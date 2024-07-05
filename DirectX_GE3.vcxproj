@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{71c99448-9f54-4eae-bb92-3285bc5f0c96}</ProjectGuid>
+    <RootNamespace>DirectXEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(ProjectDir)/Base/WinApp;$(ProjectDir)/Base/DirectXCommon;$(ProjectDir)/Base/System;$(ProjectDir)/lib/Logger;$(ProjectDir)/lib/ComPtr;$(ProjectDir)/Base/PSO/Compiler;$(ProjectDir)/Base/PSO/PipelineManager;$(ProjectDir)/Base/PSO/RootSignature;$(ProjectDir)/Base/PSO/InputLayout;$(ProjectDir)/Base/PSO/BlendState;$(ProjectDir)/Base/PSO/RasterizerState;$(ProjectDir)/lib/Vector;$(ProjectDir)/Base/Mesh;$(ProjectDir)/lib/Input;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/ignore:4049 /ignore:4048 %(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
+copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(ProjectDir)/Base/WinApp;$(ProjectDir)/Base/DirectXCommon;$(ProjectDir)/Base/System;$(ProjectDir)/lib/Logger;$(ProjectDir)/lib/ComPtr;$(ProjectDir)/Base/PSO/Compiler;$(ProjectDir)/Base/PSO/PipelineManager;$(ProjectDir)/Base/PSO/RootSignature;$(ProjectDir)/Base/PSO/InputLayout;$(ProjectDir)/Base/PSO/BlendState;$(ProjectDir)/Base/PSO/RasterizerState;$(ProjectDir)/lib/Vector;$(ProjectDir)/Base/Mesh;$(ProjectDir)/lib/Input;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/ignore:4049 /ignore:4048 %(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
+copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Base\DirectXCommon\DirectXCommon.cpp" />
+    <ClCompile Include="Base\PSO\Compiler\Compiler.cpp" />
+    <ClCompile Include="Base\PSO\Inputlayout\InputLayout.cpp" />
+    <ClCompile Include="Base\PSO\BlendState\BlendState.cpp" />
+    <ClCompile Include="lib\Input\Input.cpp" />
+    <ClCompile Include="lib\Logger\Logger.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Base\System\System.cpp" />
+    <ClCompile Include="Base\WinApp\WinApp.cpp" />
+    <ClCompile Include="Base\PSO\PipelineManager\PipelineManager.cpp" />
+    <ClCompile Include="Base\PSO\RootSignature\RootSignature.cpp" />
+    <ClCompile Include="Base\PSO\RasterizerState\RasterizerState.cpp" />
+    <ClCompile Include="Base\Mesh\Mesh.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base\PSO\Compiler\Compiler.h" />
+    <ClInclude Include="Base\PSO\Inputlayout\InputLayout.h" />
+    <ClInclude Include="Base\PSO\BlendState\BlendState.h" />
+    <ClInclude Include="lib\Input\Input.h" />
+    <ClInclude Include="lib\Vector\Vector.h" />
+    <ClInclude Include="lib\ComPtr\ComPtr.h" />
+    <ClInclude Include="Base\DirectXCommon\DirectXCommon.h" />
+    <ClInclude Include="lib\Logger\Logger.h" />
+    <ClInclude Include="Base\System\System.h" />
+    <ClInclude Include="Base\WinApp\WinApp.h" />
+    <ClInclude Include="Base\PSO\PipelineManager\PipelineManager.h" />
+    <ClInclude Include="Base\PSO\RootSignature\RootSignature.h" />
+    <ClInclude Include="Base\PSO\RasterizerState\RasterizerState.h" />
+    <ClInclude Include="Base\Mesh\Mesh.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Object3d.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Object3d.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
