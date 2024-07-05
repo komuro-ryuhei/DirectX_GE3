@@ -15,7 +15,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// フレームの開始
 		System::BeginFrame();
 
-		System::DrawTriangle();
+
 
 		// フレームの終了
 		System::EndFrame();
