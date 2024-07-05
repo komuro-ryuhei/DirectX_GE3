@@ -8,6 +8,8 @@
 // getter
 ID3D12Device* DirectXCommon::GetDevice() const { return device_.Get(); }
 ID3D12GraphicsCommandList* DirectXCommon::GetCommandList() const { return commandList_.Get(); }
+D3D12_VIEWPORT DirectXCommon::GetViewPort() const { return viewPort; }
+D3D12_RECT DirectXCommon::GetScissor() const { return scissorRect; }
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;
@@ -35,6 +37,20 @@ void DirectXCommon::PreDraw() {
 	TransitionBarrier();
 
 	CrearRenderTargets();
+
+	// クライアント領域のサイズと一緒にして画面全体に表示
+	viewPort.Width = winApp_->kWindowWidth_;
+	viewPort.Height = winApp_->kWindowHeight_;
+	viewPort.TopLeftX = 0;
+	viewPort.TopLeftY = 0;
+	viewPort.MinDepth = 0.0f;
+	viewPort.MaxDepth = 1.0f;
+
+	// 基本的にビューポートと同じ矩形が構成されるようにする
+	scissorRect.left = 0;
+	scissorRect.right = winApp_->kWindowWidth_;
+	scissorRect.top = 0;
+	scissorRect.bottom = winApp_->kWindowHeight_;
 }
 
 void DirectXCommon::PostDraw() {

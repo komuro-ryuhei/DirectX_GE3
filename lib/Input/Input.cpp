@@ -28,9 +28,34 @@ void Input::Initialize(WinApp* winApp) {
 
 void Input::Update() {
 
+	HRESULT hr;
+
+	// 前回のキー入力を保存
+	memcpy(preKey, key, sizeof(key));
+
 	// キーボード情報取得開始
 	keyboard->Acquire();
-	// 全キーの入力情報を取得する
-	BYTE key[256] = {};
 	keyboard->GetDeviceState(sizeof(key), key);
+}
+
+bool Input::PushKey(BYTE keyNumber) {
+
+	// 指定キーを押していたらtrue
+	if (key[keyNumber]) {
+		return true;
+	}
+
+	// それ以外はfalse
+	return false;
+}
+
+bool Input::TriggerKey(BYTE keyNumber) {
+	
+	// 指定キーをトリガーしていたらtrue
+	if (!preKey[keyNumber] && key[keyNumber]) {
+		return true;
+	}
+
+	// それ以外はfalse
+	return false;
 }

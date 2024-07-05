@@ -50,9 +50,12 @@ public: // 静的メンバ変数
 	/// </summary>
 	ID3D12Device* GetDevice() const;
 
-
 	ID3D12GraphicsCommandList* GetCommandList() const;
 
+
+	D3D12_VIEWPORT GetViewPort() const;
+
+	D3D12_RECT GetScissor() const;
 
 private: // メンバ変数
 
@@ -90,6 +93,12 @@ private: // メンバ変数
 	HANDLE fenceEvent;
 
 	D3D12_RESOURCE_BARRIER barrier{};
+
+
+	// ビューポート
+	D3D12_VIEWPORT viewPort{};
+	// シザー矩形
+	D3D12_RECT scissorRect{};
 
 private: // メンバ関数
 

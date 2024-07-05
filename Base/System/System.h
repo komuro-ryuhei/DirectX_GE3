@@ -1,8 +1,28 @@
 #pragma once
 
 #include "ComPtr.h"
-
 #include <memory>
+
+#include "DirectXCommon.h"
+#include "WinApp.h"
+#include "PipelineManager.h"
+#include "Mesh.h"
+#include "Input.h"
+
+#include "Logger.h"
+
+#include <cstdint>
+#include <string>
+#include <format>
+#include <cassert>
+
+#include <d3d12.h>
+#include <dxgi1_6.h>
+#include <dxgidebug.h>
+
+#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"dxgi.lib")
+#pragma comment(lib, "dxguid.lib")
 
 /// <summary>
 /// システム

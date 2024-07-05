@@ -37,8 +37,26 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// キーの押下をチェック
+	/// </summary>
+	/// <param name="keyNumber">キー番号</param>
+	/// <returns></returns>
+	bool PushKey(BYTE keyNumber);
+
+	/// <summary>
+	/// キーのトリガーをチェック
+	/// </summary>
+	/// <param name="ketNumber">キー番号</param>
+	/// <returns></returns>
+	bool TriggerKey(BYTE ketNumber);
+
 private:
 
 	ComPtr<IDirectInput8> directInput = nullptr;
 	ComPtr<IDirectInputDevice8> keyboard;
+	// 全キーの入力情報を取得する
+	BYTE key[256] = {};
+	// 前回の全キー状態
+	BYTE preKey[256] = {};
 };
