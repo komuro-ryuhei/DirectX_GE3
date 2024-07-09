@@ -142,4 +142,9 @@ private: // メンバ関数
 	/// フェンスの作成
 	/// </summary>
 	void CreateFence();
+
+	/// <summary>
+	/// シザリング矩形の初期化
+	/// </summary>
+	void InitializeScissoringRect();
 };

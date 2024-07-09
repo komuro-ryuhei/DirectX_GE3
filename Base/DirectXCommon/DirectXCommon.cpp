@@ -30,6 +30,8 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 	CreateRenderTargets();
 	// フェンスの生成
 	CreateFence();
+	// シザリング矩形の初期化
+	InitializeScissoringRect();
 }
 
 void DirectXCommon::PreDraw() {
@@ -135,7 +137,7 @@ void DirectXCommon::InitializeDXGIDevice() {
 		assert(SUCCEEDED(hr));
 		if (!(adapterDesc.Flags & DXGI_ADAPTER_FLAG3_SOFTWARE)) {
 			// 採用したアダプタの情報をログに出力
-			Logger::Log(Logger::ConvertString(std::format(L"Use Adapter:{}\n", adapterDesc.Description)));
+			Logger::Log(StringUtility::ConvertString(std::format(L"Use Adapter:{}\n", adapterDesc.Description)));
 			break;
 		}
 		useAdapter_ = nullptr; // ソフトウェアアダプタの場合は見なかったことにする
@@ -313,4 +315,23 @@ void DirectXCommon::CreateFence() {
 	// fenceのsignalを持つためのイベントを作成
 	fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 	assert(fenceEvent != nullptr);
+}
+
+void DirectXCommon::InitializeScissoringRect() {
+
+	// ビューポート
+	// クライアント領域のサイズと一緒にして画面全体に表示
+	viewPort.Width = winApp_->kWindowWidth_;
+	viewPort.Height = winApp_->kWindowHeight_;
+	viewPort.TopLeftX = 0;
+	viewPort.TopLeftY = 0;
+	viewPort.MinDepth = 0.0f;
+	viewPort.MaxDepth = 1.0f;
+
+	// シザー矩形
+	// 基本的にビューポートと同じ矩形が構成されるようにする
+	scissorRect.left = 0;
+	scissorRect.right = winApp_->kWindowWidth_;
+	scissorRect.top = 0;
+	scissorRect.bottom = winApp_->kWindowHeight_;
 }

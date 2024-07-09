@@ -37,6 +37,7 @@
     <ClCompile Include="Base\PSO\RasterizerState\RasterizerState.cpp" />
     <ClCompile Include="Base\Mesh\Mesh.cpp" />
     <ClCompile Include="lib\Input\Input.cpp" />
+    <ClCompile Include="lib\StringUtility\StringUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\ComPtr\ComPtr.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Base\Mesh\Mesh.h" />
     <ClInclude Include="lib\Vector\Vector.h" />
     <ClInclude Include="lib\Input\Input.h" />
+    <ClInclude Include="lib\StringUtility\StringUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

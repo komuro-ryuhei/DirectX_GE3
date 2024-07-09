@@ -43,7 +43,7 @@ void System::Initialize(const char* title, int width, int height) {
 
 	// ゲームウインドウの作成
 	std::string titleWithVersion = std::string(title);
-	auto&& titleString = Logger::ConvertString(titleWithVersion);
+	auto&& titleString = StringUtility::ConvertString(titleWithVersion);
 	winApp_->CreateGameWindow(
 		titleString.c_str(), WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME), width,
 		height);
@@ -69,24 +69,6 @@ void System::BeginFrame() {
 	dxCommon_->PreDraw();
 
 	input_->Update();
-
-	// ビューポート
-	D3D12_VIEWPORT viewPort{};
-	// クライアント領域のサイズと一緒にして画面全体に表示
-	viewPort.Width = winApp_->kWindowWidth_;
-	viewPort.Height = winApp_->kWindowHeight_;
-	viewPort.TopLeftX = 0;
-	viewPort.TopLeftY = 0;
-	viewPort.MinDepth = 0.0f;
-	viewPort.MaxDepth = 1.0f;
-
-	// シザー矩形
-	D3D12_RECT scissorRect{};
-	// 基本的にビューポートと同じ矩形が構成されるようにする
-	scissorRect.left = 0;
-	scissorRect.right = winApp_->kWindowWidth_;
-	scissorRect.top = 0;
-	scissorRect.bottom = winApp_->kWindowHeight_;
 }
 
 void System::EndFrame() {

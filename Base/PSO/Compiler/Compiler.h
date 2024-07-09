@@ -8,6 +8,7 @@
 #include <cassert>
 #include <format>
 
+#include "StringUtility.h"
 #include "Logger.h"
 #include "ComPtr.h"
 
