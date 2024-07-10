@@ -20,6 +20,9 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 
 	winApp_ = winApp;
 
+	// FPS初期化
+	InitializeFixFPS();
+
 	// DXGIデバイスの初期化
 	InitializeDXGIDevice();
 	// commandの初期化
@@ -74,6 +77,9 @@ void DirectXCommon::PostDraw() {
 	commandQueue_->ExecuteCommandLists(1, commandLists);
 	// GPUとOSに画面の交換を行うよう通知する
 	swapChain_->Present(1, 0);
+
+	// FPS固定
+	UpdateFixFPS();
 
 	// fenceの値を更新
 	fenceValue++;
@@ -334,4 +340,36 @@ void DirectXCommon::InitializeScissoringRect() {
 	scissorRect.right = winApp_->kWindowWidth_;
 	scissorRect.top = 0;
 	scissorRect.bottom = winApp_->kWindowHeight_;
+}
+
+void DirectXCommon::InitializeFixFPS() {
+
+	// 現在時間を記録する
+	reference_ = std::chrono::steady_clock::now();
+}
+
+void DirectXCommon::UpdateFixFPS() {
+
+	// 1/60 秒ぴったりの時間
+	const std::chrono::microseconds kMinTime(int64_t(1000000.0f / 60.0f));
+	// 1/60　秒よりわずかに短い時間
+	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+
+	// 現在時間を取得する
+	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	// 前回記録からの経過時間を取得する
+	std::chrono::microseconds elapsed =
+		std::chrono::duration_cast<std::chrono::microseconds>(now - reference_);
+
+	// 1/60 秒(よりわずかに短い時間) 経っていない場合
+	if (elapsed < kMinCheckTime) {
+
+		// 1/60 秒経過するまで微小なスリープを繰り返す
+		while (std::chrono::steady_clock::now() - reference_ < kMinTime) {
+			// 1マイクロ秒スリープ
+			std::this_thread::sleep_for(std::chrono::microseconds(1));
+		}
+	}
+	// 現在の時間を記録する
+	reference_ = std::chrono::steady_clock::now();
 }

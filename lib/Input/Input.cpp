@@ -28,8 +28,6 @@ void Input::Initialize(WinApp* winApp) {
 
 void Input::Update() {
 
-	HRESULT hr;
-
 	// 前回のキー入力を保存
 	memcpy(preKey, key, sizeof(key));
 

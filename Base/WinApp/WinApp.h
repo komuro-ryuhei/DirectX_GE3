@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include <cstdint>
 
+#pragma comment(lib,"winmm.lib")
+
 #include "ComPtr.h"
 
 /// <summary>

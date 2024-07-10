@@ -66,6 +66,9 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t cl
 	// COMの初期化
 	CoInitializeEx(0, COINIT_MULTITHREADED);
 
+	// システムタイマーの分解能を上げる
+	timeBeginPeriod(1);
+
 	// ウインドウプロシージャ
 	wndClass_.lpfnWndProc = WindowProc;
 	// ウインドウクラス名

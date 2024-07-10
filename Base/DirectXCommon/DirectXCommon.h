@@ -4,6 +4,8 @@
 #include <dxgi1_6.h>
 
 #include <cassert>
+#include <chrono>
+#include <thread>
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -100,6 +102,10 @@ private: // メンバ変数
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 
+
+	// 記録時間(FPS固定用)
+	std::chrono::steady_clock::time_point reference_;
+
 private: // メンバ関数
 
 	DirectXCommon() = default;
@@ -147,4 +153,14 @@ private: // メンバ関数
 	/// シザリング矩形の初期化
 	/// </summary>
 	void InitializeScissoringRect();
+
+	/// <summary>
+	/// FPS固定初期化
+	/// </summary>
+	void InitializeFixFPS();
+
+	/// <summary>
+	/// FPS固定更新
+	/// </summary>
+	void UpdateFixFPS();
 };
