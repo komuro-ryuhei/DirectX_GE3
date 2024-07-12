@@ -238,7 +238,7 @@ void DirectXCommon::CreateSwapChain() {
 ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(
 	ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible) {
 
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap = nullptr;
+	ComPtr<ID3D12DescriptorHeap> descriptorHeap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
 	descriptorHeapDesc.Type = heaptype;
 	descriptorHeapDesc.NumDescriptors = numDescriptors;
