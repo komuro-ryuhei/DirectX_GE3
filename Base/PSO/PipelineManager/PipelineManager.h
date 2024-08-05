@@ -39,11 +39,11 @@ public:
 	ID3D12PipelineState* GetGraphicsPipelineState() const;
 
 private:
-	Compiler* compiler_ = new Compiler();
-	RootSignature* rootSignature_ = new RootSignature();
-	InputLayout* inputLayout_ = new InputLayout();
-	RasterizerState* rasterizer_ = new RasterizerState();
-	BlendState* blendState_ = new BlendState();
+	std::unique_ptr<Compiler> compiler_ = std::make_unique<Compiler>();
+	std::unique_ptr<RootSignature> rootSignature_ = std::make_unique<RootSignature>();
+	std::unique_ptr<InputLayout> inputLayout_ = std::make_unique<InputLayout>();
+	std::unique_ptr<RasterizerState> rasterizer_ = std::make_unique<RasterizerState>();
+	std::unique_ptr<BlendState> blendState_ = std::make_unique<BlendState>();
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	ComPtr<ID3D12PipelineState> graphicsPipelineState = nullptr;
