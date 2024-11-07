@@ -12,4 +12,3 @@ public: // 静的メンバ関数
 
 	static void Log(const std::string& message);
 };
-

@@ -38,6 +38,11 @@
     <ClCompile Include="Base\Mesh\Mesh.cpp" />
     <ClCompile Include="lib\Input\Input.cpp" />
     <ClCompile Include="lib\StringUtility\StringUtility.cpp" />
+    <ClCompile Include="Base\Sprite\Sprite.cpp" />
+    <ClCompile Include="Base\SpriteCommon\SpriteCommon.cpp" />
+    <ClCompile Include="lib\Math\MyMath.cpp" />
+    <ClCompile Include="Base\Triangle\Triangle.cpp" />
+    <ClCompile Include="Base\TextureManager\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\ComPtr\ComPtr.h" />
@@ -55,9 +60,18 @@
     <ClInclude Include="lib\Vector\Vector.h" />
     <ClInclude Include="lib\Input\Input.h" />
     <ClInclude Include="lib\StringUtility\StringUtility.h" />
+    <ClInclude Include="Base\Sprite\Sprite.h" />
+    <ClInclude Include="Base\SpriteCommon\SpriteCommon.h" />
+    <ClInclude Include="lib\Matrix\Matrix.h" />
+    <ClInclude Include="lib\Math\MyMath.h" />
+    <ClInclude Include="Base\Triangle\Triangle.h" />
+    <ClInclude Include="Base\TextureManager\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />
     <FxCompile Include="Object3d.PS.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Object3d.hlsli" />
   </ItemGroup>
 </Project>

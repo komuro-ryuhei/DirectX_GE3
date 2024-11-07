@@ -2,8 +2,12 @@
 
 D3D12_VERTEX_BUFFER_VIEW Mesh::GetVBV() const { return vertexBufferView; }
 
-ComPtr<ID3D12Resource> Mesh::CreateVertexResource(DirectXCommon* dXCommon, size_t sizeInBytes) {
+ID3D12Resource* Mesh::GetMateialResource() const { return materialResource_.Get(); }
+
+ComPtr<ID3D12Resource> Mesh::CreateVertexResource(DirectXCommon* dxCommon, size_t sizeInBytes) {
 	HRESULT hr;
+
+	dxCommon_ = dxCommon;
 
 	// 頂点リソース用のヒープの設定
 	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -19,9 +23,7 @@ ComPtr<ID3D12Resource> Mesh::CreateVertexResource(DirectXCommon* dXCommon, size_
 	// バッファの場合はこれにする決まり
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	// 実際に頂点リソースを作る
-	hr = dXCommon->GetDevice()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE,
-		&vertexResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&vertexResource));
+	hr = dxCommon_->GetDevice()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &vertexResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertexResource));
 	assert(SUCCEEDED(hr));
 
 	return vertexResource;
@@ -37,6 +39,13 @@ void Mesh::CreateVertexBufferView() {
 	vertexBufferView.StrideInBytes = sizeof(Vector4);
 }
 
+void Mesh::CreateMaterialResource() {
+
+	materialResource_ = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(Vector4));
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
+	materialData->color = Vector4(1.0, 0.0f, 0.0f, 1.0f);
+}
+
 void Mesh::WriteDateForResource() {
 
 	// 頂点リソースにデータを書き込む
@@ -45,9 +54,11 @@ void Mesh::WriteDateForResource() {
 	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 
 	// 左下
-	vertexData[0] = { -0.5f,-0.5f,0.0f,1.0f };
+	vertexData[0] = {-0.5f, -0.5f, 0.0f, 1.0f};
 	// 上
-	vertexData[1] = { 0.0f,0.5f,0.0f,1.0f };
+	vertexData[1] = {0.0f, 0.5f, 0.0f, 1.0f};
 	// 右下
-	vertexData[2] = { 0.5f,-0.5f,0.0f,1.0f };
+	vertexData[2] = {0.5f, -0.5f, 0.0f, 1.0f};
+
+	CreateMaterialResource();
 }

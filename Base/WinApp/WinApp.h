@@ -4,6 +4,7 @@
 
 #pragma comment(lib,"winmm.lib")
 
+// MyClass
 #include "ComPtr.h"
 
 /// <summary>
@@ -19,6 +20,9 @@ public: // 静的メンバ変数
 	static const wchar_t kWindowName[];
 
 public: // メンバ関数
+
+	WinApp() = default;
+	~WinApp() = default;
 
 	/// <summary>
 	/// シングルトンインスタンスの取得
@@ -54,8 +58,9 @@ public: // メンバ関数
 	
 
 	WNDCLASS GetWindowClass() const;
-
 	HWND GetHwnd() const;
+	uint32_t GetWidth() const;
+	uint32_t GetHeight() const;
 
 private: // メンバ変数
 
@@ -66,8 +71,6 @@ private: // メンバ変数
 
 private:// メンバ関数
 
-	WinApp() = default;
-	~WinApp() = default;
 	WinApp(const WinApp&) = delete;
 	const WinApp& operator=(const WinApp&) = delete;
 };

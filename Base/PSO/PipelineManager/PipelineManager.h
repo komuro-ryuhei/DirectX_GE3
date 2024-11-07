@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Compiler.h"
+
+// MyClass
 #include "RootSignature.h"
 #include "Inputlayout.h"
 #include "RasterizerState.h"
@@ -14,6 +16,9 @@
 /// </summary>
 class PipelineManager {
 public:
+	
+	PipelineManager() = default;
+	~PipelineManager() = default;
 
 	/// <summary>
 	/// シングルトンインスタンス
@@ -35,7 +40,7 @@ public:
 	void PSOSetting(DirectXCommon* dXCommon);
 
 
-	ID3D12RootSignature* GetRootsignature() const;
+	ID3D12RootSignature* GetRootSignature() const;
 	ID3D12PipelineState* GetGraphicsPipelineState() const;
 
 private:
@@ -53,8 +58,6 @@ private:
 
 private:
 
-	PipelineManager() = default;
-	~PipelineManager() = default;
 	PipelineManager(const PipelineManager&) = delete;
 	const PipelineManager& operator=(const PipelineManager&) = delete;
 };

@@ -1,6 +1,6 @@
 #include "PipelineManager.h"
 
-ID3D12RootSignature* PipelineManager::GetRootsignature() const { return rootSignature_->GetRootSignature(); }
+ID3D12RootSignature* PipelineManager::GetRootSignature() const { return rootSignature_->GetRootSignature(); }
 
 ID3D12PipelineState* PipelineManager::GetGraphicsPipelineState() const { return graphicsPipelineState.Get(); }
 

@@ -7,18 +7,20 @@
 #include <chrono>
 #include <thread>
 
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "dxgi.lib")
+#include <DirectXTex.h>
 
+// MyClass
 #include "ComPtr.h"
-#include "WinApp.h"
 #include "Compiler.h"
+#include "WinApp.h"
 
 /// <summary>
 /// DirectXCommon
 /// </summary>
 class DirectXCommon {
 public: // 静的メンバ変数
+	DirectXCommon() = default;
+	~DirectXCommon() = default;
 
 	/// <summary>
 	/// シングルトンインスタンス
@@ -46,6 +48,45 @@ public: // 静的メンバ変数
 	/// </summary>
 	void CrearRenderTargets();
 
+	/// <summary>
+	/// リソース作成
+	/// </summary>
+	ComPtr<ID3D12Resource> CreateBufferResource(ID3D12Device* device, size_t sizeInBytes);
+
+	/// <summary>
+	/// ディスクリプターヒープの作成
+	/// </summary>
+	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible);
+
+	/// <summary>
+	///
+	/// </summary>
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap, uint32_t descriptorSize, uint32_t index);
+
+	/// <summary>
+	///
+	/// </summary>
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap, uint32_t descriptorSize, uint32_t index);
+
+	/// <summary>
+	///
+	/// </summary>
+	ComPtr<ID3D12Resource> CreateTextureResource(ID3D12Device* device, const DirectX::TexMetadata& metadata);
+
+	/// <summary>
+	///
+	/// </summary>
+	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
+
+	/// <summary>
+	///
+	/// </summary>
+	DirectX::ScratchImage LoadTexture(const std::string& filePath);
+
+	/// <summary>
+	///
+	/// </summary>
+	void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 	/// <summary>
 	/// getter
@@ -54,20 +95,17 @@ public: // 静的メンバ変数
 
 	ID3D12GraphicsCommandList* GetCommandList() const;
 
-
 	D3D12_VIEWPORT GetViewPort() const;
 
 	D3D12_RECT GetScissor() const;
 
 private: // メンバ変数
-
 	// ウィンドウサイズ
 	uint32_t kWindowWidth_;
 	uint32_t kWindowHeight_;
 
 	// ウィンドウズアプリケーション
 	WinApp* winApp_;
-
 
 	// DiretcX
 	ComPtr<IDXGIFactory7> dxgiFactory_;
@@ -80,36 +118,41 @@ private: // メンバ変数
 
 	// スワップチェイン
 	ComPtr<IDXGISwapChain4> swapChain_;
-	ComPtr<ID3D12Resource> swapChainResources[2] = { nullptr };
+	ComPtr<ID3D12Resource> swapChainResources[2] = {nullptr};
 
 	// ディスクリプターヒープ
 	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
 
 	// RTVを2つ作るのでディスクリプタを2つ用意
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
-
+	// インフォキュー
 	ComPtr<ID3D12InfoQueue> infoQueue_ = nullptr;
-
+	// フェンス
 	ComPtr<ID3D12Fence> fence_;
 	uint64_t fenceValue = 0;
 	HANDLE fenceEvent;
 
+	// バリア
 	D3D12_RESOURCE_BARRIER barrier{};
 
+	// DescriptorSize
+	uint32_t descriptorSizeSRV;
+	uint32_t descriptorSizeRTV;
+	uint32_t descriptorSizeDSV;
 
 	// ビューポート
 	D3D12_VIEWPORT viewPort{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 
-
 	// 記録時間(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;
 
-private: // メンバ関数
+public:
+	// 最大SRV数(最大テクスチャ枚数)
+	static const uint32_t kMaxSRVCount_;
 
-	DirectXCommon() = default;
-	~DirectXCommon() = default;
+private: // メンバ関数
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
 
@@ -131,8 +174,7 @@ private: // メンバ関数
 	/// <summary>
 	/// ディスクリプターヒープの生成
 	/// </summary>
-	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(
-		ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible);
+	void CreateDescriptorHeap();
 
 	/// <summary>
 	/// レンダーターゲットの生成
@@ -148,6 +190,11 @@ private: // メンバ関数
 	/// フェンスの作成
 	/// </summary>
 	void CreateFence();
+
+	/// <summary>
+	/// 深度バッファの作成
+	/// </summary>
+	void CreateDSV();
 
 	/// <summary>
 	/// シザリング矩形の初期化

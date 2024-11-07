@@ -8,6 +8,7 @@
 #include <cassert>
 #include <format>
 
+// MyClass
 #include "StringUtility.h"
 #include "Logger.h"
 #include "ComPtr.h"
@@ -21,7 +22,6 @@ public:
 	/// <summary>
 	/// シングルトンインスタンスの取得
 	/// </summary>
-	/// <returns>シングルトンインスタンス</returns>
 	static Compiler* GetInstance();
 
 	/// <summary>

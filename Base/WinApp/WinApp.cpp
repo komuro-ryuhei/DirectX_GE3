@@ -6,6 +6,8 @@ const wchar_t WinApp::kWindowName[] = L"GE3";
 // getter
 WNDCLASS WinApp::GetWindowClass() const { return wndClass_; }
 HWND WinApp::GetHwnd() const { return hwnd_; }
+uint32_t WinApp::GetWidth() const { return kWindowWidth_; }
+uint32_t WinApp::GetHeight() const { return kWindowHeight_; }
 
 /*==================================================================================*/
 // インスタンス
