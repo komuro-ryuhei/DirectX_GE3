@@ -64,7 +64,7 @@ private: // メンバ変数
 	UINT windowStyle_;
 	float aspectRatio_;
 
-private:// メンバ関数
+public:// メンバ関数
 
 	WinApp() = default;
 	~WinApp() = default;

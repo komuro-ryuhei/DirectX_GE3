@@ -1,35 +1,34 @@
 #pragma once
 
-#include "ComPtr.h"
-#include <memory>
-
-#include "DirectXCommon.h"
-#include "WinApp.h"
-#include "PipelineManager.h"
-#include "Mesh.h"
-#include "Input.h"
-
-#include "Logger.h"
-
-#include <cstdint>
-#include <string>
-#include <format>
 #include <cassert>
+#include <cstdint>
+#include <format>
+#include <memory>
+#include <string>
 
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <dxgidebug.h>
 
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
+
+// MyClass
+#include "ComPtr.h"
+#include "DirectXCommon.h"
+#include "Input.h"
+#include "Mesh.h"
+#include "PipelineManager.h"
+#include "WinApp.h"
+
+#include "Logger.h"
 
 /// <summary>
 /// システム
 /// </summary>
 class System {
 public: // 静的メンバ関数
-
 	/// <summary>
 	/// システム全体の初期化
 	/// </summary>
@@ -42,7 +41,7 @@ public: // 静的メンバ関数
 	/// Windowsのメッセージを処理する
 	/// </summary>
 	/// <returns>1: ゲーム終了 0: ゲーム継続</returns>
-	static bool ProcessMesage();
+	static bool ProcessMessage();
 
 	/// <summary>
 	/// フレーム開始処理
@@ -53,8 +52,6 @@ public: // 静的メンバ関数
 	/// フレーム終了処理
 	/// </summary>
 	static void EndFrame();
-
-	static void CreateMesh();
 
 	static void DrawTriangle();
 };

@@ -11,14 +11,16 @@
 #pragma comment(lib, "dxgi.lib")
 
 #include "ComPtr.h"
-#include "WinApp.h"
 #include "Compiler.h"
+#include "WinApp.h"
 
 /// <summary>
 /// DirectXCommon
 /// </summary>
 class DirectXCommon {
 public: // 静的メンバ変数
+	DirectXCommon() = default;
+	~DirectXCommon() = default;
 
 	/// <summary>
 	/// シングルトンインスタンス
@@ -46,6 +48,10 @@ public: // 静的メンバ変数
 	/// </summary>
 	void CrearRenderTargets();
 
+	/// <summary>
+	/// リソース作成
+	/// </summary>
+	ComPtr<ID3D12Resource> CreateBufferResource(ID3D12Device* device, size_t sizeInBytes);
 
 	/// <summary>
 	/// getter
@@ -54,20 +60,17 @@ public: // 静的メンバ変数
 
 	ID3D12GraphicsCommandList* GetCommandList() const;
 
-
 	D3D12_VIEWPORT GetViewPort() const;
 
 	D3D12_RECT GetScissor() const;
 
 private: // メンバ変数
-
 	// ウィンドウサイズ
 	uint32_t kWindowWidth_;
 	uint32_t kWindowHeight_;
 
 	// ウィンドウズアプリケーション
 	WinApp* winApp_;
-
 
 	// DiretcX
 	ComPtr<IDXGIFactory7> dxgiFactory_;
@@ -80,7 +83,7 @@ private: // メンバ変数
 
 	// スワップチェイン
 	ComPtr<IDXGISwapChain4> swapChain_;
-	ComPtr<ID3D12Resource> swapChainResources[2] = { nullptr };
+	ComPtr<ID3D12Resource> swapChainResources[2] = {nullptr};
 
 	// ディスクリプターヒープ
 	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
@@ -96,20 +99,15 @@ private: // メンバ変数
 
 	D3D12_RESOURCE_BARRIER barrier{};
 
-
 	// ビューポート
 	D3D12_VIEWPORT viewPort{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 
-
 	// 記録時間(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;
 
 private: // メンバ関数
-
-	DirectXCommon() = default;
-	~DirectXCommon() = default;
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
 
@@ -131,8 +129,7 @@ private: // メンバ関数
 	/// <summary>
 	/// ディスクリプターヒープの生成
 	/// </summary>
-	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(
-		ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible);
+	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible);
 
 	/// <summary>
 	/// レンダーターゲットの生成

@@ -53,7 +53,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Base/WinApp;$(ProjectDir)/Base/DirectXCommon;$(ProjectDir)/Base/System;$(ProjectDir)/lib/Logger;$(ProjectDir)/lib/ComPtr;$(ProjectDir)/Base/PSO/Compiler;$(ProjectDir)/Base/PSO/PipelineManager;$(ProjectDir)/Base/PSO/RootSignature;$(ProjectDir)/Base/PSO/InputLayout;$(ProjectDir)/Base/PSO/BlendState;$(ProjectDir)/Base/PSO/RasterizerState;$(ProjectDir)/lib/Vector;$(ProjectDir)/Base/Mesh;$(ProjectDir)/lib/Input;$(ProjectDir)/lib/StringUtility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/Base/WinApp;$(ProjectDir)/Base/DirectXCommon;$(ProjectDir)/Base/System;$(ProjectDir)/lib/Logger;$(ProjectDir)/lib/ComPtr;$(ProjectDir)/Base/PSO/Compiler;$(ProjectDir)/Base/PSO/PipelineManager;$(ProjectDir)/Base/PSO/RootSignature;$(ProjectDir)/Base/PSO/InputLayout;$(ProjectDir)/Base/PSO/BlendState;$(ProjectDir)/Base/PSO/RasterizerState;$(ProjectDir)/lib/Vector;$(ProjectDir)/Base/Mesh;$(ProjectDir)/lib/Input;$(ProjectDir)/lib/StringUtility;$(ProjectDir)/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,12 +108,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Base\PSO\RasterizerState\RasterizerState.cpp" />
     <ClCompile Include="Base\Mesh\Mesh.cpp" />
     <ClCompile Include="lib\StringUtility\StringUtility.cpp" />
+    <ClCompile Include="lib\Math\MyMath.cpp" />
+    <ClCompile Include="Base\Triangle\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\PSO\Compiler\Compiler.h" />
     <ClInclude Include="Base\PSO\Inputlayout\InputLayout.h" />
     <ClInclude Include="Base\PSO\BlendState\BlendState.h" />
     <ClInclude Include="lib\Input\Input.h" />
+    <ClInclude Include="lib\Matrix\Matrix.h" />
     <ClInclude Include="lib\Vector\Vector.h" />
     <ClInclude Include="lib\ComPtr\ComPtr.h" />
     <ClInclude Include="Base\DirectXCommon\DirectXCommon.h" />
@@ -125,6 +128,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Base\PSO\RasterizerState\RasterizerState.h" />
     <ClInclude Include="Base\Mesh\Mesh.h" />
     <ClInclude Include="lib\StringUtility\StringUtility.h" />
+    <ClInclude Include="lib\Math\MyMath.h" />
+    <ClInclude Include="Base\Triangle\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -139,6 +144,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Object3d.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

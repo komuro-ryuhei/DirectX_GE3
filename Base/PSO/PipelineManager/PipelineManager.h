@@ -1,19 +1,24 @@
+
 #pragma once
 
 #include "Compiler.h"
-#include "RootSignature.h"
+
+// MyClass
+#include "BlendState.h"
 #include "Inputlayout.h"
 #include "RasterizerState.h"
-#include "BlendState.h"
+#include "RootSignature.h"
 
-#include "DirectXCommon.h"
 #include "ComPtr.h"
+#include "DirectXCommon.h"
 
 /// <summary>
 /// パイプライン管理
 /// </summary>
 class PipelineManager {
 public:
+	PipelineManager() = default;
+	~PipelineManager() = default;
 
 	/// <summary>
 	/// シングルトンインスタンス
@@ -31,11 +36,9 @@ public:
 	/// </summary>
 	void CreatePSO(DirectXCommon* dXCommon);
 
-
 	void PSOSetting(DirectXCommon* dXCommon);
 
-
-	ID3D12RootSignature* GetRootsignature() const;
+	ID3D12RootSignature* GetRootSignature() const;
 	ID3D12PipelineState* GetGraphicsPipelineState() const;
 
 private:
@@ -52,9 +55,6 @@ private:
 	ComPtr<IDxcBlob> psBlob;
 
 private:
-
-	PipelineManager() = default;
-	~PipelineManager() = default;
 	PipelineManager(const PipelineManager&) = delete;
 	const PipelineManager& operator=(const PipelineManager&) = delete;
 };

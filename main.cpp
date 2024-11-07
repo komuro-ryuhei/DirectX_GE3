@@ -23,7 +23,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	System::Initialize(kWindowTitle, 1280, 720);
 
 	// ×が押されるまでループ
-	while (System::ProcessMesage() == 0) {
+	while (System::ProcessMessage() == 0) {
 
 		// フレームの開始
 		System::BeginFrame();
