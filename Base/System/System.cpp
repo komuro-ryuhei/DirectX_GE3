@@ -3,13 +3,12 @@
 
 // MyClass
 #include "Base/DirectXCommon/DirectXCommon.h"
-#include "lib/Input/Input.h"
 #include "Base/Mesh/Mesh.h"
 #include "Base/PSO/PipelineManager/PipelineManager.h"
+#include "Base/Sprite/Sprite.h"
 #include "Base/Triangle/Triangle.h"
 #include "Base/WinApp/WinApp.h"
-#include "Base/Sprite/Sprite.h"
-
+#include "lib/Input/Input.h"
 #include "lib/Logger/Logger.h"
 
 #include <cassert>
@@ -41,7 +40,8 @@ std::unique_ptr<Mesh> mesh_ = nullptr;
 // Triangle
 std::unique_ptr<Triangle> triangle_ = nullptr;
 // SPrite
-std::unique_ptr<Sprite> sprite_ = nullptr;
+// std::unique_ptr<Sprite> sprite_ = nullptr;
+std::vector<std::unique_ptr<Sprite>> sprites_;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -69,8 +69,15 @@ void System::Initialize(const char* title, int width, int height) {
 	triangle_->Initialize(dxCommon_.get(), pipelineManager_.get());
 
 	// Sprite
-	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_.get(),pipelineManager_.get());
+	/*sprite_ = std::make_unique<Sprite>();
+	sprite_->Init(dxCommon_.get(),pipelineManager_.get());*/
+
+	for (uint32_t i = 0; i < 5; ++i) {
+		auto sprite = std::make_unique<Sprite>();
+		sprite->Init(dxCommon_.get(), pipelineManager_.get());
+		sprite->SetPosition(Vector2{200.0f * i, 0.0f});
+		sprites_.push_back(std::move(sprite));
+	}
 
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
@@ -83,15 +90,28 @@ void System::BeginFrame() {
 
 	// DirectX描画前処理
 	dxCommon_->PreDraw();
+
 	// Sprite描画前処理
-	sprite_->PreDraw();
+	// sprite_->PreDraw();
+	// Sprite描画前処理
+	for (auto& sprite : sprites_) {
+		sprite->PreDraw();
+	}
 }
 
 void System::Update() {
 
 	input_->Update();
 
-	sprite_->Update();
+	// sprite_->Update();
+
+	for (auto& sprite : sprites_) {
+		sprite->Update();
+
+		/*Vector2 position = sprite->GetPosition();
+		position += Vector2{0.1f, 0.1f};
+		sprite->SetPosition(position);*/
+	}
 }
 
 void System::EndFrame() {
@@ -102,4 +122,9 @@ void System::EndFrame() {
 
 void System::DrawTriangle() { triangle_->Draw(); }
 
-void System::DrawSprite() { sprite_->Draw(); }
+void System::DrawSprite() {
+	// sprite_->Draw();
+	for (auto& sprite : sprites_) {
+		sprite->Draw();
+	}
+}

@@ -47,6 +47,19 @@ public:
 
 	void PreDraw();
 
+public:
+
+	// getter
+	const Vector2& GetPosition() const;
+	float GetRotation() const;
+	const Vector4& GetColor() const;
+	const Vector2& GetSize() const;
+	// setter
+	void SetPosition(const Vector2& position);
+	void SetRotation(float rotation);
+	void SetColor(const Vector4& color);
+	void SetSize(const Vector2& size);
+
 private:
 	// DxCommon
 	DirectXCommon* dxCommon_ = nullptr;
@@ -87,4 +100,10 @@ private:
 	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap;
 	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU;
 	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU;
+
+private:
+
+	Vector2 position_ = {0.0f, 0.0f};
+	float rotation_ = 0.0f;
+	Vector2 size_ = {100.0f, 100.0f};
 };

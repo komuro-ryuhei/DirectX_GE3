@@ -1,5 +1,16 @@
 #include "Sprite.h"
 
+// getter
+const Vector2& Sprite::GetPosition() const { return position_; }
+float Sprite::GetRotation() const { return rotation_; }
+const Vector4& Sprite::GetColor() const { return materialData->color; }
+const Vector2& Sprite::GetSize() const { return size_; }
+// setter
+void Sprite::SetPosition(const Vector2& position) { position_ = position; }
+void Sprite::SetRotation(float rotation) { rotation_ = rotation; }
+void Sprite::SetColor(const Vector4& color) { materialData->color = color; }
+void Sprite::SetSize(const Vector2& size) { size_ = size; }
+
 void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 
 	dxCommon_ = dxCommon;
@@ -16,8 +27,8 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 	vertexBufferView.SizeInBytes = sizeof(VertexData) * 6;                    // 6頂点のサイズ
 	vertexBufferView.StrideInBytes = sizeof(VertexData);                      // 1頂点のサイズ
 	// IndexBufferViewを設定
-	indexBufferView.BufferLocation = indexResource->GetGPUVirtualAddress();   // 先頭のアドレスを使用
-	indexBufferView.SizeInBytes = sizeof(uint32_t) * 6;                       // 6頂点のサイズ
+	indexBufferView.BufferLocation = indexResource->GetGPUVirtualAddress(); // 先頭のアドレスを使用
+	indexBufferView.SizeInBytes = sizeof(uint32_t) * 6;                     // 6頂点のサイズ
 	// インデックスはuint32_tとする
 	indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 
@@ -82,7 +93,7 @@ void Sprite::Update() {
 	// ヴァーテックスリソースにデータを書き込む
 	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 
-	vertexData[0].position = {0.0f, 360.0f, 0.0f, 1.0f}; // 左下
+	vertexData[0].position = {0.0f, 1.0f, 0.0f, 1.0f}; // 左下
 	vertexData[0].texcoord = {0.0f, 1.0f};
 	vertexData[0].normal = {0.0f, 0.0f, -1.0f};
 
@@ -90,11 +101,11 @@ void Sprite::Update() {
 	vertexData[1].texcoord = {0.0f, 0.0f};
 	vertexData[1].normal = {0.0f, 0.0f, -1.0f};
 
-	vertexData[2].position = {640.0f, 360.0f, 0.0f, 1.0f}; // 右下
+	vertexData[2].position = {1.0f, 1.0f, 0.0f, 1.0f}; // 右下
 	vertexData[2].texcoord = {1.0f, 1.0f};
 	vertexData[2].normal = {0.0f, 0.0f, -1.0f};
 
-	vertexData[3].position = {640.0f, 0.0f, 0.0f, 1.0f}; // 右上
+	vertexData[3].position = {1.0f, 0.0f, 0.0f, 1.0f}; // 右上
 	vertexData[3].texcoord = {1.0f, 0.0f};
 	vertexData[3].normal = {0.0f, 0.0f, -1.0f};
 
@@ -120,6 +131,9 @@ void Sprite::Update() {
 	uvTransformMatrix = MyMath::Multiply(uvTransformMatrix, MyMath::MakeRotateZMatrix(uvTransform.rotate.z));
 	uvTransformMatrix = MyMath::Multiply(uvTransformMatrix, MyMath::MakeTranslateMatrix(uvTransform.translate));
 	materialData->uvTransform = uvTransformMatrix;
+
+	transform.translate = {position_.x, position_.y, 0.0f};
+	transform.scale = {size_.x, size_.y, 1.0f};
 }
 
 void Sprite::Draw() {
