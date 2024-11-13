@@ -15,6 +15,10 @@ WinApp* WinApp::GetInstance() {
 	return &instance;
 }
 
+int32_t WinApp::GetWindowWidth() { return kWindowWidth_; }
+
+int32_t WinApp::GetWindowHeight() { return kWindowHeight_; }
+
 /*==================================================================================*/
 // メッセージ
 
@@ -36,11 +40,14 @@ bool WinApp::ProcessMessage() {
 	return false;
 }
 
-
 /*==================================================================================*/
 // ウインドウプロシージャ
 
 LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
+		return true;
+	}
 
 	// メッセージに応じてゲーム固有の処理
 	switch (msg) {
@@ -82,25 +89,13 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t cl
 	RegisterClass(&wndClass_);
 
 	// ウインドウサイズを表す構造体にクライアント領域を入れる
-	RECT wrc = { 0,0,clientWidth,clientHeight };
+	RECT wrc = {0, 0, clientWidth, clientHeight};
 
 	// クライアント領域を元に実際のサイズにwrcを変更してもらう
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
 	// ウインドの生成
-	hwnd_ = CreateWindow(
-		wndClass_.lpszClassName,
-		title,
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		wrc.right - wrc.left,
-		wrc.bottom - wrc.top,
-		nullptr,
-		nullptr,
-		wndClass_.hInstance,
-		nullptr
-	);
+	hwnd_ = CreateWindow(wndClass_.lpszClassName, title, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, wrc.right - wrc.left, wrc.bottom - wrc.top, nullptr, nullptr, wndClass_.hInstance, nullptr);
 
 	// ウインドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);

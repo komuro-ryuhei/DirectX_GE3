@@ -3,9 +3,9 @@
 
 #include <d3d12.h>
 
-#include "ComPtr.h"
-#include "DirectXCommon.h"
-#include "Logger.h"
+#include "lib/ComPtr/ComPtr.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "lib/Logger/Logger.h"
 
 class RootSignature {
 public:

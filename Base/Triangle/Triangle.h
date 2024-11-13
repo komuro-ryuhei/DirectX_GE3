@@ -1,11 +1,11 @@
 #pragma once
 
 // MyClass
-#include "ComPtr.h"
-#include "DirectXCommon.h"
-#include "Mesh.h"
-#include "PipelineManager.h"
-#include "WinApp.h"
+#include "lib/ComPtr/ComPtr.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Base/Mesh/Mesh.h"
+#include "Base/PSO/PipelineManager/PipelineManager.h"
+#include "Base/WinApp/WinApp.h"
 
 // C++
 #include <memory>

@@ -10,9 +10,16 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-#include "ComPtr.h"
-#include "Compiler.h"
-#include "WinApp.h"
+#include "externals/DirectXTex/DirectXTex.h"
+
+#include "externals/imgui/imgui.h"
+#include "externals/imgui/imgui_impl_dx12.h"
+#include "externals/imgui/imgui_impl_win32.h"
+
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "Base/PSO/Compiler/Compiler.h"
+#include "Base/WinApp/WinApp.h"
+#include "lib/StringUtility/StringUtility.h"
 
 /// <summary>
 /// DirectXCommon
@@ -54,6 +61,11 @@ public: // 静的メンバ変数
 	ComPtr<ID3D12Resource> CreateBufferResource(ID3D12Device* device, size_t sizeInBytes);
 
 	/// <summary>
+	/// ディスクリプターヒープの生成
+	/// </summary>
+	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible);
+
+	/// <summary>
 	/// getter
 	/// </summary>
 	ID3D12Device* GetDevice() const;
@@ -63,6 +75,12 @@ public: // 静的メンバ変数
 	D3D12_VIEWPORT GetViewPort() const;
 
 	D3D12_RECT GetScissor() const;
+
+	uint32_t GetDescriptorSizeSRV() const;
+	uint32_t GetDescriptorSizeRTV() const;
+	uint32_t GetDescriptorSizeDSV() const;
+
+	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() const;
 
 private: // メンバ変数
 	// ウィンドウサイズ
@@ -84,9 +102,14 @@ private: // メンバ変数
 	// スワップチェイン
 	ComPtr<IDXGISwapChain4> swapChain_;
 	ComPtr<ID3D12Resource> swapChainResources[2] = {nullptr};
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 	// ディスクリプターヒープ
 	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
+	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap;
+
+	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 
 	// RTVを2つ作るのでディスクリプタを2つ用意
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
@@ -107,6 +130,16 @@ private: // メンバ変数
 	// 記録時間(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;
 
+	// DescriptorSize
+	uint32_t descriptorSizeSRV;
+	uint32_t descriptorSizeRTV;
+	uint32_t descriptorSizeDSV;
+
+	ComPtr<ID3D12Resource> depthStencilResource;
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle;
+
 private: // メンバ関数
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
@@ -122,14 +155,14 @@ private: // メンバ関数
 	void InitializeCommand();
 
 	/// <summary>
+	/// Descriptorのサイズ設定
+	/// </summary>
+	void SettingDescriptorSize();
+
+	/// <summary>
 	/// スワップチェーンの作成
 	/// </summary>
 	void CreateSwapChain();
-
-	/// <summary>
-	/// ディスクリプターヒープの生成
-	/// </summary>
-	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible);
 
 	/// <summary>
 	/// レンダーターゲットの生成
@@ -160,4 +193,26 @@ private: // メンバ関数
 	/// FPS固定更新
 	/// </summary>
 	void UpdateFixFPS();
+
+	/// <summary>
+	/// ImGuiの初期化
+	/// </summary>
+	void InitializeImGui();
+
+
+	void InitializeDepthStencilView();
+
+	void ShowImGui();
+
+public:
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ComPtr<ID3D12DescriptorHeap> descriptorHeap, uint32_t descriptorSize, uint32_t index);
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(ComPtr<ID3D12DescriptorHeap> descriptorHeap, uint32_t descriptorSize, uint32_t index);
+
+	DirectX::ScratchImage LoadTexture(const std::string& filePath);
+
+	ComPtr<ID3D12Resource> CreateTextureResource(ID3D12Device* device, const DirectX::TexMetadata& metadata);
+
+	void UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
+
+	ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
 };

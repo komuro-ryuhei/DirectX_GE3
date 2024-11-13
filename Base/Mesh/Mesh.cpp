@@ -62,3 +62,25 @@ void Mesh::WriteDateForResource() {
 
 	CreateMaterialResource();
 }
+
+void Mesh::LightSetting(DirectXCommon* dXCommon) {
+	
+	dxCommon_ = dXCommon;
+
+	// Light用のマテリアルリソースを作る
+	materialResourceLight = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(DirectionalLight));
+
+	// リソース用の先頭のアドレスから使う
+	vertexBufferViewLight.BufferLocation = materialResourceLight->GetGPUVirtualAddress();
+
+	// 使用するリソースのサイズは頂点6つ分のサイズ
+	vertexBufferViewLight.SizeInBytes = sizeof(DirectionalLight);
+	// 1頂点当たりのサイズ
+	vertexBufferViewLight.StrideInBytes = sizeof(DirectionalLight);
+
+	materialResourceLight->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
+
+	directionalLightData->color = {1.0f, 1.0f, 1.0f, 1.0f};
+	directionalLightData->direction = {0.0f, -1.0f, 0.0f};
+	directionalLightData->intensity = 1.0f;
+}

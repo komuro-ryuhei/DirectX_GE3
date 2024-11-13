@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "System.h"
+#include "Base/System/System.h"
 
 const char kWindowTitle[] = "LE2B_11_コムロ_リュウヘイ";
 
@@ -28,7 +28,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// フレームの開始
 		System::BeginFrame();
 
-		System::DrawTriangle();
+
+		System::Update();
+
+		System::DrawSprite();
+
 
 		// フレームの終了
 		System::EndFrame();

@@ -2,14 +2,15 @@
 #include "System.h"
 
 // MyClass
-#include "DirectXCommon.h"
-#include "Input.h"
-#include "Mesh.h"
-#include "PipelineManager.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
+#include "lib/Input/Input.h"
+#include "Base/Mesh/Mesh.h"
+#include "Base/PSO/PipelineManager/PipelineManager.h"
 #include "Base/Triangle/Triangle.h"
-#include "WinApp.h"
+#include "Base/WinApp/WinApp.h"
+#include "Base/Sprite/Sprite.h"
 
-#include "Logger.h"
+#include "lib/Logger/Logger.h"
 
 #include <cassert>
 #include <cstdint>
@@ -35,8 +36,12 @@ std::unique_ptr<DirectXCommon> dxCommon_ = nullptr;
 std::unique_ptr<PipelineManager> pipelineManager_ = nullptr;
 // Input
 std::unique_ptr<Input> input_ = nullptr;
+// Mesh
+std::unique_ptr<Mesh> mesh_ = nullptr;
 // Triangle
 std::unique_ptr<Triangle> triangle_ = nullptr;
+// SPrite
+std::unique_ptr<Sprite> sprite_ = nullptr;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -62,6 +67,14 @@ void System::Initialize(const char* title, int width, int height) {
 	// Triangle
 	triangle_ = std::make_unique<Triangle>();
 	triangle_->Initialize(dxCommon_.get(), pipelineManager_.get());
+
+	// Sprite
+	sprite_ = std::make_unique<Sprite>();
+	sprite_->Init(dxCommon_.get(),pipelineManager_.get());
+
+	// Mesh
+	mesh_ = std::make_unique<Mesh>();
+	mesh_->LightSetting(dxCommon_.get());
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -71,11 +84,14 @@ void System::BeginFrame() {
 	// DirectX描画前処理
 	dxCommon_->PreDraw();
 	// Sprite描画前処理
+	sprite_->PreDraw();
+}
+
+void System::Update() {
 
 	input_->Update();
 
-	// sprite_->Update();
-	// sprite_->Draw();
+	sprite_->Update();
 }
 
 void System::EndFrame() {
@@ -85,3 +101,5 @@ void System::EndFrame() {
 }
 
 void System::DrawTriangle() { triangle_->Draw(); }
+
+void System::DrawSprite() { sprite_->Draw(); }

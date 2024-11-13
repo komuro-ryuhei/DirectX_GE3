@@ -4,7 +4,12 @@
 
 #pragma comment(lib,"winmm.lib")
 
-#include "ComPtr.h"
+#include "lib/ComPtr/ComPtr.h"
+
+#include "externals/imgui/imgui.h"
+#include "externals/imgui/imgui_impl_dx12.h"
+#include "externals/imgui/imgui_impl_win32.h"
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 /// <summary>
 /// ウィンドウズアプリケーション
@@ -25,6 +30,16 @@ public: // メンバ関数
 	/// </summary>
 	/// <returns>シングルトンインスタンス</returns>
 	static WinApp* GetInstance();
+
+	/// <summary>
+	/// ウィンドウサイズの横幅の取得
+	/// </summary>
+	int32_t GetWindowWidth();
+
+	/// <summary>
+	/// ウィンドウサイズの高さの取得
+	/// </summary>
+	int32_t GetWindowHeight();
 
 	/// <summary>
 	/// メッセージ

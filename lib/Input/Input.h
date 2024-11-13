@@ -6,8 +6,8 @@
 #include "dinput.h"
 #include <cassert>
 
-#include "WinApp.h"
-#include "ComPtr.h"
+#include "Base/WinApp/WinApp.h"
+#include "lib/ComPtr/ComPtr.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")

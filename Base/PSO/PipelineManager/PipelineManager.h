@@ -1,16 +1,17 @@
 
 #pragma once
 
-#include "Compiler.h"
+#include "Base/PSO/Compiler/Compiler.h"
 
 // MyClass
-#include "BlendState.h"
-#include "Inputlayout.h"
-#include "RasterizerState.h"
-#include "RootSignature.h"
+#include "Base/PSO/BlendState/BlendState.h"
+#include "Base/PSO/Inputlayout/InputLayout.h"
+#include "Base/PSO/RootSignature/RootSignature.h"
+#include "Base/PSO/RasterizerState/RasterizerState.h"
+#include "Base/PSO/BlendState/BlendState.h"
 
-#include "ComPtr.h"
-#include "DirectXCommon.h"
+#include "lib/ComPtr/ComPtr.h"
+#include "Base/DirectXCommon/DirectXCommon.h"
 
 /// <summary>
 /// パイプライン管理

@@ -8,9 +8,9 @@
 #include <cassert>
 #include <format>
 
-#include "StringUtility.h"
-#include "Logger.h"
-#include "ComPtr.h"
+#include "lib/StringUtility/StringUtility.h"
+#include "lib/Logger/Logger.h"
+#include "lib/ComPtr/ComPtr.h"
 
 /// <summary>
 /// シェーダーコンパイル

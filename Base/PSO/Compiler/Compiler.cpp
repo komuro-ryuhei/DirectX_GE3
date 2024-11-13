@@ -64,7 +64,7 @@ ComPtr<IDxcBlob> Compiler::CompileShader(
 		filePath.c_str(), // コンパイル対象のhlslファイル名
 		L"-E",L"main", // エントリーポイントの指定。基本的にmain以外はしない
 		L"-T",profile, // ShaderProfileの指定
-		L"-Zi",L"Qembed_debug", // デバッグ用の情報を埋め込む
+		L"-Zi",L"-Qembed_debug", // デバッグ用の情報を埋め込む
 		L"-Od", // 最適解を外しておく
 		L"-Zpr", // メモリレイアウトは行優先
 	};
