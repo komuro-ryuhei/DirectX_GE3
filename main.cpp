@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include "Base/System/System.h"
 
-const char kWindowTitle[] = "LE2B_11_コムロ_リュウヘイ";
+const char kWindowTitle[] = "LE2B_12_コムロ_リュウヘイ";
 
 struct LeakChecker {
 	~LeakChecker()

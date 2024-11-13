@@ -67,6 +67,8 @@ private:
 
 	// マテリアルリソース
 	ComPtr<ID3D12Resource> materialResource;
+	// テクスチャリソース
+	ComPtr<ID3D12Resource> textureResource;
 	// マテリアルリソース内のデータを指すポインタ
 	Material* materialData = nullptr;
 	// 座標変換用

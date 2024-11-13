@@ -64,7 +64,7 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 	// Textureを読んで転送する
 	DirectX::ScratchImage mipImages = dxCommon_->LoadTexture("./Resources/uvChecker.png");
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	Microsoft::WRL::ComPtr<ID3D12Resource> textureResource = dxCommon_->CreateTextureResource(dxCommon_->GetDevice(), metadata);
+	textureResource = dxCommon_->CreateTextureResource(dxCommon_->GetDevice(), metadata);
 	dxCommon_->UploadTextureData(textureResource.Get(), mipImages);
 
 	// metaDataを基にSRVの設定
