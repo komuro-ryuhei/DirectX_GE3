@@ -8,6 +8,7 @@
 #include "Base/PSO/PipelineManager/PipelineManager.h"
 #include "Base/WinApp/WinApp.h"
 #include "lib/Math/MyMath.h"
+#include "Base/TextureManager/TextureManager.h"
 
 struct VertexData {
 	Vector4 position;
@@ -39,7 +40,7 @@ public:
 	Sprite() = default;
 	~Sprite() = default;
 
-	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager);
+	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, const std::string& textureFilePath);
 
 	void Update();
 
@@ -59,6 +60,7 @@ public:
 	void SetRotation(float rotation);
 	void SetColor(const Vector4& color);
 	void SetSize(const Vector2& size);
+	void SetTexture(const std::string& textureFilePath);
 
 private:
 	// DxCommon
@@ -102,6 +104,10 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU;
 
 private:
+
+	uint32_t textureIndex = 0;
+
+	const std::string uvTexture = "./Resources/uvChecker.png";
 
 	Vector2 position_ = {0.0f, 0.0f};
 	float rotation_ = 0.0f;

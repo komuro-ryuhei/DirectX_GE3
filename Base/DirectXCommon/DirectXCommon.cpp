@@ -4,12 +4,15 @@
 
 #include "lib/Logger/Logger.h"
 
+const uint32_t DirectXCommon::kMaxSRVCount = 512;
+
 /*==================================================================================*/
 // getter
 ID3D12Device* DirectXCommon::GetDevice() const { return device_.Get(); }
 ID3D12GraphicsCommandList* DirectXCommon::GetCommandList() const { return commandList_.Get(); }
 D3D12_VIEWPORT DirectXCommon::GetViewPort() const { return viewPort; }
 D3D12_RECT DirectXCommon::GetScissor() const { return scissorRect; }
+ID3D12DescriptorHeap* DirectXCommon::GetSrvDescriptorHeap() { return srvDescriptorHeap.Get(); }
 
 uint32_t DirectXCommon::GetDescriptorSizeSRV() const { return descriptorSizeSRV; }
 uint32_t DirectXCommon::GetDescriptorSizeRTV() const { return descriptorSizeRTV; }
@@ -37,6 +40,8 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 	CreateSwapChain();
 	// レンダーターゲットの生成
 	CreateRenderTargets();
+	//
+	CreateDescriptorHeaps();
 	// フェンスの生成
 	CreateFence();
 	// シザリング矩形の初期化
@@ -77,15 +82,14 @@ void DirectXCommon::PreDraw() {
 	commandList_->RSSetViewports(1, &viewPort);       // Viewportを設定
 	commandList_->RSSetScissorRects(1, &scissorRect); // Scissorを設定
 
+	// ImGui_ImplDX12_NewFrame();
+	// ImGui_ImplWin32_NewFrame();
+	// ImGui::NewFrame();
 
-	//ImGui_ImplDX12_NewFrame();
-	//ImGui_ImplWin32_NewFrame();
-	//ImGui::NewFrame();
-
-	//ShowImGui();
+	// ShowImGui();
 
 	//// ImGuiの内部コマンドを生成する
-	//ImGui::Render();
+	// ImGui::Render();
 }
 
 void DirectXCommon::PostDraw() {
@@ -146,7 +150,7 @@ void DirectXCommon::CrearRenderTargets() {
 	UINT bbIndex = swapChain_->GetCurrentBackBufferIndex();
 
 	// 描画先のRTVを設定する
-	//commandList_->OMSetRenderTargets(1, &rtvHandles[bbIndex], false, nullptr);
+	// commandList_->OMSetRenderTargets(1, &rtvHandles[bbIndex], false, nullptr);
 
 	// 描画先のRTVとDSVを設定する
 	commandList_->OMSetRenderTargets(1, &rtvHandles[bbIndex], false, &dsvHandle);
@@ -296,6 +300,12 @@ ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(ID3D12Device* d
 	return descriptorHeap;
 }
 
+void DirectXCommon::CreateDescriptorHeaps() {
+
+	//
+	srvDescriptorHeap = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, kMaxSRVCount, true);
+}
+
 void DirectXCommon::CreateRenderTargets() {
 
 	HRESULT hr;
@@ -440,8 +450,6 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateBufferResource(ID3D12Device* device,
 }
 
 void DirectXCommon::InitializeImGui() {
-
-	srvDescriptorHeap = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 2, true);
 
 	// ImGuiの初期化
 	IMGUI_CHECKVERSION();

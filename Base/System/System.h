@@ -21,7 +21,6 @@
 #include "Base/Mesh/Mesh.h"
 #include "Base/PSO/PipelineManager/PipelineManager.h"
 #include "Base/WinApp/WinApp.h"
-
 #include "lib/Logger/Logger.h"
 
 /// <summary>

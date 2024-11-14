@@ -65,6 +65,8 @@ public: // 静的メンバ変数
 	/// </summary>
 	ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heaptype, UINT numDescriptors, bool shaderVisible);
 
+	void CreateDescriptorHeaps();
+
 	/// <summary>
 	/// getter
 	/// </summary>
@@ -75,6 +77,8 @@ public: // 静的メンバ変数
 	D3D12_VIEWPORT GetViewPort() const;
 
 	D3D12_RECT GetScissor() const;
+
+	ID3D12DescriptorHeap* GetSrvDescriptorHeap();
 
 	uint32_t GetDescriptorSizeSRV() const;
 	uint32_t GetDescriptorSizeRTV() const;
@@ -105,8 +109,8 @@ private: // メンバ変数
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 	// ディスクリプターヒープ
-	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
 	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap;
 
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
@@ -139,6 +143,10 @@ private: // メンバ変数
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle;
+
+public:
+
+	static const uint32_t kMaxSRVCount;
 
 private: // メンバ関数
 	DirectXCommon(const DirectXCommon&) = delete;

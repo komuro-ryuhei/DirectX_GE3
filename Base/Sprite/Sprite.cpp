@@ -10,8 +10,9 @@ void Sprite::SetPosition(const Vector2& position) { position_ = position; }
 void Sprite::SetRotation(float rotation) { rotation_ = rotation; }
 void Sprite::SetColor(const Vector4& color) { materialData->color = color; }
 void Sprite::SetSize(const Vector2& size) { size_ = size; }
+void Sprite::SetTexture(const std::string& textureFilePath) { textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath); }
 
-void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
+void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, const std::string& textureFilePath) {
 
 	dxCommon_ = dxCommon;
 	pipelineManager_ = pipelineManager;
@@ -53,12 +54,12 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 	transformationMatrixData->World = MyMath::MakeIdentity4x4();
 
 	// SRV用のヒープでディスクリプタの数は128
-	srvDescriptorHeap = dxCommon_->CreateDescriptorHeap(dxCommon_->GetDevice(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 128, true);
+	/*srvDescriptorHeap = dxCommon_->CreateDescriptorHeap(dxCommon_->GetDevice(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 128, true);
 	textureSrvHandleCPU = srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	textureSrvHandleGPU = srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
 
 	textureSrvHandleCPU = dxCommon_->GetCPUDescriptorHandle(srvDescriptorHeap, dxCommon_->GetDescriptorSizeSRV(), 2);
-	textureSrvHandleGPU = dxCommon_->GetGPUDescriptorHandle(srvDescriptorHeap, dxCommon_->GetDescriptorSizeSRV(), 2);
+	textureSrvHandleGPU = dxCommon_->GetGPUDescriptorHandle(srvDescriptorHeap, dxCommon_->GetDescriptorSizeSRV(), 2);*/
 
 	transform = {
 	    {1.0f, 1.0f, 1.0f},
@@ -73,25 +74,27 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 	};
 
 	// Textureを読んで転送する
-	DirectX::ScratchImage mipImages = dxCommon_->LoadTexture("./Resources/uvChecker.png");
-	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	textureResource = dxCommon_->CreateTextureResource(dxCommon_->GetDevice(), metadata);
-	dxCommon_->UploadTextureData(textureResource.Get(), mipImages);
+	// TextureManager::GetInstance()->LoadTexture(dxCommon_, textureFilePath);
+	// DirectX::ScratchImage mipImages = dxCommon_->LoadTexture("./Resources/uvChecker.png");
+	// const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
+	// textureResource = dxCommon_->CreateTextureResource(dxCommon_->GetDevice(), metadata);
+	// dxCommon_->UploadTextureData(textureResource.Get(), mipImages);
 
-	// metaDataを基にSRVの設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = metadata.format;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
+	//// metaDataを基にSRVの設定
+	// D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	// srvDesc.Format = metadata.format;
+	// srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	// srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
+	// srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
-	dxCommon_->GetDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, textureSrvHandleCPU);
+	// dxCommon_->GetDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, textureSrvHandleCPU);
+
+	textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 }
 
 void Sprite::Update() {
 
 	// ヴァーテックスリソースにデータを書き込む
-	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 
 	vertexData[0].position = {0.0f, 1.0f, 0.0f, 1.0f}; // 左下
 	vertexData[0].texcoord = {0.0f, 1.0f};
@@ -110,7 +113,6 @@ void Sprite::Update() {
 	vertexData[3].normal = {0.0f, 0.0f, -1.0f};
 
 	// インデックスリソースにデータを書き込む
-	indexResource->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
 
 	indexData[0] = 0;
 	indexData[1] = 1;
@@ -141,8 +143,8 @@ void Sprite::Draw() {
 	ComPtr<ID3D12GraphicsCommandList> commandList = dxCommon_->GetCommandList();
 
 	// 描画用のDescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = {srvDescriptorHeap.Get()};
-	commandList->SetDescriptorHeaps(1, descriptorHeaps);
+	/*ID3D12DescriptorHeap* descriptorHeaps[] = {srvDescriptorHeap.Get()};
+	commandList->SetDescriptorHeaps(1, descriptorHeaps);*/
 
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
@@ -152,7 +154,9 @@ void Sprite::Draw() {
 	commandList->IASetIndexBuffer(&indexBufferView);
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
+	// 
+	commandList->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(textureIndex));
+	// commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
 	// Spriteの描画
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }

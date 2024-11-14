@@ -6,6 +6,7 @@
 #include "Base/Mesh/Mesh.h"
 #include "Base/PSO/PipelineManager/PipelineManager.h"
 #include "Base/Sprite/Sprite.h"
+#include "Base/TextureManager/TextureManager.h"
 #include "Base/Triangle/Triangle.h"
 #include "Base/WinApp/WinApp.h"
 #include "lib/Input/Input.h"
@@ -15,6 +16,7 @@
 #include <cstdint>
 #include <format>
 #include <string>
+#include <vector>
 
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -68,14 +70,24 @@ void System::Initialize(const char* title, int width, int height) {
 	triangle_ = std::make_unique<Triangle>();
 	triangle_->Initialize(dxCommon_.get(), pipelineManager_.get());
 
+	// TextureManager
+	TextureManager::GetInstance()->Init();
+
 	// Sprite
 	/*sprite_ = std::make_unique<Sprite>();
 	sprite_->Init(dxCommon_.get(),pipelineManager_.get());*/
 
-	for (uint32_t i = 0; i < 5; ++i) {
+	// テクスチャの読み込み
+	const std::string& uvTexture = "./Resources/uvChecker.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);
+	const std::string& monsterBallTexture = "./Resources/monsterBall.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);
+
+	for (uint32_t i = 0; i < 1; ++i) {
 		auto sprite = std::make_unique<Sprite>();
-		sprite->Init(dxCommon_.get(), pipelineManager_.get());
+		sprite->Init(dxCommon_.get(), pipelineManager_.get(),uvTexture);
 		sprite->SetPosition(Vector2{200.0f * i, 0.0f});
+		// sprite->SetTexture(uvTexture);
 		sprites_.push_back(std::move(sprite));
 	}
 
@@ -118,6 +130,8 @@ void System::EndFrame() {
 
 	// DirectX描画終了
 	dxCommon_->PostDraw();
+	//
+	TextureManager::GetInstance()->Finalize();
 }
 
 void System::DrawTriangle() { triangle_->Draw(); }
