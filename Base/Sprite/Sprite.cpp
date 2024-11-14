@@ -91,7 +91,6 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 void Sprite::Update() {
 
 	// ヴァーテックスリソースにデータを書き込む
-	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 
 	vertexData[0].position = {0.0f, 1.0f, 0.0f, 1.0f}; // 左下
 	vertexData[0].texcoord = {0.0f, 1.0f};
@@ -110,7 +109,6 @@ void Sprite::Update() {
 	vertexData[3].normal = {0.0f, 0.0f, -1.0f};
 
 	// インデックスリソースにデータを書き込む
-	indexResource->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
 
 	indexData[0] = 0;
 	indexData[1] = 1;
