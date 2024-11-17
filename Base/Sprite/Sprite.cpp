@@ -20,12 +20,12 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	pipelineManager_->CreatePSO(dxCommon_);
 
 	// リソース作成
-	vertexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(VertexData) * 6);
+	vertexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(VertexData) * 4);
 	indexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(uint32_t) * 6);
 
 	// VertexBufferViewを設定
 	vertexBufferView.BufferLocation = vertexResource->GetGPUVirtualAddress(); // 先頭のアドレスを使用
-	vertexBufferView.SizeInBytes = sizeof(VertexData) * 6;                    // 6頂点のサイズ
+	vertexBufferView.SizeInBytes = sizeof(VertexData) * 4;                    // 6頂点のサイズ
 	vertexBufferView.StrideInBytes = sizeof(VertexData);                      // 1頂点のサイズ
 	// IndexBufferViewを設定
 	indexBufferView.BufferLocation = indexResource->GetGPUVirtualAddress(); // 先頭のアドレスを使用
@@ -122,6 +122,9 @@ void Sprite::Update() {
 	indexData[4] = 3;
 	indexData[5] = 2;
 
+	transform.translate = {position_.x, position_.y, 0.0f};
+	transform.scale = {size_.x, size_.y, 1.0f};
+
 	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 viewMatrix = MyMath::MakeIdentity4x4();
 	Matrix4x4 projectionMatrix = MyMath::MakeOrthographicMatrix(0.0f, 0.0f, float(winApp_->GetWindowWidth()), float(winApp_->GetWindowHeight()), 0.0f, 100.0f);
@@ -133,9 +136,6 @@ void Sprite::Update() {
 	uvTransformMatrix = MyMath::Multiply(uvTransformMatrix, MyMath::MakeRotateZMatrix(uvTransform.rotate.z));
 	uvTransformMatrix = MyMath::Multiply(uvTransformMatrix, MyMath::MakeTranslateMatrix(uvTransform.translate));
 	materialData->uvTransform = uvTransformMatrix;
-
-	transform.translate = {position_.x, position_.y, 0.0f};
-	transform.scale = {size_.x, size_.y, 1.0f};
 }
 
 void Sprite::Draw() {
@@ -154,7 +154,7 @@ void Sprite::Draw() {
 	commandList->IASetIndexBuffer(&indexBufferView);
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
-	// 
+	//
 	commandList->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(textureIndex));
 	// commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
 	// Spriteの描画

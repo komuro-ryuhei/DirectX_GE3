@@ -54,6 +54,11 @@ public: // 静的メンバ関数
 	/// </summary>
 	static void EndFrame();
 
+	/// <summary>
+	/// 終了処理
+	/// </summary>
+	static void Finalize();
+
 	static void DrawTriangle();
 
 	static void DrawSprite();

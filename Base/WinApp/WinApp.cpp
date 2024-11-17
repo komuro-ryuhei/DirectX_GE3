@@ -100,3 +100,8 @@ void WinApp::CreateGameWindow(const wchar_t* title, UINT windowStyle, int32_t cl
 	// ウインドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);
 }
+
+void WinApp::TerminateGameWindow() {
+	// 
+	UnregisterClass(wndClass_.lpszClassName, wndClass_.hInstance);
+}

@@ -1,7 +1,7 @@
 #include "TextureManager.h"
 
 TextureManager* TextureManager::instance = nullptr;
-uint32_t TextureManager::kSRVIndexTop_ = 0;
+uint32_t TextureManager::kSRVIndexTop_ = 1;
 
 TextureManager* TextureManager::GetInstance() {
 	if (instance == nullptr) {
@@ -34,6 +34,12 @@ void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& fil
 	// テクスチャ枚数上限チェック
 	assert(textureDatas.size() + kSRVIndexTop_ < DirectXCommon::kMaxSRVCount);
 
+	// テクスチャデータ読み込み
+	// textureDatas.reserve(textureDatas.size() + 1);
+	textureDatas.emplace_back();
+	// 追加したテクスチャデータの参照を取得する
+	TextureData& textureData = textureDatas.back();
+
 	// テクスチャファイルを読んでプログラムで扱えるようにする
 	DirectX::ScratchImage image{};
 	std::wstring filePathW = StringUtility::ConvertString(filePath);
@@ -44,12 +50,6 @@ void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& fil
 	DirectX::ScratchImage mipImage{};
 	hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImage);
 	assert(SUCCEEDED(hr));
-
-	// テクスチャデータ読み込み
-	// textureDatas.reserve(textureDatas.size() + 1);
-	textureDatas.emplace_back();
-	// 追加したテクスチャデータの参照を取得する
-	TextureData& textureData = textureDatas.back();
 
 	textureData.filePath = filePath;
 	textureData.metaData = mipImage.GetMetadata();

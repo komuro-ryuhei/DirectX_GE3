@@ -38,5 +38,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		System::EndFrame();
 	}
 
+	System::Finalize();
+
 	return 0;
 }

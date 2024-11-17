@@ -6,9 +6,9 @@
 // MyClass
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Base/PSO/PipelineManager/PipelineManager.h"
+#include "Base/TextureManager/TextureManager.h"
 #include "Base/WinApp/WinApp.h"
 #include "lib/Math/MyMath.h"
-#include "Base/TextureManager/TextureManager.h"
 
 struct VertexData {
 	Vector4 position;
@@ -49,7 +49,6 @@ public:
 	void PreDraw();
 
 public:
-
 	// getter
 	const Vector2& GetPosition() const;
 	float GetRotation() const;
@@ -104,12 +103,11 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU;
 
 private:
-
 	uint32_t textureIndex = 0;
 
 	const std::string uvTexture = "./Resources/uvChecker.png";
 
 	Vector2 position_ = {0.0f, 0.0f};
 	float rotation_ = 0.0f;
-	Vector2 size_ = {100.0f, 100.0f};
+	Vector2 size_ = {640.0f, 360.0f};
 };

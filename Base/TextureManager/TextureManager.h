@@ -52,10 +52,15 @@ public:
 
 	TextureManager() = default;
 	~TextureManager() = default;
+
+	// SRVインデックスの開始番号
+	static uint32_t kSRVIndexTop_;
+
+private:
+
 	TextureManager(TextureManager&) = delete;
 	TextureManager& operator=(TextureManager&) = delete;
 
-private:
 	// テクスチャ1枚分のデータ
 	struct TextureData {
 		std::string filePath;
@@ -67,7 +72,4 @@ private:
 
 	// テクスチャデータ
 	std::vector<TextureData> textureDatas;
-
-	// SRVインデックスの開始番号
-	static uint32_t kSRVIndexTop_;
 };

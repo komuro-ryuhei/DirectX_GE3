@@ -80,15 +80,21 @@ void System::Initialize(const char* title, int width, int height) {
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/uvChecker.png";
 	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);
-	const std::string& monsterBallTexture = "./Resources/monsterBall.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);
+	/*const std::string& monsterBallTexture = "./Resources/monsterBall.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);*/
 
 	for (uint32_t i = 0; i < 1; ++i) {
-		auto sprite = std::make_unique<Sprite>();
-		sprite->Init(dxCommon_.get(), pipelineManager_.get(),uvTexture);
-		sprite->SetPosition(Vector2{200.0f * i, 0.0f});
-		// sprite->SetTexture(uvTexture);
-		sprites_.push_back(std::move(sprite));
+		if (i % 2 == 0) {
+			auto sprite = std::make_unique<Sprite>();
+			sprite->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
+			sprite->SetPosition(Vector2{200.0f * i, 0.0f});
+			sprites_.push_back(std::move(sprite));
+		} else {
+			auto sprite = std::make_unique<Sprite>();
+			sprite->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
+			sprite->SetPosition(Vector2{200.0f * i, 0.0f});
+			sprites_.push_back(std::move(sprite));
+		}
 	}
 
 	// Mesh
@@ -123,6 +129,21 @@ void System::Update() {
 		/*Vector2 position = sprite->GetPosition();
 		position += Vector2{0.1f, 0.1f};
 		sprite->SetPosition(position);*/
+
+		/*Vector4 color = sprite->GetColor();
+		color.x += 0.01f;
+		if (color.x > 1.0f) {
+		    color.x -= 1.0f;
+		}
+		sprite->SetColor(color);*/
+
+		Vector2 size = {512.0f, 100.0f};
+		sprite->SetSize(size);
+
+		/*Vector2 size = sprite->GetSize();
+		size.x += 0.3f;
+		size.y += 0.3f;
+		sprite->SetSize(size);*/
 	}
 }
 
@@ -130,6 +151,22 @@ void System::EndFrame() {
 
 	// DirectX描画終了
 	dxCommon_->PostDraw();
+}
+
+void System::Finalize() {
+
+	winApp_->TerminateGameWindow();
+
+	winApp_.reset();
+	dxCommon_.reset();
+	pipelineManager_.reset();
+	input_.reset();
+	mesh_.reset();
+	triangle_.reset();
+	for (auto& sprite : sprites_) {
+		sprite.reset();
+	}
+
 	//
 	TextureManager::GetInstance()->Finalize();
 }

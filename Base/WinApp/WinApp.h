@@ -67,6 +67,10 @@ public: // メンバ関数
 	void CreateGameWindow(const wchar_t* title = L"DirectXGame", UINT windowStyle = WS_OVERLAPPEDWINDOW,
 		int32_t clientWidth = kWindowWidth_, int32_t clientHeight = kWindowHeight_);
 	
+	/// <summary>
+	/// ゲームウィンドウの破棄
+	/// </summary>
+	void TerminateGameWindow();
 
 	WNDCLASS GetWindowClass() const;
 
