@@ -109,9 +109,9 @@ private: // メンバ変数
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 	// ディスクリプターヒープ
-	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> rtvHeap_;
-	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap;
+	ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap_;
+	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_;
+	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_;
 
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 

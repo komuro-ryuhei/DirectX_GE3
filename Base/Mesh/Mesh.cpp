@@ -43,7 +43,7 @@ void Mesh::CreateMaterialResource() {
 
 	materialResource_ = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(Vector4));
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
-	materialData->color = Vector4(1.0, 0.0f, 0.0f, 1.0f);
+	materialData->color = Vector4(1.0, 1.0f, 1.0f, 1.0f);
 }
 
 void Mesh::WriteDateForResource() {

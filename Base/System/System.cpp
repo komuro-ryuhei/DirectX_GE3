@@ -137,13 +137,22 @@ void System::Update() {
 		}
 		sprite->SetColor(color);*/
 
-		Vector2 size = {512.0f, 100.0f};
+		Vector2 size = {512.0f, 512.0f};
 		sprite->SetSize(size);
 
 		/*Vector2 size = sprite->GetSize();
 		size.x += 0.3f;
 		size.y += 0.3f;
 		sprite->SetSize(size);*/
+
+		/*float rotation = sprite->GetRotation();
+		rotation += 0.01f;
+		sprite->SetRotation(rotation);*/
+
+		/*Vector2 anchor = {0.5f, 0.5f};
+		sprite->SetAnchorPoint(anchor);*/
+
+		/*sprite->SetIsFlipY(true);*/
 	}
 }
 

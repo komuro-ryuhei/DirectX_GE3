@@ -12,7 +12,7 @@ ID3D12Device* DirectXCommon::GetDevice() const { return device_.Get(); }
 ID3D12GraphicsCommandList* DirectXCommon::GetCommandList() const { return commandList_.Get(); }
 D3D12_VIEWPORT DirectXCommon::GetViewPort() const { return viewPort; }
 D3D12_RECT DirectXCommon::GetScissor() const { return scissorRect; }
-ID3D12DescriptorHeap* DirectXCommon::GetSrvDescriptorHeap() { return srvDescriptorHeap.Get(); }
+ID3D12DescriptorHeap* DirectXCommon::GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); }
 
 uint32_t DirectXCommon::GetDescriptorSizeSRV() const { return descriptorSizeSRV; }
 uint32_t DirectXCommon::GetDescriptorSizeRTV() const { return descriptorSizeRTV; }
@@ -62,7 +62,7 @@ void DirectXCommon::PreDraw() {
 	CrearRenderTargets();
 
 	// 描画用のDescriptorHeapの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = {srvDescriptorHeap.Get()};
+	ID3D12DescriptorHeap* descriptorHeaps[] = {srvDescriptorHeap_.Get()};
 	commandList_->SetDescriptorHeaps(1, descriptorHeaps);
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
@@ -303,14 +303,14 @@ ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(ID3D12Device* d
 void DirectXCommon::CreateDescriptorHeaps() {
 
 	//
-	srvDescriptorHeap = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, kMaxSRVCount, true);
+	srvDescriptorHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, kMaxSRVCount, true);
 }
 
 void DirectXCommon::CreateRenderTargets() {
 
 	HRESULT hr;
 
-	rtvHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
+	rtvDescriptorHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
 
 	hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(&swapChainResources[0]));
 	// うまく取得できなければ起動できない
@@ -322,7 +322,7 @@ void DirectXCommon::CreateRenderTargets() {
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; // 2Dテクスチャとして書き込む
 
 	// ディスクリプタの先端を取得する
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle = rtvHeap_->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle = rtvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
 
 	// まず1つ目を作る。1つ目は最初のところに作る。作る場所をこちらで指定する必要がある。
 	rtvHandles[0] = rtvStartHandle;
@@ -457,18 +457,18 @@ void DirectXCommon::InitializeImGui() {
 	ImGui::StyleColorsDark();
 	ImGui_ImplWin32_Init(winApp_->GetHwnd());
 	ImGui_ImplDX12_Init(
-	    device_.Get(), swapChainDesc.BufferCount, rtvDesc.Format, srvDescriptorHeap.Get(), srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-	    srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+	    device_.Get(), swapChainDesc.BufferCount, rtvDesc.Format, srvDescriptorHeap_.Get(), srvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(),
+	    srvDescriptorHeap_->GetGPUDescriptorHandleForHeapStart());
 }
 
 void DirectXCommon::InitializeDepthStencilView() {
 
 	depthStencilResource = CreateDepthStencilTextureResource(device_.Get(), winApp_->GetWindowWidth(), winApp_->GetWindowHeight());
-	dsvDescriptorHeap = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
+	dsvDescriptorHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
 	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;        // Format
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D; // 2dTexture
-	device_->CreateDepthStencilView(depthStencilResource.Get(), &dsvDesc, dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-	dsvHandle = GetCPUDescriptorHandle(dsvDescriptorHeap, descriptorSizeDSV, 0);
+	device_->CreateDepthStencilView(depthStencilResource.Get(), &dsvDesc, dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
+	dsvHandle = GetCPUDescriptorHandle(dsvDescriptorHeap_, descriptorSizeDSV, 0);
 
 	// Depthの機能を有効化する
 	depthStencilDesc.DepthEnable = true;

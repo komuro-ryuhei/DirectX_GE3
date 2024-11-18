@@ -5,12 +5,27 @@ const Vector2& Sprite::GetPosition() const { return position_; }
 float Sprite::GetRotation() const { return rotation_; }
 const Vector4& Sprite::GetColor() const { return materialData->color; }
 const Vector2& Sprite::GetSize() const { return size_; }
+const Vector2& Sprite::GetAnchorPoint() const { return anchorPoint_; }
+const bool& Sprite::GetIsFilpX() const { return isFlipX_; }
+const bool& Sprite::GetIsFilpY() const { return isFlipY_; }
+const Vector2& Sprite::GetTextureLeftTop() const { return textureLeftTop_; }
+const Vector2& Sprite::GetTextureSize() const { return textureSize_; }
 // setter
 void Sprite::SetPosition(const Vector2& position) { position_ = position; }
 void Sprite::SetRotation(float rotation) { rotation_ = rotation; }
 void Sprite::SetColor(const Vector4& color) { materialData->color = color; }
 void Sprite::SetSize(const Vector2& size) { size_ = size; }
 void Sprite::SetTexture(const std::string& textureFilePath) { textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath); }
+
+void Sprite::SetAnchorPoint(const Vector2& anchorPoint) { anchorPoint_ = anchorPoint; }
+
+void Sprite::SetIsFlipX(const bool& isFlipX) { isFlipX_ = isFlipX; }
+
+void Sprite::SetIsFlipY(const bool& isFlipY) { isFlipY_ = isFlipY; }
+
+void Sprite::SetTextureLeftTop(const Vector2& textureLeftTop) { textureLeftTop_ = textureLeftTop; }
+
+void Sprite::SetTextureSize(const Vector2& textureSize) { textureSize_ = textureSize; }
 
 void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, const std::string& textureFilePath) {
 
@@ -90,6 +105,8 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	// dxCommon_->GetDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, textureSrvHandleCPU);
 
 	textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
+
+	AdjustTextureSize();
 }
 
 void Sprite::Update() {
@@ -124,6 +141,40 @@ void Sprite::Update() {
 
 	transform.translate = {position_.x, position_.y, 0.0f};
 	transform.scale = {size_.x, size_.y, 1.0f};
+	transform.rotate = {0.0f, 0.0f, rotation_};
+
+	float left = 0.0f - anchorPoint_.x;
+	float right = 1.0f - anchorPoint_.x;
+	float top = 0.0f - anchorPoint_.y;
+	float bottom = 1.0f - anchorPoint_.y;
+
+	// 左右反転
+	if (isFlipX_) {
+		left = -left;
+		right = -right;
+	}
+	// 上下反転
+	if (isFlipY_) {
+		top = -top;
+		bottom = -bottom;
+	}
+
+	vertexData[0].position = {left, bottom, 0.0f, 1.0f};  // 左下
+	vertexData[1].position = {left, top, 0.0f, 1.0f};     // 左上
+	vertexData[2].position = {right, bottom, 0.0f, 1.0f}; // 右下
+	vertexData[3].position = {right, top, 0.0f, 1.0f};    // 右上
+
+	const DirectX::TexMetadata& metaData = TextureManager::GetInstance()->GetMetaData(textureIndex);
+	float tex_left = textureLeftTop_.x / metaData.width;
+	float tex_right = (textureLeftTop_.x + textureSize_.x) / metaData.width;
+	float tex_top = textureLeftTop_.y / metaData.height;
+	float tex_bottom = (textureLeftTop_.y + textureSize_.y) / metaData.height;
+
+	// 頂点リソースにデータを書き込む
+	vertexData[0].texcoord = {tex_left, tex_bottom};
+	vertexData[1].texcoord = {tex_left, tex_top};
+	vertexData[2].texcoord = {tex_right, tex_bottom};
+	vertexData[3].texcoord = {tex_right, tex_top};
 
 	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 viewMatrix = MyMath::MakeIdentity4x4();
@@ -172,4 +223,15 @@ void Sprite::PreDraw() {
 
 	// プリミティブトポロジーをセット
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void Sprite::AdjustTextureSize() {
+
+	// テクスチャメタデータを取得
+	const DirectX::TexMetadata& metaData = TextureManager::GetInstance()->GetMetaData(textureIndex);
+
+	textureSize_.x = static_cast<float>(metaData.width);
+	textureSize_.y = static_cast<float>(metaData.height);
+	// 画像サイズをテクスチャサイズに合わせる
+	size_ = textureSize_;
 }

@@ -54,12 +54,26 @@ public:
 	float GetRotation() const;
 	const Vector4& GetColor() const;
 	const Vector2& GetSize() const;
+	const Vector2& GetAnchorPoint() const;
+	const bool& GetIsFilpX() const;
+	const bool& GetIsFilpY() const;
+	const Vector2& GetTextureLeftTop() const;
+	const Vector2& GetTextureSize() const;
 	// setter
 	void SetPosition(const Vector2& position);
 	void SetRotation(float rotation);
 	void SetColor(const Vector4& color);
 	void SetSize(const Vector2& size);
 	void SetTexture(const std::string& textureFilePath);
+	void SetAnchorPoint(const Vector2& anchorPoint);
+	void SetIsFlipX(const bool& isFlipX);
+	void SetIsFlipY(const bool& isFlipY);
+	void SetTextureLeftTop(const Vector2& textureLeftTop);
+	void SetTextureSize(const Vector2& textureSize);
+
+private:
+	// テクスチャサイズをイメージに合わせる
+	void AdjustTextureSize();
 
 private:
 	// DxCommon
@@ -105,9 +119,18 @@ private:
 private:
 	uint32_t textureIndex = 0;
 
-	const std::string uvTexture = "./Resources/uvChecker.png";
-
 	Vector2 position_ = {0.0f, 0.0f};
 	float rotation_ = 0.0f;
 	Vector2 size_ = {640.0f, 360.0f};
+
+	Vector2 anchorPoint_ = {0.0f, 0.0f};
+
+	// テクスチャ左上座標
+	Vector2 textureLeftTop_ = {0.0f, 0.0f};
+	// テクスチャ切り出しサイズ
+	Vector2 textureSize_ = {64.0f, 64.0f};
+
+	// 左右フリップ
+	bool isFlipX_ = false;
+	bool isFlipY_ = false;
 };

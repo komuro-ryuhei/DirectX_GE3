@@ -55,8 +55,6 @@ void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& fil
 	textureData.metaData = mipImage.GetMetadata();
 	textureData.resource = CreateTextureResource(dxCommon->GetDevice(), textureData.metaData);
 
-	UploadTextureData(textureData.resource.Get(), image);
-
 	// テクスチャデータの要素番号をSRVのインデックスとする
 	uint32_t srvIndex = static_cast<uint32_t>(textureDatas.size() - 1) + kSRVIndexTop_;
 
@@ -68,6 +66,8 @@ void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& fil
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = UINT(textureData.metaData.mipLevels);
+
+	UploadTextureData(textureData.resource.Get(), image);
 
 	dxCommon->GetDevice()->CreateShaderResourceView(textureData.resource.Get(), &srvDesc, textureData.srvHandleCPU);
 }
@@ -160,4 +160,14 @@ D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetSrvHandleGPU(uint32_t textureInde
 	TextureData& textureData = textureDatas[textureIndex];
 
 	return textureData.srvHandleGPU;
+}
+
+const DirectX::TexMetadata& TextureManager::GetMetaData(uint32_t textureIndex) {
+
+	// 範囲外指定違反チェック
+	assert(textureIndex < textureDatas.size());
+
+	TextureData& textureData = textureDatas[textureIndex];
+
+	return textureData.metaData;
 }
