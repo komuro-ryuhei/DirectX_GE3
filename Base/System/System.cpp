@@ -79,9 +79,10 @@ void System::Initialize(const char* title, int width, int height) {
 
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/uvChecker.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);
+	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);	
 	/*const std::string& monsterBallTexture = "./Resources/monsterBall.png";
 	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);*/
+
 
 	for (uint32_t i = 0; i < 1; ++i) {
 		if (i % 2 == 0) {
@@ -137,7 +138,9 @@ void System::Update() {
 		}
 		sprite->SetColor(color);*/
 
-		Vector2 size = {512.0f, 512.0f};
+		Vector2 size = sprite->GetSize();
+		size.x -= 0.5f;
+		size.y -= 0.5f;
 		sprite->SetSize(size);
 
 		/*Vector2 size = sprite->GetSize();
