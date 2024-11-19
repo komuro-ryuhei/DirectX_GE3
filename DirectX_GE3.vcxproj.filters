@@ -49,6 +49,7 @@
     <ClCompile Include="externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Base\TextureManager\TextureManager.cpp" />
+    <ClCompile Include="Base\Object3d\Object3d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\ComPtr\ComPtr.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="externals\imgui\imstb_textedit.h" />
     <ClInclude Include="externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Base\TextureManager\TextureManager.h" />
+    <ClInclude Include="Base\Object3d\Object3d.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

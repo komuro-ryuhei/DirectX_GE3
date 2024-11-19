@@ -62,4 +62,6 @@ public: // 静的メンバ関数
 	static void DrawTriangle();
 
 	static void DrawSprite();
+
+	static void DrawObj();
 };

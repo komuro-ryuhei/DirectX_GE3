@@ -6,6 +6,7 @@
 #include "Base/Mesh/Mesh.h"
 #include "Base/PSO/PipelineManager/PipelineManager.h"
 #include "Base/Sprite/Sprite.h"
+#include "Base/Object3d/Object3d.h"
 #include "Base/TextureManager/TextureManager.h"
 #include "Base/Triangle/Triangle.h"
 #include "Base/WinApp/WinApp.h"
@@ -44,6 +45,8 @@ std::unique_ptr<Triangle> triangle_ = nullptr;
 // SPrite
 // std::unique_ptr<Sprite> sprite_ = nullptr;
 std::vector<std::unique_ptr<Sprite>> sprites_;
+// Model
+std::unique_ptr<Object3d> object3d_ = nullptr;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -78,9 +81,9 @@ void System::Initialize(const char* title, int width, int height) {
 	sprite_->Init(dxCommon_.get(),pipelineManager_.get());*/
 
 	// テクスチャの読み込み
-	const std::string& uvTexture = "./Resources/uvChecker.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);	
-	/*const std::string& monsterBallTexture = "./Resources/monsterBall.png";
+	const std::string& uvTexture = "./Resources/images/uvChecker.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);
+	/*const std::string& monsterBallTexture = "./Resources/images/monsterBall.png";
 	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);*/
 
 
@@ -97,6 +100,9 @@ void System::Initialize(const char* title, int width, int height) {
 			sprites_.push_back(std::move(sprite));
 		}
 	}
+
+	object3d_ = std::make_unique<Object3d>();
+	object3d_->Init(dxCommon_.get());
 
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
@@ -116,6 +122,8 @@ void System::BeginFrame() {
 	for (auto& sprite : sprites_) {
 		sprite->PreDraw();
 	}
+
+	// object3d_->PreDraw();
 }
 
 void System::Update() {
@@ -139,9 +147,10 @@ void System::Update() {
 		sprite->SetColor(color);*/
 
 		Vector2 size = sprite->GetSize();
-		size.x -= 0.5f;
-		size.y -= 0.5f;
 		sprite->SetSize(size);
+		/*size.x -= 0.5f;
+		size.y -= 0.5f;
+		sprite->SetSize(size);*/
 
 		/*Vector2 size = sprite->GetSize();
 		size.x += 0.3f;
@@ -157,6 +166,8 @@ void System::Update() {
 
 		/*sprite->SetIsFlipY(true);*/
 	}
+
+	object3d_->Update();
 }
 
 void System::EndFrame() {
@@ -190,4 +201,9 @@ void System::DrawSprite() {
 	for (auto& sprite : sprites_) {
 		sprite->Draw();
 	}
+}
+
+void System::DrawObj() {
+	// 
+	object3d_->Draw();
 }

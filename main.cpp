@@ -33,6 +33,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		System::DrawSprite();
 
+		System::DrawObj();
 
 		// フレームの終了
 		System::EndFrame();

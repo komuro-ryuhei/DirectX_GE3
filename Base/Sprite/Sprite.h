@@ -10,35 +10,35 @@
 #include "Base/WinApp/WinApp.h"
 #include "lib/Math/MyMath.h"
 
-struct VertexData {
-	Vector4 position;
-	Vector2 texcoord;
-	Vector3 normal;
-};
-
-struct TransformationMatrix {
-	Matrix4x4 WVP;
-	Matrix4x4 World;
-};
-
-struct Transform {
-	Vector3 scale;
-	Vector3 rotate;
-	Vector3 translate;
-};
-
 class Sprite {
 
 public:
+	Sprite() = default;
+	~Sprite() = default;
+
+	struct VertexData {
+		Vector4 position;
+		Vector2 texcoord;
+		Vector3 normal;
+	};
+
+	struct TransformationMatrix {
+		Matrix4x4 WVP;
+		Matrix4x4 World;
+	};
+
+	struct Transform {
+		Vector3 scale;
+		Vector3 rotate;
+		Vector3 translate;
+	};
+
 	struct Material {
 		Vector4 color;
 		int32_t enableLighting;
 		float padding[3];
 		Matrix4x4 uvTransform;
 	};
-
-	Sprite() = default;
-	~Sprite() = default;
 
 	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, const std::string& textureFilePath);
 
