@@ -12,8 +12,6 @@
 class ModelManager {
 
 public:
-	ModelManager() = default;
-	~ModelManager() = default;
 
 	static ModelManager* GetInstance();
 
@@ -27,6 +25,8 @@ public:
 	void SetModel(const std::string& filePath);
 
 private:
+	ModelManager() = default;
+	~ModelManager() = default;
 	ModelManager(ModelManager&) = delete;
 	ModelManager& operator=(ModelManager&) = delete;
 

@@ -53,14 +53,13 @@ public:
 public:
 	static TextureManager* instance;
 
-	TextureManager() = default;
-	~TextureManager() = default;
-
 	// SRVインデックスの開始番号
 	static uint32_t kSRVIndexTop_;
 
 private:
 
+	TextureManager() = default;
+	~TextureManager() = default;
 	TextureManager(TextureManager&) = delete;
 	TextureManager& operator=(TextureManager&) = delete;
 

@@ -50,7 +50,7 @@ std::vector<std::unique_ptr<Sprite>> sprites_;
 // Model
 std::unique_ptr<Object3d> object3d_ = nullptr;
 // ModelManager
-std::unique_ptr<ModelManager> modelManager_ = nullptr;
+// std::unique_ptr<ModelManager> modelManager_ = nullptr;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -105,13 +105,12 @@ void System::Initialize(const char* title, int width, int height) {
 		}
 	}
 
-	modelManager_ = std::make_unique<ModelManager>();
-	modelManager_->Init(dxCommon_.get());
-
 	object3d_ = std::make_unique<Object3d>();
 	object3d_->Init(dxCommon_.get());
 
-	modelManager_->LoadModel("plane.obj");
+	ModelManager::GetInstance()->Init(dxCommon_.get());
+
+	ModelManager::GetInstance()->LoadModel("plane.obj");
 	object3d_->SetModel("plane.obj");
 
 	// Mesh
@@ -202,7 +201,7 @@ void System::Finalize() {
 
 	//
 	TextureManager::GetInstance()->Finalize();
-	modelManager_->Finalize();
+	ModelManager::GetInstance()->Finalize();
 }
 
 void System::DrawTriangle() { triangle_->Draw(); }
