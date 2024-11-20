@@ -12,29 +12,7 @@
 #include "Base/TextureManager/TextureManager.h"
 #include "Base/WinApp/WinApp.h"
 #include "lib/Math/MyMath.h"
-
-struct VertexData {
-	Vector4 position;
-	Vector2 texcoord;
-	Vector3 normal;
-};
-
-struct MaterialData {
-	std::string textureFilePath;
-	uint32_t textureIndex = 0;
-};
-
-struct ModelData {
-	std::vector<VertexData> vertices;
-	MaterialData material;
-};
-
-struct Material {
-	Vector4 color;
-	int32_t enableLighting;
-	float padding[3];
-	Matrix4x4 uvTransform;
-};
+#include "Base/Model/Model.h"
 
 struct TransformationMatrix {
 	Matrix4x4 WVP;
@@ -60,13 +38,7 @@ public: // メンバ関数
 
 	void Draw();
 
-	void PreDraw();
-
-private:
-	// mtlファイルの読み取り
-	static MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
-	// .objファイルの読み取り
-	static ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
+	// void PreDraw();
 
 private:
 	// DxCommon
@@ -76,20 +48,10 @@ private:
 	// ウィンドウズアプリケーション
 	WinApp* winApp_ = nullptr;
 
-	// Objファイルのデータ
-	ModelData modelData;
+	// モデル
+	//Model* model_ = nullptr;
 
-	// バッファーリソース
-	ComPtr<ID3D12Resource> vertexResource;
-	// バッファーリソース内のデータを指すポインタ
-	VertexData* vertexData = nullptr;
-	// バッファーリソースの使い道を補足するバッファービュー
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
-
-	// マテリアルリソース
-	ComPtr<ID3D12Resource> materialResource;
-	// マテリアルリソース内のデータを指すポインタ
-	Material* materialData = nullptr;
+	std::unique_ptr<Model> model_ = nullptr;
 
 	// 座標変換用
 	// Sprite用のTransformationMatrix用のリソースを作る
