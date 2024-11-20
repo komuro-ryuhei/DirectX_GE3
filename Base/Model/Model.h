@@ -39,7 +39,7 @@ struct Material {
 class Model {
 
 public:
-	void Init(DirectXCommon* dxCommon);
+	void Init(DirectXCommon* dxCommon, const std::string& directoryPath, const std::string& filename);
 
 	void Draw();
 
@@ -50,15 +50,14 @@ public: // メンバ関数
 	const Model& operator=(const Model&) = delete;
 
 public:
-
 	//// getter
-	//const Vector3& GetScale() const;
-	//const Vector3& GetRotate() const;
-	//const Vector3& GetTranslate() const;
+	// const Vector3& GetScale() const;
+	// const Vector3& GetRotate() const;
+	// const Vector3& GetTranslate() const;
 	//// setter
-	//void SetScale(const Vector3& scale);
-	//void SetRotate(const Vector3& Rotate);
-	//void SetTranslate(const Vector3& Translate);
+	// void SetScale(const Vector3& scale);
+	// void SetRotate(const Vector3& Rotate);
+	// void SetTranslate(const Vector3& Translate);
 
 private:
 	// mtlファイルの読み取り

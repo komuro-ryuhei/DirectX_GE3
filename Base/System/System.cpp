@@ -4,14 +4,16 @@
 // MyClass
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Base/Mesh/Mesh.h"
-#include "Base/PSO/PipelineManager/PipelineManager.h"
 #include "Base/Sprite/Sprite.h"
 #include "Base/Object3d/Object3d.h"
-#include "Base/TextureManager/TextureManager.h"
 #include "Base/Triangle/Triangle.h"
 #include "Base/WinApp/WinApp.h"
 #include "lib/Input/Input.h"
 #include "lib/Logger/Logger.h"
+
+#include "Base/PSO/PipelineManager/PipelineManager.h"
+#include "Base/TextureManager/TextureManager.h"
+#include "Base/ModelManager/ModelManager.h"
 
 #include <cassert>
 #include <cstdint>
@@ -47,6 +49,8 @@ std::unique_ptr<Triangle> triangle_ = nullptr;
 std::vector<std::unique_ptr<Sprite>> sprites_;
 // Model
 std::unique_ptr<Object3d> object3d_ = nullptr;
+// ModelManager
+std::unique_ptr<ModelManager> modelManager_ = nullptr;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -101,8 +105,14 @@ void System::Initialize(const char* title, int width, int height) {
 		}
 	}
 
+	modelManager_ = std::make_unique<ModelManager>();
+	modelManager_->Init(dxCommon_.get());
+
 	object3d_ = std::make_unique<Object3d>();
 	object3d_->Init(dxCommon_.get());
+
+	modelManager_->LoadModel("plane.obj");
+	object3d_->SetModel("plane.obj");
 
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
@@ -192,6 +202,7 @@ void System::Finalize() {
 
 	//
 	TextureManager::GetInstance()->Finalize();
+	modelManager_->Finalize();
 }
 
 void System::DrawTriangle() { triangle_->Draw(); }

@@ -1,11 +1,11 @@
 #include "Model.h"
 
-void Model::Init(DirectXCommon* dxCommon) {
+void Model::Init(DirectXCommon* dxCommon, const std::string& directoryPath, const std::string& filename) {
 
 	dxCommon_ = dxCommon;
 
 	// モデル読み込み
-	modelData = LoadObjFile("Resources", "plane.obj");
+	modelData = LoadObjFile(directoryPath, filename);
 
 	// リソース作成
 	vertexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(VertexData) * modelData.vertices.size());

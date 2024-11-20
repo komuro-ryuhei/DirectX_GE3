@@ -4,8 +4,8 @@ void Object3d::Init(DirectXCommon* dxCommon) {
 
 	dxCommon_ = dxCommon;
 
-	model_ = std::make_unique<Model>();
-	model_->Init(dxCommon_);
+	/*model_ = std::make_unique<Model>();
+	model_->Init(dxCommon_);*/
 
 	// 座標変換用
 	transformationMatrixResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(TransformationMatrix));
@@ -51,4 +51,10 @@ void Object3d::Draw() {
 		// 
 		model_->Draw();
 	}
+}
+
+void Object3d::SetModel(const std::string& filePath) {
+
+	// モデルを検索してセットする
+	model_ = ModelManager::GetInstance()->FindModel(filePath);
 }

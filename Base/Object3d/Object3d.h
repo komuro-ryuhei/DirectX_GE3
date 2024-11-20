@@ -10,6 +10,7 @@
 #include "Base/DirectXCommon/DirectXCommon.h"
 #include "Base/PSO/PipelineManager/PipelineManager.h"
 #include "Base/TextureManager/TextureManager.h"
+#include "Base/ModelManager/ModelManager.h"
 #include "Base/WinApp/WinApp.h"
 #include "lib/Math/MyMath.h"
 #include "Base/Model/Model.h"
@@ -40,6 +41,8 @@ public: // メンバ関数
 
 	// void PreDraw();
 
+	void SetModel(const std::string& filePath);
+
 private:
 	// DxCommon
 	DirectXCommon* dxCommon_ = nullptr;
@@ -51,7 +54,7 @@ private:
 	// モデル
 	//Model* model_ = nullptr;
 
-	std::unique_ptr<Model> model_ = nullptr;
+	Model* model_ = nullptr;
 
 	// 座標変換用
 	// Sprite用のTransformationMatrix用のリソースを作る

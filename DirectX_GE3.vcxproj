@@ -121,6 +121,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Base\TextureManager\TextureManager.cpp" />
     <ClCompile Include="Base\Object3d\Object3d.cpp" />
     <ClCompile Include="Base\Model\Model.cpp" />
+    <ClCompile Include="Base\ModelManager\ModelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\PSO\Compiler\Compiler.h" />
@@ -153,6 +154,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Base\TextureManager\TextureManager.h" />
     <ClInclude Include="Base\Object3d\Object3d.h" />
     <ClInclude Include="Base\Model\Model.h" />
+    <ClInclude Include="Base\ModelManager\ModelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
