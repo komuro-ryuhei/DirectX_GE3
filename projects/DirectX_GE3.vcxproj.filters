@@ -52,6 +52,7 @@
     <ClCompile Include="Engine\Base\3d\Object3d\Object3d.cpp" />
     <ClCompile Include="Engine\Base\3d\Model\Model.cpp" />
     <ClCompile Include="Engine\Base\ModelManager\ModelManager.cpp" />
+    <ClCompile Include="Engine\Base\Camera\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -85,6 +86,8 @@
     <ClInclude Include="Engine\Base\3d\Object3d\Object3d.h" />
     <ClInclude Include="Engine\Base\3d\Model\Model.h" />
     <ClInclude Include="Engine\Base\ModelManager\ModelManager.h" />
+    <ClInclude Include="Engine\Base\Camera\Camera.h" />
+    <ClInclude Include="struct.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

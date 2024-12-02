@@ -9,36 +9,13 @@
 #include "Engine/Base/TextureManager/TextureManager.h"
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Math/MyMath.h"
+#include "struct.h"
 
 class Sprite {
 
 public:
 	Sprite() = default;
 	~Sprite() = default;
-
-	struct VertexData {
-		Vector4 position;
-		Vector2 texcoord;
-		Vector3 normal;
-	};
-
-	struct TransformationMatrix {
-		Matrix4x4 WVP;
-		Matrix4x4 World;
-	};
-
-	struct Transform {
-		Vector3 scale;
-		Vector3 rotate;
-		Vector3 translate;
-	};
-
-	struct Material {
-		Vector4 color;
-		int32_t enableLighting;
-		float padding[3];
-		Matrix4x4 uvTransform;
-	};
 
 	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, const std::string& textureFilePath);
 

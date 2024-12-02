@@ -2,18 +2,19 @@
 #include "System.h"
 
 // MyClass
-#include "Engine/Base/DirectXCommon/DirectXCommon.h"
-#include "Engine/Base/Mesh/Mesh.h"
 #include "Engine/Base/2d/Sprite/Sprite.h"
 #include "Engine/Base/3d/Object3d/Object3d.h"
 #include "Engine/Base/3d/Triangle/Triangle.h"
+#include "Engine/Base/Camera/Camera.h"
+#include "Engine/Base/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/Mesh/Mesh.h"
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
 
+#include "Engine/Base/ModelManager/ModelManager.h"
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
 #include "Engine/Base/TextureManager/TextureManager.h"
-#include "Engine/Base/ModelManager/ModelManager.h"
 
 #include <cassert>
 #include <cstdint>
@@ -51,6 +52,9 @@ std::vector<std::unique_ptr<Sprite>> sprites_;
 std::unique_ptr<Object3d> object3d_ = nullptr;
 // ModelManager
 // std::unique_ptr<ModelManager> modelManager_ = nullptr;
+
+// Camera
+std::unique_ptr<Camera> camera_ = nullptr;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -90,7 +94,6 @@ void System::Initialize(const char* title, int width, int height) {
 	/*const std::string& monsterBallTexture = "./Resources/images/monsterBall.png";
 	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);*/
 
-
 	for (uint32_t i = 0; i < 1; ++i) {
 		if (i % 2 == 0) {
 			auto sprite = std::make_unique<Sprite>();
@@ -116,6 +119,11 @@ void System::Initialize(const char* title, int width, int height) {
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
 	mesh_->LightSetting(dxCommon_.get());
+
+	camera_ = std::make_unique<Camera>();
+	camera_->SetRotate({0.0f, 0.0f, 0.0f});
+	camera_->SetTranslate({0.0f, 0.0f, -10.0f});
+	object3d_->SetDefaultCamera(camera_.get());
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -139,41 +147,15 @@ void System::Update() {
 
 	input_->Update();
 
+	camera_->Update();
+
 	// sprite_->Update();
 
 	for (auto& sprite : sprites_) {
 		sprite->Update();
 
-		/*Vector2 position = sprite->GetPosition();
-		position += Vector2{0.1f, 0.1f};
-		sprite->SetPosition(position);*/
-
-		/*Vector4 color = sprite->GetColor();
-		color.x += 0.01f;
-		if (color.x > 1.0f) {
-		    color.x -= 1.0f;
-		}
-		sprite->SetColor(color);*/
-
 		Vector2 size = sprite->GetSize();
 		sprite->SetSize(size);
-		/*size.x -= 0.5f;
-		size.y -= 0.5f;
-		sprite->SetSize(size);*/
-
-		/*Vector2 size = sprite->GetSize();
-		size.x += 0.3f;
-		size.y += 0.3f;
-		sprite->SetSize(size);*/
-
-		/*float rotation = sprite->GetRotation();
-		rotation += 0.01f;
-		sprite->SetRotation(rotation);*/
-
-		/*Vector2 anchor = {0.5f, 0.5f};
-		sprite->SetAnchorPoint(anchor);*/
-
-		/*sprite->SetIsFlipY(true);*/
 	}
 
 	object3d_->Update();
@@ -214,6 +196,6 @@ void System::DrawSprite() {
 }
 
 void System::DrawObj() {
-	// 
+	//
 	object3d_->Draw();
 }

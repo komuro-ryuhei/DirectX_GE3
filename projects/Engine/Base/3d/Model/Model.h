@@ -12,29 +12,7 @@
 #include "Engine/Base/TextureManager/TextureManager.h"
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Math/MyMath.h"
-
-struct VertexData {
-	Vector4 position;
-	Vector2 texcoord;
-	Vector3 normal;
-};
-
-struct MaterialData {
-	std::string textureFilePath;
-	uint32_t textureIndex = 0;
-};
-
-struct ModelData {
-	std::vector<VertexData> vertices;
-	MaterialData material;
-};
-
-struct Material {
-	Vector4 color;
-	int32_t enableLighting;
-	float padding[3];
-	Matrix4x4 uvTransform;
-};
+#include "struct.h"
 
 class Model {
 

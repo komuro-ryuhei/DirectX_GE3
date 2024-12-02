@@ -14,17 +14,8 @@
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Math/MyMath.h"
 #include "Engine/Base/3d/Model/Model.h"
-
-struct TransformationMatrix {
-	Matrix4x4 WVP;
-	Matrix4x4 World;
-};
-
-struct Transform {
-	Vector3 scale;
-	Vector3 rotate;
-	Vector3 translate;
-};
+#include "Engine/Base/Camera/Camera.h"
+#include "struct.h"
 
 // 3Dオブジェクト
 class Object3d {
@@ -41,7 +32,13 @@ public: // メンバ関数
 
 	// void PreDraw();
 
+	// setter
 	void SetModel(const std::string& filePath);
+	void SetCamera(Camera* camera);
+	void SetDefaultCamera(Camera* camera);
+
+	// getter
+	Camera* GetDefaultCamera() const;
 
 private:
 	// DxCommon
@@ -55,6 +52,9 @@ private:
 	//Model* model_ = nullptr;
 
 	Model* model_ = nullptr;
+
+	Camera* camera_ = nullptr;
+	Camera* defaultCamera_ = nullptr;
 
 	// 座標変換用
 	// Sprite用のTransformationMatrix用のリソースを作る
