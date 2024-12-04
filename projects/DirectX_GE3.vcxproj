@@ -131,6 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\3d\Object3d\Object3d.cpp" />
     <ClCompile Include="Engine\Base\3d\Model\Model.cpp" />
     <ClCompile Include="Engine\Base\ModelManager\ModelManager.cpp" />
+    <ClCompile Include="Engine\Base\SrvManager\SrvManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Camera\Camera.h" />
@@ -165,6 +166,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\3d\Object3d\Object3d.h" />
     <ClInclude Include="Engine\Base\3d\Model\Model.h" />
     <ClInclude Include="Engine\Base\ModelManager\ModelManager.h" />
+    <ClInclude Include="Engine\Base\SrvManager\SrvManager.h" />
     <ClInclude Include="struct.h" />
   </ItemGroup>
   <ItemGroup>

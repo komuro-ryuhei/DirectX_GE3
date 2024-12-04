@@ -15,6 +15,7 @@
 #include "Engine/Base/ModelManager/ModelManager.h"
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
 #include "Engine/Base/TextureManager/TextureManager.h"
+#include "Engine/Base/SrvManager/SrvManager.h"
 
 #include <cassert>
 #include <cstdint>
@@ -56,6 +57,9 @@ std::unique_ptr<Object3d> object3d_ = nullptr;
 // Camera
 std::unique_ptr<Camera> camera_ = nullptr;
 
+// SrvManager
+std::unique_ptr<SrvManager> srvManager_ = nullptr;
+
 void System::Initialize(const char* title, int width, int height) {
 
 	winApp_ = std::make_unique<WinApp>();
@@ -72,6 +76,10 @@ void System::Initialize(const char* title, int width, int height) {
 	// pipelineの初期化
 	pipelineManager_ = std::make_unique<PipelineManager>();
 	pipelineManager_->PSOSetting(dxCommon_.get());
+	
+	// SrvManager
+	srvManager_ = std::make_unique<SrvManager>();
+	srvManager_->Init(dxCommon_.get());
 
 	// Inputの初期化
 	input_ = std::make_unique<Input>();
@@ -82,7 +90,7 @@ void System::Initialize(const char* title, int width, int height) {
 	triangle_->Initialize(dxCommon_.get(), pipelineManager_.get());
 
 	// TextureManager
-	TextureManager::GetInstance()->Init();
+	TextureManager::GetInstance()->Init(srvManager_.get());
 
 	// Sprite
 	/*sprite_ = std::make_unique<Sprite>();
@@ -132,6 +140,8 @@ void System::BeginFrame() {
 
 	// DirectX描画前処理
 	dxCommon_->PreDraw();
+
+	srvManager_->PreDraw();
 
 	// Sprite描画前処理
 	// sprite_->PreDraw();

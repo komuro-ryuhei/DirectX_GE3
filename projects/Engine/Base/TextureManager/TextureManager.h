@@ -1,11 +1,13 @@
 #pragma once
 // C++
 #include <d3d12.h>
-#include <externals/DirectXTex/DirectXTex.h>
+#include <unordered_map>
 #include <string>
+#include <externals/DirectXTex/DirectXTex.h>
 
 // MyClass
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/SrvManager/SrvManager.h"
 #include "Engine/lib/ComPtr/ComPtr.h"
 
 // テクスチャマネージャー
@@ -15,7 +17,7 @@ public:
 	// シングルトンインスタンスの取得
 	static TextureManager* GetInstance();
 
-	void Init();
+	void Init(SrvManager* srvManager);
 	// 終了処理
 	void Finalize();
 
@@ -44,11 +46,13 @@ public:
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap, uint32_t descriptorSize, uint32_t index);
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap, uint32_t descriptorSize, uint32_t index);
 
-	// テクスチャ番号からGPUハンドルを取得
-	D3D12_GPU_DESCRIPTOR_HANDLE GetSrvHandleGPU(uint32_t textureIndex);
-
 	// メタデータ取得
-	const DirectX::TexMetadata& GetMetaData(uint32_t textureIndex);
+	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
+
+	// テクスチャ番号からGPUハンドルを取得
+	D3D12_GPU_DESCRIPTOR_HANDLE GetSrvHandleGPU(const std::string& filePath);
+
+	uint32_t GetSrvIndex(const std::string& filePath);
 
 public:
 	static TextureManager* instance;
@@ -68,10 +72,15 @@ private:
 		std::string filePath;
 		DirectX::TexMetadata metaData;
 		ComPtr<ID3D12Resource> resource;
+		uint32_t srvIndex;
 		D3D12_CPU_DESCRIPTOR_HANDLE srvHandleCPU;
 		D3D12_GPU_DESCRIPTOR_HANDLE srvHandleGPU;
 	};
 
+	SrvManager* srvManager_ = nullptr;
+
 	// テクスチャデータ
-	std::vector<TextureData> textureDatas;
+	// std::vector<TextureData> textureDatas;
+
+	std::unordered_map<std::string, TextureData> textureDatas;
 };

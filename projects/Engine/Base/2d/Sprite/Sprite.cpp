@@ -32,6 +32,8 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	dxCommon_ = dxCommon;
 	pipelineManager_ = pipelineManager;
 
+	textureFilePath_ = textureFilePath;
+
 	pipelineManager_->CreatePSO(dxCommon_);
 
 	// リソース作成
@@ -164,7 +166,7 @@ void Sprite::Update() {
 	vertexData[2].position = {right, bottom, 0.0f, 1.0f}; // 右下
 	vertexData[3].position = {right, top, 0.0f, 1.0f};    // 右上
 
-	const DirectX::TexMetadata& metaData = TextureManager::GetInstance()->GetMetaData(textureIndex);
+	const DirectX::TexMetadata& metaData = TextureManager::GetInstance()->GetMetaData(textureFilePath_);
 	float tex_left = textureLeftTop_.x / metaData.width;
 	float tex_right = (textureLeftTop_.x + textureSize_.x) / metaData.width;
 	float tex_top = textureLeftTop_.y / metaData.height;
@@ -206,7 +208,7 @@ void Sprite::Draw() {
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 	//
-	commandList->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(textureIndex));
+	commandList->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(textureFilePath_));
 	// commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
 	// Spriteの描画
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
@@ -228,7 +230,7 @@ void Sprite::PreDraw() {
 void Sprite::AdjustTextureSize() {
 
 	// テクスチャメタデータを取得
-	const DirectX::TexMetadata& metaData = TextureManager::GetInstance()->GetMetaData(textureIndex);
+	const DirectX::TexMetadata& metaData = TextureManager::GetInstance()->GetMetaData(textureFilePath_);
 
 	textureSize_.x = static_cast<float>(metaData.width);
 	textureSize_.y = static_cast<float>(metaData.height);
