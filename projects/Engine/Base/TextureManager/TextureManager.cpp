@@ -81,6 +81,8 @@ void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& fil
 
 	// dxCommon->GetDevice()->CreateShaderResourceView(textureData.resource.Get(), &srvDesc, textureData.srvHandleCPU);
 
+	srvManager_->CreateSRVforTexture2D(textureData.srvIndex, textureData.resource.Get(), textureData.metaData.format, static_cast<UINT>(textureData.metaData.mipLevels));
+
 	UploadTextureData(textureData.resource.Get(), mipImage);
 }
 
