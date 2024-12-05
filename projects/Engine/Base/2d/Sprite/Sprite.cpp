@@ -1,5 +1,7 @@
 #include "Sprite.h"
 
+#include "imgui/imgui.h"
+
 // getter
 const Vector2& Sprite::GetPosition() const { return position_; }
 float Sprite::GetRotation() const { return rotation_; }
@@ -70,14 +72,6 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	transformationMatrixData->WVP = MyMath::MakeIdentity4x4();
 	transformationMatrixData->World = MyMath::MakeIdentity4x4();
 
-	// SRV用のヒープでディスクリプタの数は128
-	/*srvDescriptorHeap = dxCommon_->CreateDescriptorHeap(dxCommon_->GetDevice(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 128, true);
-	textureSrvHandleCPU = srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-	textureSrvHandleGPU = srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
-
-	textureSrvHandleCPU = dxCommon_->GetCPUDescriptorHandle(srvDescriptorHeap, dxCommon_->GetDescriptorSizeSRV(), 2);
-	textureSrvHandleGPU = dxCommon_->GetGPUDescriptorHandle(srvDescriptorHeap, dxCommon_->GetDescriptorSizeSRV(), 2);*/
-
 	transform = {
 	    {1.0f, 1.0f, 1.0f},
 	    {0.0f, 0.0f, 0.0f},
@@ -90,22 +84,6 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	    {0.0f, 0.0f, 0.0f},
 	};
 
-	// Textureを読んで転送する
-	// TextureManager::GetInstance()->LoadTexture(dxCommon_, textureFilePath);
-	// DirectX::ScratchImage mipImages = dxCommon_->LoadTexture("./Resources/uvChecker.png");
-	// const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	// textureResource = dxCommon_->CreateTextureResource(dxCommon_->GetDevice(), metadata);
-	// dxCommon_->UploadTextureData(textureResource.Get(), mipImages);
-
-	//// metaDataを基にSRVの設定
-	// D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	// srvDesc.Format = metadata.format;
-	// srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	// srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; // 2Dテクスチャ
-	// srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
-
-	// dxCommon_->GetDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, textureSrvHandleCPU);
-
 	textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 
 	AdjustTextureSize();
@@ -114,7 +92,6 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 void Sprite::Update() {
 
 	// ヴァーテックスリソースにデータを書き込む
-
 	vertexData[0].position = {0.0f, 1.0f, 0.0f, 1.0f}; // 左下
 	vertexData[0].texcoord = {0.0f, 1.0f};
 	vertexData[0].normal = {0.0f, 0.0f, -1.0f};
@@ -132,7 +109,6 @@ void Sprite::Update() {
 	vertexData[3].normal = {0.0f, 0.0f, -1.0f};
 
 	// インデックスリソースにデータを書き込む
-
 	indexData[0] = 0;
 	indexData[1] = 1;
 	indexData[2] = 2;
@@ -236,4 +212,14 @@ void Sprite::AdjustTextureSize() {
 	textureSize_.y = static_cast<float>(metaData.height);
 	// 画像サイズをテクスチャサイズに合わせる
 	size_ = textureSize_;
+}
+
+void Sprite::ImGuiDebug() {
+
+	//
+	ImGui::Begin("Sprite");
+
+	ImGui::DragFloat3("transfoem", &position_.x, 1.0f);
+
+	ImGui::End();
 }

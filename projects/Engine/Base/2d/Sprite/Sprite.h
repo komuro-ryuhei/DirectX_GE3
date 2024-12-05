@@ -25,6 +25,11 @@ public:
 
 	void PreDraw();
 
+	/// <summary>
+	/// ImGuiのでバグ表示
+	/// </summary>
+	void ImGuiDebug();
+
 public:
 	// getter
 	const Vector2& GetPosition() const;

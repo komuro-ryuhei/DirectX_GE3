@@ -54,6 +54,7 @@
     <ClCompile Include="Engine\Base\ModelManager\ModelManager.cpp" />
     <ClCompile Include="Engine\Base\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Base\SrvManager\SrvManager.cpp" />
+    <ClCompile Include="Engine\Base\ImGuiManager\ImGuiManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Engine\Base\Camera\Camera.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="Engine\Base\SrvManager\SrvManager.h" />
+    <ClInclude Include="Engine\Base\ImGuiManager\ImGuiManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

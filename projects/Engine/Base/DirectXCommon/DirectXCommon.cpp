@@ -20,6 +20,8 @@ uint32_t DirectXCommon::GetDescriptorSizeDSV() const { return descriptorSizeDSV;
 
 D3D12_DEPTH_STENCIL_DESC DirectXCommon::GetDepthStencilDesc() const { return depthStencilDesc; }
 
+size_t DirectXCommon::GetBackBufferCount() const { return 2; }
+
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;
 	return &instance;
@@ -452,13 +454,6 @@ ComPtr<ID3D12Resource> DirectXCommon::CreateBufferResource(ID3D12Device* device,
 void DirectXCommon::InitializeImGui() {
 
 	// ImGuiの初期化
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui::StyleColorsDark();
-	ImGui_ImplWin32_Init(winApp_->GetHwnd());
-	ImGui_ImplDX12_Init(
-	    device_.Get(), swapChainDesc.BufferCount, rtvDesc.Format, srvDescriptorHeap_.Get(), srvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart(),
-	    srvDescriptorHeap_->GetGPUDescriptorHandleForHeapStart());
 }
 
 void DirectXCommon::InitializeDepthStencilView() {
@@ -480,7 +475,6 @@ void DirectXCommon::InitializeDepthStencilView() {
 
 void DirectXCommon::ShowImGui() {
 	// 開発用UIの処理
-	ImGui::ShowDemoWindow();
 }
 
 D3D12_CPU_DESCRIPTOR_HANDLE DirectXCommon::GetCPUDescriptorHandle(ComPtr<ID3D12DescriptorHeap> descriptorHeap, uint32_t descriptorSize, uint32_t index) {

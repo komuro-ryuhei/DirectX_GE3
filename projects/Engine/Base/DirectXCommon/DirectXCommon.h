@@ -12,10 +12,6 @@
 
 #include "externals/DirectXTex/DirectXTex.h"
 
-#include "externals/imgui/imgui.h"
-#include "externals/imgui/imgui_impl_dx12.h"
-#include "externals/imgui/imgui_impl_win32.h"
-
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/PSO/Compiler/Compiler.h"
 #include "Engine/Base/WinApp/WinApp.h"
@@ -85,6 +81,8 @@ public: // 静的メンバ変数
 	uint32_t GetDescriptorSizeDSV() const;
 
 	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() const;
+
+size_t GetBackBufferCount() const;
 
 private: // メンバ変数
 	// ウィンドウサイズ

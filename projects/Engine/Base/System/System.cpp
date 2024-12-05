@@ -16,6 +16,9 @@
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
 #include "Engine/Base/TextureManager/TextureManager.h"
 #include "Engine/Base/SrvManager/SrvManager.h"
+#include "Engine/Base/ImGuiManager/ImGuiManager.h"
+
+#include "imgui/imgui.h"
 
 #include <cassert>
 #include <cstdint>
@@ -59,6 +62,8 @@ std::unique_ptr<Camera> camera_ = nullptr;
 
 // SrvManager
 std::unique_ptr<SrvManager> srvManager_ = nullptr;
+// ImGuiManager
+std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -132,6 +137,9 @@ void System::Initialize(const char* title, int width, int height) {
 	camera_->SetRotate({0.0f, 0.0f, 0.0f});
 	camera_->SetTranslate({0.0f, 0.0f, -10.0f});
 	object3d_->SetDefaultCamera(camera_.get());
+
+	imguiManager_ = std::make_unique<ImGuiManager>();
+	imguiManager_->Init(winApp_.get(), dxCommon_.get());
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -169,9 +177,21 @@ void System::Update() {
 	}
 
 	object3d_->Update();
+
+	imguiManager_->Begin();
+
+	ImGui::ShowDemoWindow();
+
+	for (auto& sprite : sprites_) {
+		sprite->ImGuiDebug();
+	}
+
+	imguiManager_->End();
 }
 
 void System::EndFrame() {
+
+	imguiManager_->Draw();
 
 	// DirectX描画終了
 	dxCommon_->PostDraw();
@@ -194,6 +214,8 @@ void System::Finalize() {
 	//
 	TextureManager::GetInstance()->Finalize();
 	ModelManager::GetInstance()->Finalize();
+
+	imguiManager_->Finalize();
 }
 
 void System::DrawTriangle() { triangle_->Draw(); }
