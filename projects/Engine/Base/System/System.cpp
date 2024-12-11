@@ -61,7 +61,7 @@ std::unique_ptr<Object3d> object3d_ = nullptr;
 // Camera
 std::unique_ptr<Camera> camera_ = nullptr;
 // Audio
-std::unique_ptr<Audio> audio = nullptr;
+std::unique_ptr<Audio> audio_ = nullptr;
 
 // SrvManager
 std::unique_ptr<SrvManager> srvManager_ = nullptr;
@@ -144,7 +144,11 @@ void System::Initialize(const char* title, int width, int height) {
 	imguiManager_ = std::make_unique<ImGuiManager>();
 	imguiManager_->Init(winApp_.get(), dxCommon_.get());
 
-	
+	audio_ = std::make_unique<Audio>();
+	audio_->Init();
+
+	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
+	audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }

@@ -50,6 +50,9 @@ public:
 	// 音声再生
 	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);
 
+
+	IXAudio2* GetXAudio2() const;
+
 private:
 	ComPtr<IXAudio2> xAudio2_;
 	IXAudio2MasteringVoice* masterVoice_;

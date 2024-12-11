@@ -103,3 +103,5 @@ void Audio::SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData) {
 	hr = pSourceVoice->SubmitSourceBuffer(&buf);
 	hr = pSourceVoice->Start();
 }
+
+IXAudio2* Audio::GetXAudio2() const { return xAudio2_.Get(); }
