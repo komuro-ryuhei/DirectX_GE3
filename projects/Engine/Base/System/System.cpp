@@ -11,6 +11,7 @@
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
+#include "Engine/Base/Audio/Audio.h"
 
 #include "Engine/Base/ModelManager/ModelManager.h"
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
@@ -59,6 +60,8 @@ std::unique_ptr<Object3d> object3d_ = nullptr;
 
 // Camera
 std::unique_ptr<Camera> camera_ = nullptr;
+// Audio
+std::unique_ptr<Audio> audio = nullptr;
 
 // SrvManager
 std::unique_ptr<SrvManager> srvManager_ = nullptr;
@@ -140,6 +143,8 @@ void System::Initialize(const char* title, int width, int height) {
 
 	imguiManager_ = std::make_unique<ImGuiManager>();
 	imguiManager_->Init(winApp_.get(), dxCommon_.get());
+
+	
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
