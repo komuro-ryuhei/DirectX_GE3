@@ -2,7 +2,7 @@
 
 #include <xaudio2.h>
 
-#pragma comment(lib, "xaudio.lib")
+#pragma comment(lib, "xaudio2.lib")
 
 // C++
 #include <fstream>

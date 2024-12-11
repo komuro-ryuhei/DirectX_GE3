@@ -12,8 +12,6 @@ void Audio::Init() {
 
 SoundData Audio::SoundLoadWave(const char* filename) {
 
-	HRESULT hr;
-
 	// ファイル入力ストリームのインスタンス
 	std::ifstream file;
 	// .wavファイルをバイナリモードで開く
@@ -37,7 +35,7 @@ SoundData Audio::SoundLoadWave(const char* filename) {
 	FormatChunk format = {};
 	// チャンクヘッダーの確認
 	file.read((char*)&format, sizeof(ChunkHeader));
-	if (strncmp(format.chunk.id, "fmt", 4) != 0) {
+	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
 		assert(0);
 	}
 	// チャンク本体の読み込み
@@ -48,7 +46,7 @@ SoundData Audio::SoundLoadWave(const char* filename) {
 	ChunkHeader data;
 	file.read((char*)&data, sizeof(data));
 	// JUNKチャンクを検出した場合
-	if (strncmp(data.id, "JUNK", 4) != 0) {
+	if (strncmp(data.id, "JUNK", 4) == 0) {
 		// 読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		// サイド読み取り
