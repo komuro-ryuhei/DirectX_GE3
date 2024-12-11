@@ -1,6 +1,8 @@
 #include "Object3d.h"
 #include "Engine/lib/Logger/Logger.h"
 
+#include "externals/imgui/imgui.h"
+
 void Object3d::Init(DirectXCommon* dxCommon) {
 
 	camera_ = defaultCamera_;
@@ -32,8 +34,6 @@ void Object3d::Init(DirectXCommon* dxCommon) {
 
 void Object3d::Update() {
 
-	transform.rotate.y += 0.01f;
-
 	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 projectionMatrix = MyMath::MakePerspectiveFovMatrix(0.45f, float(winApp_->GetWindowWidth()) / float(winApp_->GetWindowHeight()), 0.1f, 100.0f);
 	Matrix4x4 worldViewProjectionMatrix/* = MyMath::Multiply(worldMatrix, MyMath::Multiply(viewMatrix, projectionMatrix))*/;
@@ -58,6 +58,17 @@ void Object3d::Draw() {
 		// 
 		model_->Draw();
 	}
+}
+
+void Object3d::ImGuiDebug() {
+
+	//
+	ImGui::Begin("model");
+
+	ImGui::DragFloat3("rotate", &transform.rotate.x, 0.1f);
+	ImGui::DragFloat3("translate", &transform.translate.x, 1.0f);
+
+	ImGui::End();
 }
 
 void Object3d::SetModel(const std::string& filePath) {

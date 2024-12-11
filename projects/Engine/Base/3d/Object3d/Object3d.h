@@ -32,6 +32,9 @@ public: // メンバ関数
 
 	// void PreDraw();
 
+
+	void ImGuiDebug();
+
 	// setter
 	void SetModel(const std::string& filePath);
 	void SetCamera(Camera* camera);

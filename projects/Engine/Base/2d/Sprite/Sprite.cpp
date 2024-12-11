@@ -219,7 +219,7 @@ void Sprite::ImGuiDebug() {
 	//
 	ImGui::Begin("Sprite");
 
-	ImGui::DragFloat3("transfoem", &position_.x, 1.0f);
+	ImGui::DragFloat2("transfoem", &position_.x, 1.0f);
 
 	ImGui::End();
 }

@@ -13,6 +13,9 @@ public:
 
 	void Update();
 
+
+	void ImGuiDebug();
+
 public:
 	// setter
 	void SetRotate(const Vector3& rotate) { transform_.rotate = rotate; }

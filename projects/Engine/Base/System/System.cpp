@@ -129,8 +129,8 @@ void System::Initialize(const char* title, int width, int height) {
 
 	ModelManager::GetInstance()->Init(dxCommon_.get());
 
-	ModelManager::GetInstance()->LoadModel("plane.obj");
-	object3d_->SetModel("plane.obj");
+	ModelManager::GetInstance()->LoadModel("skydome.obj");
+	object3d_->SetModel("skydome.obj");
 
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
@@ -148,7 +148,7 @@ void System::Initialize(const char* title, int width, int height) {
 	audio_->Init();
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
-	audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
+	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -187,6 +187,10 @@ void System::Update() {
 
 	object3d_->Update();
 
+
+	/*==================================================================================*/
+	// ImGui
+
 	imguiManager_->Begin();
 
 	ImGui::ShowDemoWindow();
@@ -194,6 +198,11 @@ void System::Update() {
 	for (auto& sprite : sprites_) {
 		sprite->ImGuiDebug();
 	}
+
+	camera_->ImGuiDebug();
+
+	object3d_->ImGuiDebug();
+
 
 	imguiManager_->End();
 }
