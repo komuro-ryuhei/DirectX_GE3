@@ -148,7 +148,7 @@ void System::Initialize(const char* title, int width, int height) {
 	audio_->Init();
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
-	audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
+	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
