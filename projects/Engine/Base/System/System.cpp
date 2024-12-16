@@ -5,19 +5,22 @@
 #include "Engine/Base/2d/Sprite/Sprite.h"
 #include "Engine/Base/3d/Object3d/Object3d.h"
 #include "Engine/Base/3d/Triangle/Triangle.h"
+#include "Engine/Base/Audio/Audio.h"
 #include "Engine/Base/Camera/Camera.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/Mesh/Mesh.h"
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
-#include "Engine/Base/Audio/Audio.h"
 
+#include "Engine/Base/ImGuiManager/ImGuiManager.h"
 #include "Engine/Base/ModelManager/ModelManager.h"
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
-#include "Engine/Base/TextureManager/TextureManager.h"
+#include "Engine/Base/ParticleManager/ParticleManager.h"
 #include "Engine/Base/SrvManager/SrvManager.h"
-#include "Engine/Base/ImGuiManager/ImGuiManager.h"
+#include "Engine/Base/TextureManager/TextureManager.h"
+
+#include "Engine/Base/ParticleEmitter/ParticleEmitter.h"
 
 #include "imgui/imgui.h"
 
@@ -68,6 +71,10 @@ std::unique_ptr<SrvManager> srvManager_ = nullptr;
 // ImGuiManager
 std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
 
+std::unique_ptr<ParticleEmitter> emitter_ = nullptr;
+
+// std::unique_ptr<ParticleManager> particle_ = nullptr;
+
 void System::Initialize(const char* title, int width, int height) {
 
 	winApp_ = std::make_unique<WinApp>();
@@ -84,7 +91,7 @@ void System::Initialize(const char* title, int width, int height) {
 	// pipelineの初期化
 	pipelineManager_ = std::make_unique<PipelineManager>();
 	pipelineManager_->PSOSetting(dxCommon_.get());
-	
+
 	// SrvManager
 	srvManager_ = std::make_unique<SrvManager>();
 	srvManager_->Init(dxCommon_.get());
@@ -149,6 +156,13 @@ void System::Initialize(const char* title, int width, int height) {
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
+
+	// particle_ = std::make_unique<ParticleManager>();
+	ParticleManager::GetInstance()->Init(dxCommon_.get(), srvManager_.get(), camera_.get(), pipelineManager_.get());
+
+	ParticleManager::GetInstance()->CreateParticleGeoup("normal", "./Resources/images/uvChecker.png");
+
+	emitter_->Init("normal", {0.0f, 0.0f, 0.0f}, 50);
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -187,15 +201,32 @@ void System::Update() {
 
 	object3d_->Update();
 
+	ParticleManager::GetInstance()->Update();
+
 	imguiManager_->Begin();
 
-	ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 
 	for (auto& sprite : sprites_) {
 		sprite->ImGuiDebug();
 	}
 
+	if (ImGui::Button("Emit Fire Particles")) {
+		emitter_->Update();
+	}
+
 	imguiManager_->End();
+}
+
+void System::Draw() {
+
+	for (auto& sprite : sprites_) {
+		sprite->Draw();
+	}
+
+	object3d_->Draw();
+
+	ParticleManager::GetInstance()->Draw();
 }
 
 void System::EndFrame() {
@@ -223,6 +254,8 @@ void System::Finalize() {
 	//
 	TextureManager::GetInstance()->Finalize();
 	ModelManager::GetInstance()->Finalize();
+
+	ParticleManager::GetInstance()->Finalize();
 
 	imguiManager_->Finalize();
 }

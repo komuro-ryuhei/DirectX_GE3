@@ -38,6 +38,8 @@ public: // 静的メンバ関数
 
 	static void Update();
 
+	static void Draw();
+
 	/// <summary>
 	/// Windowsのメッセージを処理する
 	/// </summary>
