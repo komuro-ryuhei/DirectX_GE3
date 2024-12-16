@@ -88,7 +88,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Base/WinApp;$(ProjectDir)/Base/DirectXCommon;$(ProjectDir)/Base/System;$(ProjectDir)/lib/Logger;$(ProjectDir)/lib/ComPtr;$(ProjectDir)/Base/PSO/Compiler;$(ProjectDir)/Base/PSO/PipelineManager;$(ProjectDir)/Base/PSO/RootSignature;$(ProjectDir)/Base/PSO/InputLayout;$(ProjectDir)/Base/PSO/BlendState;$(ProjectDir)/Base/PSO/RasterizerState;$(ProjectDir)/lib/Vector;$(ProjectDir)/Base/Mesh;$(ProjectDir)/lib/Input;$(ProjectDir)/lib/StringUtility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
