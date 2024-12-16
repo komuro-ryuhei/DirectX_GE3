@@ -136,6 +136,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\3d\Model\Model.cpp" />
     <ClCompile Include="Engine\Base\ModelManager\ModelManager.cpp" />
     <ClCompile Include="Engine\Base\SrvManager\SrvManager.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Audio\Audio.h" />
@@ -173,6 +174,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\ModelManager\ModelManager.h" />
     <ClInclude Include="Engine\Base\SrvManager\SrvManager.h" />
     <ClInclude Include="Engine\Base\ImGuiManager\ImGuiManager.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="struct.h" />
   </ItemGroup>
   <ItemGroup>
