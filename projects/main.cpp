@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include "Engine/Base/System/System.h"
+#include "Engine/Base/MyGame/MyGame.h"
 
 const char kWindowTitle[] = "LE2B_12_コムロ_リュウヘイ";
 
@@ -22,24 +23,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ライブラリの初期化
 	System::Initialize(kWindowTitle, 1280, 720);
 
-	// ×が押されるまでループ
-	while (System::ProcessMessage() == 0) {
+	MyGame game;
 
-		// フレームの開始
-		System::BeginFrame();
-
-
-		System::Update();
-
-		System::DrawSprite();
-
-		System::DrawObj();
-
-		// フレームの終了
-		System::EndFrame();
-	}
-
-	System::Finalize();
+	game.Run();
 
 	return 0;
 }

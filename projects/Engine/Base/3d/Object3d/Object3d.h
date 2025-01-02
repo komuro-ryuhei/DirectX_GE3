@@ -40,8 +40,11 @@ public: // メンバ関数
 	void SetCamera(Camera* camera);
 	void SetDefaultCamera(Camera* camera);
 
+	void SetTranslate(Vector3 translate);
+
 	// getter
 	Camera* GetDefaultCamera() const;
+	Vector3 GetTranslate() const;
 
 private:
 	// DxCommon

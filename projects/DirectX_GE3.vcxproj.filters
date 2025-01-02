@@ -56,6 +56,10 @@
     <ClCompile Include="Engine\Base\SrvManager\SrvManager.cpp" />
     <ClCompile Include="Engine\Base\ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="Engine\Base\Audio\Audio.cpp" />
+    <ClCompile Include="Game\Objects\Player\Player.cpp" />
+    <ClCompile Include="Game\Objects\PlayerBullet\PlayerBullet.cpp" />
+    <ClCompile Include="Engine\Base\MyGame\MyGame.cpp" />
+    <ClCompile Include="Game\Scenes\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -94,6 +98,10 @@
     <ClInclude Include="Engine\Base\SrvManager\SrvManager.h" />
     <ClInclude Include="Engine\Base\ImGuiManager\ImGuiManager.h" />
     <ClInclude Include="Engine\Base\Audio\Audio.h" />
+    <ClInclude Include="Game\Objects\Player\Player.h" />
+    <ClInclude Include="Game\Objects\PlayerBullet\PlayerBullet.h" />
+    <ClInclude Include="Engine\Base\MyGame\MyGame.h" />
+    <ClInclude Include="Game\Scenes\GameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

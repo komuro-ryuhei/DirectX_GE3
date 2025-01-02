@@ -5,19 +5,20 @@
 #include "Engine/Base/2d/Sprite/Sprite.h"
 #include "Engine/Base/3d/Object3d/Object3d.h"
 #include "Engine/Base/3d/Triangle/Triangle.h"
+#include "Engine/Base/Audio/Audio.h"
 #include "Engine/Base/Camera/Camera.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/Mesh/Mesh.h"
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
-#include "Engine/Base/Audio/Audio.h"
+#include "Game/Objects/Player/Player.h"
 
+#include "Engine/Base/ImGuiManager/ImGuiManager.h"
 #include "Engine/Base/ModelManager/ModelManager.h"
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
-#include "Engine/Base/TextureManager/TextureManager.h"
 #include "Engine/Base/SrvManager/SrvManager.h"
-#include "Engine/Base/ImGuiManager/ImGuiManager.h"
+#include "Engine/Base/TextureManager/TextureManager.h"
 
 #include "imgui/imgui.h"
 
@@ -51,8 +52,8 @@ std::unique_ptr<Mesh> mesh_ = nullptr;
 // Triangle
 std::unique_ptr<Triangle> triangle_ = nullptr;
 // SPrite
-// std::unique_ptr<Sprite> sprite_ = nullptr;
-std::vector<std::unique_ptr<Sprite>> sprites_;
+std::unique_ptr<Sprite> sprite_ = nullptr;
+// std::vector<std::unique_ptr<Sprite>> sprites_;
 // Model
 std::unique_ptr<Object3d> object3d_ = nullptr;
 // ModelManager
@@ -67,6 +68,11 @@ std::unique_ptr<Audio> audio_ = nullptr;
 std::unique_ptr<SrvManager> srvManager_ = nullptr;
 // ImGuiManager
 std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
+
+// Player
+std::unique_ptr<Player> player_ = nullptr;
+std::unique_ptr<Object3d> playerObject3d_ = nullptr;
+std::unique_ptr<Object3d> bulletObject3d_ = nullptr;
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -84,7 +90,7 @@ void System::Initialize(const char* title, int width, int height) {
 	// pipelineの初期化
 	pipelineManager_ = std::make_unique<PipelineManager>();
 	pipelineManager_->PSOSetting(dxCommon_.get());
-	
+
 	// SrvManager
 	srvManager_ = std::make_unique<SrvManager>();
 	srvManager_->Init(dxCommon_.get());
@@ -100,29 +106,15 @@ void System::Initialize(const char* title, int width, int height) {
 	// TextureManager
 	TextureManager::GetInstance()->Init(srvManager_.get());
 
-	// Sprite
-	/*sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_.get(),pipelineManager_.get());*/
-
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/images/uvChecker.png";
 	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);
-	/*const std::string& monsterBallTexture = "./Resources/images/monsterBall.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);*/
+	const std::string& cube = "./Resources/images/cube.jpg";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), cube);
 
-	for (uint32_t i = 0; i < 1; ++i) {
-		if (i % 2 == 0) {
-			auto sprite = std::make_unique<Sprite>();
-			sprite->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
-			sprite->SetPosition(Vector2{200.0f * i, 0.0f});
-			sprites_.push_back(std::move(sprite));
-		} else {
-			auto sprite = std::make_unique<Sprite>();
-			sprite->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
-			sprite->SetPosition(Vector2{200.0f * i, 0.0f});
-			sprites_.push_back(std::move(sprite));
-		}
-	}
+	// Sprite
+	sprite_ = std::make_unique<Sprite>();
+	sprite_->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
 
 	object3d_ = std::make_unique<Object3d>();
 	object3d_->Init(dxCommon_.get());
@@ -130,6 +122,10 @@ void System::Initialize(const char* title, int width, int height) {
 	ModelManager::GetInstance()->Init(dxCommon_.get());
 
 	ModelManager::GetInstance()->LoadModel("skydome.obj");
+	ModelManager::GetInstance()->LoadModel("plane.obj");
+	ModelManager::GetInstance()->LoadModel("player.obj");
+	ModelManager::GetInstance()->LoadModel("playerBullet.obj");
+
 	object3d_->SetModel("skydome.obj");
 
 	// Mesh
@@ -149,6 +145,21 @@ void System::Initialize(const char* title, int width, int height) {
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
+
+	playerObject3d_ = std::make_unique<Object3d>();
+	playerObject3d_->Init(dxCommon_.get());
+
+	playerObject3d_->SetModel("player.obj");
+	playerObject3d_->SetDefaultCamera(camera_.get());
+
+	bulletObject3d_ = std::make_unique<Object3d>();
+	bulletObject3d_->Init(dxCommon_.get());
+
+	bulletObject3d_->SetModel("playerBullet.obj");
+	bulletObject3d_->SetDefaultCamera(camera_.get());
+
+	player_ = std::make_unique<Player>();
+	player_->Init(dxCommon_.get(), camera_.get(), playerObject3d_.get(), bulletObject3d_.get(), input_.get());
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -161,11 +172,7 @@ void System::BeginFrame() {
 	srvManager_->PreDraw();
 
 	// Sprite描画前処理
-	// sprite_->PreDraw();
-	// Sprite描画前処理
-	for (auto& sprite : sprites_) {
-		sprite->PreDraw();
-	}
+	sprite_->PreDraw();
 
 	// object3d_->PreDraw();
 }
@@ -176,17 +183,13 @@ void System::Update() {
 
 	camera_->Update();
 
-	// sprite_->Update();
-
-	for (auto& sprite : sprites_) {
-		sprite->Update();
-
-		Vector2 size = sprite->GetSize();
-		sprite->SetSize(size);
-	}
-
 	object3d_->Update();
 
+	sprite_->Update();
+
+	// playerObject3d_->Update();
+
+	player_->Update();
 
 	/*==================================================================================*/
 	// ImGui
@@ -195,16 +198,24 @@ void System::Update() {
 
 	ImGui::ShowDemoWindow();
 
-	for (auto& sprite : sprites_) {
-		sprite->ImGuiDebug();
-	}
-
 	camera_->ImGuiDebug();
 
-	object3d_->ImGuiDebug();
+	sprite_->ImGuiDebug();
+	player_->ImGuiDebug();
 
+	/*if (input_->PushKey(DIK_A)) {
+	    ImGui::Text("DIK_A");
+	}*/
 
 	imguiManager_->End();
+}
+
+void System::Draw() {
+
+	sprite_->Draw();
+
+	player_->Draw();
+	object3d_->Draw();
 }
 
 void System::EndFrame() {
@@ -225,9 +236,8 @@ void System::Finalize() {
 	input_.reset();
 	mesh_.reset();
 	triangle_.reset();
-	for (auto& sprite : sprites_) {
-		sprite.reset();
-	}
+
+	sprite_.reset();
 
 	//
 	TextureManager::GetInstance()->Finalize();
@@ -238,14 +248,6 @@ void System::Finalize() {
 
 void System::DrawTriangle() { triangle_->Draw(); }
 
-void System::DrawSprite() {
-	// sprite_->Draw();
-	for (auto& sprite : sprites_) {
-		sprite->Draw();
-	}
-}
+void System::DrawSprite() { sprite_->Draw(); }
 
-void System::DrawObj() {
-	//
-	object3d_->Draw();
-}
+void System::DrawObj() { object3d_->Draw(); }
