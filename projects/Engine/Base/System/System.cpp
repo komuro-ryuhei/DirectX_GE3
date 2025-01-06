@@ -4,7 +4,6 @@
 // MyClass
 #include "Engine/Base/2d/Sprite/Sprite.h"
 #include "Engine/Base/3d/Object3d/Object3d.h"
-#include "Engine/Base/3d/Triangle/Triangle.h"
 #include "Engine/Base/Audio/Audio.h"
 #include "Engine/Base/Camera/Camera.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
@@ -49,9 +48,7 @@ std::unique_ptr<PipelineManager> pipelineManager_ = nullptr;
 std::unique_ptr<Input> input_ = nullptr;
 // Mesh
 std::unique_ptr<Mesh> mesh_ = nullptr;
-// Triangle
-std::unique_ptr<Triangle> triangle_ = nullptr;
-// SPrite
+// Sprite
 std::unique_ptr<Sprite> sprite_ = nullptr;
 // std::vector<std::unique_ptr<Sprite>> sprites_;
 // Model
@@ -74,13 +71,24 @@ std::unique_ptr<Player> player_ = nullptr;
 std::unique_ptr<Object3d> playerObject3d_ = nullptr;
 std::unique_ptr<Object3d> bulletObject3d_ = nullptr;
 
+/// <summary>
+/// getter
+/// </summary>
+/// <returns>DxCommonの取得</returns>
+DirectXCommon* System::GetDXCommon() { return dxCommon_.get(); }
+PipelineManager* System::GetPipelineManager() { return pipelineManager_.get(); }
+WinApp* System::GetWinApp() { return winApp_.get(); }
+bool System::IsFinished() { return System::isFinished_; }
+
+bool System::isFinished_ = false;
+
 void System::Initialize(const char* title, int width, int height) {
 
 	winApp_ = std::make_unique<WinApp>();
 
 	// ゲームウインドウの作成
-	std::string titleWithVersion = std::string(title);
-	auto&& titleString = StringUtility::ConvertString(titleWithVersion);
+	std::string windowTitle = std::string(title);
+	auto&& titleString = StringUtility::ConvertString(windowTitle);
 	winApp_->CreateGameWindow(titleString.c_str(), WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME), width, height);
 
 	// DirectXの初期化処理
@@ -95,16 +103,18 @@ void System::Initialize(const char* title, int width, int height) {
 	srvManager_ = std::make_unique<SrvManager>();
 	srvManager_->Init(dxCommon_.get());
 
-	// Inputの初期化
-	input_ = std::make_unique<Input>();
-	input_->Initialize(winApp_.get());
-
-	// Triangle
-	triangle_ = std::make_unique<Triangle>();
-	triangle_->Initialize(dxCommon_.get(), pipelineManager_.get());
+	imguiManager_ = std::make_unique<ImGuiManager>();
+	imguiManager_->Init(winApp_.get(), dxCommon_.get());
 
 	// TextureManager
 	TextureManager::GetInstance()->Init(srvManager_.get());
+}
+
+void System::GameInit() {
+
+	// Inputの初期化
+	input_ = std::make_unique<Input>();
+	input_->Initialize(winApp_.get());
 
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/images/uvChecker.png";
@@ -116,17 +126,11 @@ void System::Initialize(const char* title, int width, int height) {
 	sprite_ = std::make_unique<Sprite>();
 	sprite_->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
 
-	object3d_ = std::make_unique<Object3d>();
-	object3d_->Init(dxCommon_.get());
-
 	ModelManager::GetInstance()->Init(dxCommon_.get());
-
 	ModelManager::GetInstance()->LoadModel("skydome.obj");
 	ModelManager::GetInstance()->LoadModel("plane.obj");
 	ModelManager::GetInstance()->LoadModel("player.obj");
 	ModelManager::GetInstance()->LoadModel("playerBullet.obj");
-
-	object3d_->SetModel("skydome.obj");
 
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
@@ -135,10 +139,11 @@ void System::Initialize(const char* title, int width, int height) {
 	camera_ = std::make_unique<Camera>();
 	camera_->SetRotate({0.0f, 0.0f, 0.0f});
 	camera_->SetTranslate({0.0f, 0.0f, -10.0f});
-	object3d_->SetDefaultCamera(camera_.get());
 
-	imguiManager_ = std::make_unique<ImGuiManager>();
-	imguiManager_->Init(winApp_.get(), dxCommon_.get());
+	object3d_ = std::make_unique<Object3d>();
+	object3d_->Init(dxCommon_.get());
+	object3d_->SetModel("skydome.obj");
+	object3d_->SetDefaultCamera(camera_.get());
 
 	audio_ = std::make_unique<Audio>();
 	audio_->Init();
@@ -172,29 +177,29 @@ void System::BeginFrame() {
 	srvManager_->PreDraw();
 
 	// Sprite描画前処理
-	sprite_->PreDraw();
+	// sprite_->PreDraw();
 
 	// object3d_->PreDraw();
 }
 
-void System::Update() {
+void System::Update() { imguiManager_->Begin(); }
 
-	input_->Update();
+void System::GameUpdate() {
+
+	sprite_->PreDraw();
 
 	camera_->Update();
+
+	input_->Update();
 
 	object3d_->Update();
 
 	sprite_->Update();
 
-	// playerObject3d_->Update();
-
 	player_->Update();
 
 	/*==================================================================================*/
 	// ImGui
-
-	imguiManager_->Begin();
 
 	ImGui::ShowDemoWindow();
 
@@ -202,12 +207,6 @@ void System::Update() {
 
 	sprite_->ImGuiDebug();
 	player_->ImGuiDebug();
-
-	/*if (input_->PushKey(DIK_A)) {
-	    ImGui::Text("DIK_A");
-	}*/
-
-	imguiManager_->End();
 }
 
 void System::Draw() {
@@ -219,6 +218,8 @@ void System::Draw() {
 }
 
 void System::EndFrame() {
+
+	imguiManager_->End();
 
 	imguiManager_->Draw();
 
@@ -235,7 +236,6 @@ void System::Finalize() {
 	pipelineManager_.reset();
 	input_.reset();
 	mesh_.reset();
-	triangle_.reset();
 
 	sprite_.reset();
 
@@ -245,8 +245,6 @@ void System::Finalize() {
 
 	imguiManager_->Finalize();
 }
-
-void System::DrawTriangle() { triangle_->Draw(); }
 
 void System::DrawSprite() { sprite_->Draw(); }
 

@@ -36,8 +36,6 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 
 	textureFilePath_ = textureFilePath;
 
-	pipelineManager_->CreatePSO(dxCommon_);
-
 	// リソース作成
 	vertexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(VertexData) * 4);
 	indexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(uint32_t) * 6);
@@ -84,7 +82,7 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	    {0.0f, 0.0f, 0.0f},
 	};
 
-	textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
+	// textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 
 	AdjustTextureSize();
 }

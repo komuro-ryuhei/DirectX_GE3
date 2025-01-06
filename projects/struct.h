@@ -4,6 +4,10 @@
 #include <vector>
 #include "Engine/lib/Math/MyMath.h"
 
+#include "Engine/Base/DirectXCommon/DirectXCommon.h"
+#include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
+#include "Engine/Base/WinApp/WinApp.h"
+
 struct Transform {
 	Vector3 scale;
 	Vector3 rotate;
