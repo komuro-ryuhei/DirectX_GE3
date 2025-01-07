@@ -84,6 +84,8 @@ void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& fil
 	srvManager_->CreateSRVforTexture2D(textureData.srvIndex, textureData.resource.Get(), textureData.metaData.format, static_cast<UINT>(textureData.metaData.mipLevels));
 
 	UploadTextureData(textureData.resource.Get(), mipImage);
+
+	textureData.srvIndex++;
 }
 
 ComPtr<ID3D12Resource> TextureManager::CreateTextureResource(ID3D12Device* device, const DirectX::TexMetadata& metadata) {

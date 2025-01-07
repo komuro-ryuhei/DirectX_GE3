@@ -64,7 +64,7 @@ void Player::Draw() {
 void Player::ImGuiDebug() {
 	ImGui::Begin("Player");
 	ImGui::DragFloat3("rotate", &transform_.rotate.x, 0.1f);
-	ImGui::DragFloat3("translate", &transform_.translate.x, 1.0f);
+	ImGui::DragFloat3("translate", &transform_.translate.x, 0.1f);
 	ImGui::End();
 
 	bullet_.ImGuiDebug();

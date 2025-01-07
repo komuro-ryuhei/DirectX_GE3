@@ -61,6 +61,7 @@
     <ClCompile Include="Engine\Base\MyGame\MyGame.cpp" />
     <ClCompile Include="Game\Scenes\GameScene.cpp" />
     <ClCompile Include="Game\Scenes\TitleScene.cpp" />
+    <ClCompile Include="Game\Objects\Enemy\Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -104,6 +105,7 @@
     <ClInclude Include="Engine\Base\MyGame\MyGame.h" />
     <ClInclude Include="Game\Scenes\GameScene.h" />
     <ClInclude Include="Game\Scenes\TitleScene.h" />
+    <ClInclude Include="Game\Objects\Enemy\Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

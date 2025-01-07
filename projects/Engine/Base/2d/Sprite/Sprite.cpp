@@ -82,7 +82,7 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	    {0.0f, 0.0f, 0.0f},
 	};
 
-	// textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
+	textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(textureFilePath);
 
 	AdjustTextureSize();
 }

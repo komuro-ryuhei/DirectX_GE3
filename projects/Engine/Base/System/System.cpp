@@ -11,6 +11,7 @@
 #include "Engine/Base/WinApp/WinApp.h"
 #include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
+#include "Game/Objects/Enemy/Enemy.h"
 #include "Game/Objects/Player/Player.h"
 
 #include "Engine/Base/ImGuiManager/ImGuiManager.h"
@@ -48,29 +49,33 @@ std::unique_ptr<PipelineManager> pipelineManager_ = nullptr;
 std::unique_ptr<Input> input_ = nullptr;
 // Mesh
 std::unique_ptr<Mesh> mesh_ = nullptr;
-// Sprite
-std::unique_ptr<Sprite> sprite_ = nullptr;
-// std::vector<std::unique_ptr<Sprite>> sprites_;
-// Model
-std::unique_ptr<Object3d> object3d_ = nullptr;
-// ModelManager
-// std::unique_ptr<ModelManager> modelManager_ = nullptr;
+// SrvManager
+std::unique_ptr<SrvManager> srvManager_ = nullptr;
+// ImGuiManager
+std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
+
+/*==================================================================================*/
+// ゲームシーンの初期化
 
 // Camera
 std::unique_ptr<Camera> camera_ = nullptr;
 // Audio
 std::unique_ptr<Audio> audio_ = nullptr;
 
-// SrvManager
-std::unique_ptr<SrvManager> srvManager_ = nullptr;
-// ImGuiManager
-std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
+// Sprite
+std::unique_ptr<Sprite> sprite_ = nullptr;
+// std::vector<std::unique_ptr<Sprite>> sprites_;
+// Model
+std::unique_ptr<Object3d> object3d_ = nullptr;
 
 // Player
 std::unique_ptr<Player> player_ = nullptr;
 std::unique_ptr<Object3d> playerObject3d_ = nullptr;
 std::unique_ptr<Object3d> bulletObject3d_ = nullptr;
 
+// Enemy
+std::vector<std::unique_ptr<Enemy>> enemies_;           // エネミーのリスト
+std::vector<std::unique_ptr<Object3d>> enemyObjects3d_; // エネミーのObject3d
 /// <summary>
 /// getter
 /// </summary>
@@ -126,31 +131,37 @@ void System::GameInit() {
 	sprite_ = std::make_unique<Sprite>();
 	sprite_->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
 
+	// モデル読み込み
 	ModelManager::GetInstance()->Init(dxCommon_.get());
 	ModelManager::GetInstance()->LoadModel("skydome.obj");
 	ModelManager::GetInstance()->LoadModel("plane.obj");
 	ModelManager::GetInstance()->LoadModel("player.obj");
 	ModelManager::GetInstance()->LoadModel("playerBullet.obj");
+	ModelManager::GetInstance()->LoadModel("enemy.obj");
 
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
 	mesh_->LightSetting(dxCommon_.get());
 
+	// カメラ
 	camera_ = std::make_unique<Camera>();
 	camera_->SetRotate({0.0f, 0.0f, 0.0f});
 	camera_->SetTranslate({0.0f, 0.0f, -10.0f});
 
+	// 天球の生成
 	object3d_ = std::make_unique<Object3d>();
 	object3d_->Init(dxCommon_.get());
 	object3d_->SetModel("skydome.obj");
 	object3d_->SetDefaultCamera(camera_.get());
 
+	// オーディオの生成
 	audio_ = std::make_unique<Audio>();
 	audio_->Init();
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
 
+	// 自機、弾の生成
 	playerObject3d_ = std::make_unique<Object3d>();
 	playerObject3d_->Init(dxCommon_.get());
 
@@ -165,6 +176,23 @@ void System::GameInit() {
 
 	player_ = std::make_unique<Player>();
 	player_->Init(dxCommon_.get(), camera_.get(), playerObject3d_.get(), bulletObject3d_.get(), input_.get());
+
+	// 敵の生成
+	const int enemyCount = 10; // 必要なエネミー数
+	for (int i = 0; i < enemyCount; ++i) {
+		auto enemyObject = std::make_unique<Object3d>();
+		enemyObject->Init(dxCommon_.get());
+		enemyObject->SetModel("enemy.obj");
+		enemyObject->SetDefaultCamera(camera_.get());
+
+		auto enemy = std::make_unique<Enemy>();
+		enemy->Init(dxCommon_.get(), camera_.get(), enemyObject.get());
+
+		// 敵の初期位置を設定
+		enemy->SetTranslate({float(i * 2) - 10.0f, 0.0f, (5 * i) + 10.0f});
+		enemies_.emplace_back(std::move(enemy));
+		enemyObjects3d_.emplace_back(std::move(enemyObject));
+	}
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -196,7 +224,13 @@ void System::GameUpdate() {
 
 	sprite_->Update();
 
+	sprite_->SetSize({1.0f, 1.0f});
+
 	player_->Update();
+
+	for (auto& enemy : enemies_) {
+		enemy->Update();
+	}
 
 	if (input_->TriggerKey(DIK_RETURN)) {
 		isFinished_ = true;
@@ -205,12 +239,13 @@ void System::GameUpdate() {
 	/*==================================================================================*/
 	// ImGui
 
-	ImGui::ShowDemoWindow();
-
 	camera_->ImGuiDebug();
 
 	sprite_->ImGuiDebug();
 	player_->ImGuiDebug();
+	for (auto& enemy : enemies_) {
+		enemy->ImGuiDebug();
+	}
 }
 
 void System::Draw() {
@@ -218,7 +253,12 @@ void System::Draw() {
 	sprite_->Draw();
 
 	player_->Draw();
-	object3d_->Draw();
+
+	for (auto& enemy : enemies_) {
+		enemy->Draw();
+	}
+
+	// object3d_->Draw();
 }
 
 void System::EndFrame() {
