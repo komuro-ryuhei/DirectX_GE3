@@ -71,7 +71,7 @@ std::unique_ptr<Object3d> object3d_ = nullptr;
 // Player
 std::unique_ptr<Player> player_ = nullptr;
 std::unique_ptr<Object3d> playerObject3d_ = nullptr;
-std::unique_ptr<Object3d> bulletObject3d_ = nullptr;
+std::vector<Object3d*> bulletObjects;
 
 // Enemy
 std::vector<std::unique_ptr<Enemy>> enemies_;           // エネミーのリスト
@@ -168,14 +168,16 @@ void System::GameInit() {
 	playerObject3d_->SetModel("player.obj");
 	playerObject3d_->SetDefaultCamera(camera_.get());
 
-	bulletObject3d_ = std::make_unique<Object3d>();
-	bulletObject3d_->Init(dxCommon_.get());
-
-	bulletObject3d_->SetModel("playerBullet.obj");
-	bulletObject3d_->SetDefaultCamera(camera_.get());
+	for (int i = 0; i < 50; ++i) { // 必要な数だけ準備
+		auto bulletObject = new Object3d();
+		bulletObject->Init(dxCommon_.get());
+		bulletObject->SetModel("playerBullet.obj");
+		bulletObject->SetDefaultCamera(camera_.get());
+		bulletObjects.push_back(bulletObject);
+	}
 
 	player_ = std::make_unique<Player>();
-	player_->Init(dxCommon_.get(), camera_.get(), playerObject3d_.get(), bulletObject3d_.get(), input_.get());
+	player_->Init(dxCommon_.get(), camera_.get(), playerObject3d_.get(), bulletObjects, input_.get());
 
 	// 敵の生成
 	const int enemyCount = 10; // 必要なエネミー数
@@ -282,6 +284,11 @@ void System::Finalize() {
 	mesh_.reset();
 
 	sprite_.reset();
+
+	for (Object3d* bulletObject : bulletObjects) {
+		delete bulletObject;
+	}
+	bulletObjects.clear();
 
 	//
 	TextureManager::GetInstance()->Finalize();

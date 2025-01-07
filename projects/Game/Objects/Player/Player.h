@@ -15,7 +15,7 @@
 class Player {
 
 public:
-	void Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d, Object3d* bulletObject3d, Input* input);
+	void Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d, std::vector<Object3d*> bulletObjects, Input* input);
 
 	void Update();
 
@@ -31,7 +31,7 @@ private:
 	DirectXCommon* dxCommon_ = nullptr;
 
 	Object3d* object3d_ = nullptr;
-	Object3d* bulletObject3d_ = nullptr;
+	std::vector<Object3d*> bulletObjects_;
 
 	Input* input_ = nullptr;
 
@@ -39,7 +39,7 @@ private:
 
 	float velocity_ = 0.05f;
 
-	// std::vector<PlayerBullet> bullets_;
+	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
 
 	PlayerBullet bullet_;
 	bool isBulletActive_ = false;
