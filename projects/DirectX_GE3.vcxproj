@@ -63,7 +63,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,7 +88,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Base/WinApp;$(ProjectDir)/Base/DirectXCommon;$(ProjectDir)/Base/System;$(ProjectDir)/lib/Logger;$(ProjectDir)/lib/ComPtr;$(ProjectDir)/Base/PSO/Compiler;$(ProjectDir)/Base/PSO/PipelineManager;$(ProjectDir)/Base/PSO/RootSignature;$(ProjectDir)/Base/PSO/InputLayout;$(ProjectDir)/Base/PSO/BlendState;$(ProjectDir)/Base/PSO/RasterizerState;$(ProjectDir)/lib/Vector;$(ProjectDir)/Base/Mesh;$(ProjectDir)/lib/Input;$(ProjectDir)/lib/StringUtility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,6 +104,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Scenes\ExplanationScene.cpp" />
     <ClCompile Include="Game\Scenes\ClearScene.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\Base\Audio\Audio.cpp" />
@@ -145,6 +146,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Scenes\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Scenes\ExplanationScene.h" />
     <ClInclude Include="Game\Scenes\ClearScene.h" />
     <ClInclude Include="Game\Objects\Enemy\Enemy.h" />
     <ClInclude Include="Engine\Base\Audio\Audio.h" />

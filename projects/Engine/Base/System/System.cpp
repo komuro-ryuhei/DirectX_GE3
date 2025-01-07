@@ -125,14 +125,12 @@ void System::GameInit() {
 	input_->Initialize(winApp_.get());
 
 	// テクスチャの読み込み
-	const std::string& uvTexture = "./Resources/images/uvChecker.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);
-	const std::string& cube = "./Resources/images/cube.jpg";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), cube);
+	const std::string& uvChecker = "./Resources/images/point.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvChecker);
 
 	// Sprite
 	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
+	sprite_->Init(dxCommon_.get(), pipelineManager_.get(), uvChecker);
 
 	// モデル読み込み
 	ModelManager::GetInstance()->Init(dxCommon_.get());
@@ -232,7 +230,7 @@ void System::GameUpdate() {
 
 	sprite_->Update();
 
-	sprite_->SetSize({64.0f, 64.0f});
+	sprite_->SetSize({32.0f, 32.0f});
 
 	player_->Update();
 
@@ -242,12 +240,10 @@ void System::GameUpdate() {
 
 	CheckCollisions();
 
-	if (input_->TriggerKey(DIK_RETURN)) {
-		isFinished_ = true;
-	}
-
 	/*==================================================================================*/
 	// ImGui
+
+#ifdef DEBUG
 
 	camera_->ImGuiDebug();
 
@@ -256,6 +252,8 @@ void System::GameUpdate() {
 	for (auto& enemy : enemies_) {
 		enemy->ImGuiDebug();
 	}
+
+#endif // DEBUG
 }
 
 void System::Draw() {

@@ -7,6 +7,7 @@ enum class Scene {
 	kUnknown = 0,
 
 	kTitle,
+	kExplanation,
 	kGame,
 	kClear,
 };
@@ -28,13 +29,26 @@ void MyGame::Run() {
 		case Scene::kTitle:
 			if (titleScene_->IsFinished()) {
 				// シーン変更
-				scene = Scene::kGame;
+				scene = Scene::kExplanation;
 				// 旧シーンの開放
 				delete titleScene_;
 				titleScene_ = nullptr;
 				// シーンの生成と初期化
+				explanationScene_ = new ExplanationScene();
+				explanationScene_->Init(System::GetDXCommon(), System::GetPipelineManager(), System::GetWinApp());
+			}
+			break;
+		case Scene::kExplanation:
+			if (explanationScene_->IsFinished()) {
+				// シーン変更
+				scene = Scene::kGame;
+				// 旧シーンの開放
+				delete explanationScene_;
+				explanationScene_ = nullptr;
+				// シーンの生成と初期化
 				gameScene_ = new GameScene();
 				gameScene_->Init();
+				System::SetIsFinished(false);
 			}
 			break;
 		case Scene::kGame:
@@ -70,6 +84,9 @@ void MyGame::Run() {
 		case Scene::kTitle:
 			titleScene_->Update();
 			break;
+		case Scene::kExplanation:
+			explanationScene_->Update();
+			break;
 		case Scene::kGame:
 			gameScene_->Update();
 			break;
@@ -83,6 +100,9 @@ void MyGame::Run() {
 		switch (scene) {
 		case Scene::kTitle:
 			titleScene_->Draw();
+			break;
+		case Scene::kExplanation:
+			explanationScene_->Draw();
 			break;
 		case Scene::kGame:
 			gameScene_->Draw();
@@ -119,6 +139,7 @@ void MyGame::Run() {
 
 	// 各種解放
 	delete titleScene_;
+	delete explanationScene_;
 	delete gameScene_;
 	delete clearScene_;
 

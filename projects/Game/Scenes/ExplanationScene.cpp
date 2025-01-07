@@ -1,23 +1,23 @@
-#include "ClearScene.h"
+#include "ExplanationScene.h"
 
 #include "Engine/Base/System/System.h"
 #include "Engine/Base/TextureManager/TextureManager.h"
 
 #include "Engine/lib/Math/MyMath.h"
 
-bool ClearScene::IsFinished() const { return isFinished_; }
+bool ExplanationScene::IsFinished() const { return isFinished_; }
 
-void ClearScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, WinApp* winApp) {
+void ExplanationScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, WinApp* winApp) {
 
 	dxCommon_ = dxCommon;
 	pipelineManager_ = pipelineManager;
 	winApp_ = winApp;
 
-	const std::string& clear = "./Resources/images/Clear.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, clear);
+	const std::string& explanation = "./Resources/images/explanation.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_, explanation);
 	//
 	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_, pipelineManager_, clear);
+	sprite_->Init(dxCommon_, pipelineManager_, explanation);
 
 	input_ = std::make_unique<Input>();
 	input_->Initialize(winApp_);
@@ -25,7 +25,7 @@ void ClearScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager,
 	isFinished_ = false;
 }
 
-void ClearScene::Update() {
+void ExplanationScene::Update() {
 
 	// Sprite描画前処理
 	sprite_->PreDraw();
@@ -42,4 +42,4 @@ void ClearScene::Update() {
 	}
 }
 
-void ClearScene::Draw() { sprite_->Draw(); }
+void ExplanationScene::Draw() { sprite_->Draw(); }

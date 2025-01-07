@@ -12,12 +12,14 @@ void PlayerBullet::Init(DirectXCommon* dxCommon, Camera* camera, Object3d* objec
 
 	object3d_->Init(dxCommon_);
 
+	object3d_->SetScale({0.5f, 0.5f, 0.5f});
+
 	transform_.translate = object3d_->GetTranslate();
 }
 
 void PlayerBullet::Update() {
 
-	transform_.translate += direction_ * speed_; 
+	transform_.translate += direction_ * speed_;
 	object3d_->SetTranslate(transform_.translate);
 	object3d_->Update();
 }
