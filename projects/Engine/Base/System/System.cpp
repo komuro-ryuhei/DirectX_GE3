@@ -198,6 +198,10 @@ void System::GameUpdate() {
 
 	player_->Update();
 
+	if (input_->TriggerKey(DIK_RETURN)) {
+		isFinished_ = true;
+	}
+
 	/*==================================================================================*/
 	// ImGui
 

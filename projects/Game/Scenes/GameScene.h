@@ -12,7 +12,7 @@ public:
 
 	void Draw();
 
-	bool GetIsFinished() const;
+	bool IsFinished() const;
 
 private:
 

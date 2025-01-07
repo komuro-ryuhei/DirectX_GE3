@@ -2,7 +2,7 @@
 
 #include "Engine/Base/System/System.h"
 
-bool GameScene::GetIsFinished() const { return false; }
+bool GameScene::IsFinished() const { return isFinished_; }
 
 void GameScene::Init() {
 	//	
@@ -11,8 +11,11 @@ void GameScene::Init() {
 
 void GameScene::Update() {
 	
-	isFinished_ = System::IsFinished();
 	System::GameUpdate();
+
+	if (System::isFinished_) {
+		isFinished_ = true;
+	}
 }
 
 void GameScene::Draw() { System::Draw(); }

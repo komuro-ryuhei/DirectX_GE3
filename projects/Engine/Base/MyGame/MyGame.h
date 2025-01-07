@@ -15,4 +15,7 @@ public:
 
 private:
 	std::unique_ptr<TitleScene> scene_ = nullptr;
+
+	TitleScene* titleScene_ = nullptr;
+	GameScene* gameScene_ = nullptr;
 };

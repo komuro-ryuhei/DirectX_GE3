@@ -21,6 +21,8 @@ void TitleScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager,
 
 	input_ = std::make_unique<Input>();
 	input_->Initialize(winApp_);
+
+	isFinished_ = false;
 }
 
 void TitleScene::Update() {
@@ -36,6 +38,7 @@ void TitleScene::Update() {
 	input_->Update();
 
 	if (input_->TriggerKey(DIK_SPACE)) {
+		isFinished_ = true;
 	}
 }
 
