@@ -1,11 +1,12 @@
 #include "Enemy.h"
-
 #include "externals/imgui/imgui.h"
 
+float Enemy::GetRadius() const { return radius_; }
+bool Enemy::GetIsAlive() const { return isAlive_; }
+Vector3 Enemy::GetTranslate() { return transform_.translate; }
 void Enemy::SetTranslate(Vector3 translate) { transform_.translate = translate; }
 
 void Enemy::Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d) {
-
 	dxCommon_ = dxCommon;
 	camera_ = camera;
 	object3d_ = object3d;
@@ -17,17 +18,28 @@ void Enemy::Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d) {
 }
 
 void Enemy::Update() {
-
-	if (transform_.translate.z >= 10.0f) {
+	if (isBlinking_) {
+		blinkCounter_++;
+		if (blinkCounter_ >= blinkDuration_) {
+			isBlinking_ = false;
+			blinkCounter_ = 0;
+		}
+	} else if (transform_.translate.z >= 10.0f) {
 		transform_.translate.z -= velocity_;
 	}
 
 	object3d_->SetTranslate(transform_.translate);
-
 	object3d_->Update();
 }
 
-void Enemy::Draw() { object3d_->Draw(); }
+void Enemy::Draw() {
+	// 点滅中はフレーム数によって描画を制御
+	if (isBlinking_ && (blinkCounter_ / 5) % 2 == 0) {
+		return; // 点滅効果で描画をスキップ
+	}
+
+	object3d_->Draw();
+}
 
 void Enemy::ImGuiDebug() {
 	ImGui::Begin("Enemy");
@@ -35,4 +47,9 @@ void Enemy::ImGuiDebug() {
 	ImGui::End();
 }
 
-void Enemy::Attack() {}
+void Enemy::OnHit() {
+	isBlinking_ = true; // 点滅を開始
+	blinkCounter_ = 0;  // カウンタをリセット
+
+	isAlive_ = false;
+}

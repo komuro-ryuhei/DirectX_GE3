@@ -23,6 +23,8 @@
 #include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
 
+#include "Game/Objects/Enemy/Enemy.h"
+
 /// <summary>
 /// システム
 /// </summary>
@@ -75,6 +77,9 @@ public: // 静的メンバ関数
 
 	static void DrawObj();
 
+	// 当たり判定
+	static void CheckCollisions();
+
 public:
 	/// <summary>
 	/// getter・setter
@@ -83,8 +88,11 @@ public:
 	static PipelineManager* GetPipelineManager();
 	static WinApp* GetWinApp();
 
-	static bool IsFinished();
+	static std::vector<std::unique_ptr<Enemy>>& GetEnemies();
 
-public:
+	static bool IsFinished();
+	static void SetIsFinished(bool finished);
+
+private:
 	static bool isFinished_;
 };

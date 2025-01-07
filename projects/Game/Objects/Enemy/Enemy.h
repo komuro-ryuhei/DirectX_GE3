@@ -6,6 +6,7 @@
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/lib/Input/Input.h"
 #include "struct.h"
+#include "Game/Objects/Enemy/Enemy.h"
 
 // C++
 #include <vector>
@@ -20,7 +21,15 @@ public:
 
 	void ImGuiDebug();
 
+public:
+	Vector3 GetTranslate();
 	void SetTranslate(Vector3 translate);
+
+	float GetRadius() const;
+
+	bool GetIsAlive() const;
+
+	void OnHit();
 
 private:
 	void Attack();
@@ -37,5 +46,12 @@ private:
 
 	// std::vector<PlayerBullet> bullets_;
 
-	bool isBulletActive_ = false;
+	float radius_ = 1.0f;
+
+	bool isAlive_ = true;
+
+	// 点滅用の変数 
+	bool isBlinking_ = false;
+	int blinkCounter_ = 0;
+	const int blinkDuration_ = 60; // 点滅時間 (フレーム数)
 };

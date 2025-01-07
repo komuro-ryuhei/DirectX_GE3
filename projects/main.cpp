@@ -2,7 +2,7 @@
 #include "Engine/Base/System/System.h"
 #include "Engine/Base/MyGame/MyGame.h"
 
-const char kWindowTitle[] = "LE2B_12_コムロ_リュウヘイ";
+const char kWindowTitle[] = "Neratte Taose!";
 
 struct LeakChecker {
 	~LeakChecker()

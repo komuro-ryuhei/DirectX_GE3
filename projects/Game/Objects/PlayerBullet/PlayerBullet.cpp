@@ -2,6 +2,8 @@
 
 #include "externals/imgui/imgui.h"
 
+float PlayerBullet::GetRadius() const { return radius_; }
+
 void PlayerBullet::Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d) {
 
 	dxCommon_ = dxCommon;
@@ -15,7 +17,7 @@ void PlayerBullet::Init(DirectXCommon* dxCommon, Camera* camera, Object3d* objec
 
 void PlayerBullet::Update() {
 
-	transform_.translate.z += speed_;
+	transform_.translate += direction_ * speed_; 
 	object3d_->SetTranslate(transform_.translate);
 	object3d_->Update();
 }
@@ -36,3 +38,5 @@ void PlayerBullet::ImGuiDebug() {
 Vector3 PlayerBullet::GetTranslate() const { return transform_.translate; }
 
 void PlayerBullet::SetTranlate(Vector3 translate) { transform_.translate = translate; }
+
+void PlayerBullet::SetDirection(const Vector3& direction) { direction_ = direction; }

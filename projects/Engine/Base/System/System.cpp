@@ -25,6 +25,7 @@
 #include <cassert>
 #include <cstdint>
 #include <format>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -70,12 +71,11 @@ std::unique_ptr<Object3d> object3d_ = nullptr;
 
 // Player
 std::unique_ptr<Player> player_ = nullptr;
-std::unique_ptr<Object3d> playerObject3d_ = nullptr;
 std::vector<Object3d*> bulletObjects;
 
 // Enemy
-std::vector<std::unique_ptr<Enemy>> enemies_;           // エネミーのリスト
-std::vector<std::unique_ptr<Object3d>> enemyObjects3d_; // エネミーのObject3d
+std::vector<std::unique_ptr<Enemy>> enemies_;
+std::vector<std::unique_ptr<Object3d>> enemyObjects3d_;
 /// <summary>
 /// getter
 /// </summary>
@@ -83,7 +83,10 @@ std::vector<std::unique_ptr<Object3d>> enemyObjects3d_; // エネミーのObject
 DirectXCommon* System::GetDXCommon() { return dxCommon_.get(); }
 PipelineManager* System::GetPipelineManager() { return pipelineManager_.get(); }
 WinApp* System::GetWinApp() { return winApp_.get(); }
+std::vector<std::unique_ptr<Enemy>>& System::GetEnemies() { return enemies_; }
 bool System::IsFinished() { return System::isFinished_; }
+
+void System::SetIsFinished(bool finished) { isFinished_ = finished; }
 
 bool System::isFinished_ = false;
 
@@ -161,14 +164,7 @@ void System::GameInit() {
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
 
-	// 自機、弾の生成
-	playerObject3d_ = std::make_unique<Object3d>();
-	playerObject3d_->Init(dxCommon_.get());
-
-	playerObject3d_->SetModel("player.obj");
-	playerObject3d_->SetDefaultCamera(camera_.get());
-
-	for (int i = 0; i < 50; ++i) { // 必要な数だけ準備
+	for (int i = 0; i < 50; ++i) {
 		auto bulletObject = new Object3d();
 		bulletObject->Init(dxCommon_.get());
 		bulletObject->SetModel("playerBullet.obj");
@@ -177,10 +173,16 @@ void System::GameInit() {
 	}
 
 	player_ = std::make_unique<Player>();
-	player_->Init(dxCommon_.get(), camera_.get(), playerObject3d_.get(), bulletObjects, input_.get());
+	player_->Init(dxCommon_.get(), camera_.get(), bulletObjects, sprite_.get(), input_.get());
 
+	// ランダムな値を生成するための設定
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> distX(-5.0f, 5.0f);  // X座標の範囲
+	std::uniform_real_distribution<float> distY(-5.0f, 5.0f);  // Y座標の範囲
+	std::uniform_real_distribution<float> distZ(20.0f, 50.0f); // Z座標の範囲
 	// 敵の生成
-	const int enemyCount = 10; // 必要なエネミー数
+	const int enemyCount = 5;
 	for (int i = 0; i < enemyCount; ++i) {
 		auto enemyObject = std::make_unique<Object3d>();
 		enemyObject->Init(dxCommon_.get());
@@ -190,8 +192,12 @@ void System::GameInit() {
 		auto enemy = std::make_unique<Enemy>();
 		enemy->Init(dxCommon_.get(), camera_.get(), enemyObject.get());
 
-		// 敵の初期位置を設定
-		enemy->SetTranslate({float(i * 2) - 10.0f, 0.0f, (5 * i) + 10.0f});
+		// 敵の初期位置をランダムに設定
+		float randomX = distX(gen);
+		float randomY = distY(gen);
+		float randomZ = distZ(gen);
+		enemy->SetTranslate({randomX, randomY, randomZ});
+
 		enemies_.emplace_back(std::move(enemy));
 		enemyObjects3d_.emplace_back(std::move(enemyObject));
 	}
@@ -226,13 +232,15 @@ void System::GameUpdate() {
 
 	sprite_->Update();
 
-	sprite_->SetSize({1.0f, 1.0f});
+	sprite_->SetSize({64.0f, 64.0f});
 
 	player_->Update();
 
 	for (auto& enemy : enemies_) {
 		enemy->Update();
 	}
+
+	CheckCollisions();
 
 	if (input_->TriggerKey(DIK_RETURN)) {
 		isFinished_ = true;
@@ -300,3 +308,39 @@ void System::Finalize() {
 void System::DrawSprite() { sprite_->Draw(); }
 
 void System::DrawObj() { object3d_->Draw(); }
+
+void System::CheckCollisions() {
+	auto& bullets = player_->GetBullets();
+
+	// 敵と弾の当たり判定
+	for (auto itBullet = bullets.begin(); itBullet != bullets.end();) {
+		bool bulletHit = false;
+
+		for (auto itEnemy = enemies_.begin(); itEnemy != enemies_.end();) {
+			float distance = MyMath::CalculateDistance((*itBullet)->GetTranslate(), (*itEnemy)->GetTranslate());
+			float collisionDistance = (*itBullet)->GetRadius() + (*itEnemy)->GetRadius();
+
+			if (distance < collisionDistance) {
+				// 衝突処理
+				bulletHit = true;
+
+				// 敵を削除
+				itEnemy = enemies_.erase(itEnemy);
+			} else {
+				++itEnemy;
+			}
+		}
+
+		if (bulletHit) {
+			// 衝突した弾を削除
+			itBullet = bullets.erase(itBullet);
+		} else {
+			++itBullet;
+		}
+	}
+
+	// 敵が全ていなくなった場合
+	if (enemies_.empty()) {
+		isFinished_ = true;
+	}
+}

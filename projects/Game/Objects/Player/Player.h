@@ -9,13 +9,17 @@
 
 #include "Game/Objects/PlayerBullet/PlayerBullet.h"
 
+#include "Game/Objects/Enemy/Enemy.h"
+
+#include "Engine/Base/2d/Sprite/Sprite.h"
+
 // C++
 #include <vector>
 
 class Player {
 
 public:
-	void Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d, std::vector<Object3d*> bulletObjects, Input* input);
+	void Init(DirectXCommon* dxCommon, Camera* camera, std::vector<Object3d*> bulletObjects, Sprite* sprite, Input* input);
 
 	void Update();
 
@@ -23,24 +27,36 @@ public:
 
 	void ImGuiDebug();
 
+	void LockOnTarget(std::vector<std::unique_ptr<Enemy>>& enemies);
+
+public:
+	float GetRadius() const;
+	std::vector<std::unique_ptr<PlayerBullet>>& GetBullets();
+
 private:
 	void Attack();
+	void Move();
 
 private:
 	Camera* camera_ = nullptr;
 	DirectXCommon* dxCommon_ = nullptr;
-
-	Object3d* object3d_ = nullptr;
+	// モデル
+	std::unique_ptr<Object3d> object3d_ = nullptr;
 	std::vector<Object3d*> bulletObjects_;
-
-	Input* input_ = nullptr;
-
-	Transform transform_;
-
-	float velocity_ = 0.05f;
-
+	// 弾のリスト
 	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
 
-	PlayerBullet bullet_;
+	Input* input_ = nullptr;
+	// SRT
+	Transform transform_;
+
+	// 速度
+	float velocity_ = 0.05f;
+	// 半径
+	float radius_ = 1.0f;
+	// 弾有効フラグ
 	bool isBulletActive_ = false;
+
+	Enemy* lockedTarget_ = nullptr;
+	Sprite* lockOnSprite_ = nullptr;
 };

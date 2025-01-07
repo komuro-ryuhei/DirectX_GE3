@@ -1,23 +1,23 @@
-#include "TitleScene.h"
+#include "ClearScene.h"
 
 #include "Engine/Base/System/System.h"
 #include "Engine/Base/TextureManager/TextureManager.h"
 
 #include "Engine/lib/Math/MyMath.h"
 
-bool TitleScene::IsFinished() const { return isFinished_; }
+bool ClearScene::IsFinished() const { return isFinished_; }
 
-void TitleScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, WinApp* winApp) {
+void ClearScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, WinApp* winApp) {
 
 	dxCommon_ = dxCommon;
 	pipelineManager_ = pipelineManager;
 	winApp_ = winApp;
 
-	const std::string& title = "./Resources/images/Title.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, title);
+	const std::string& clear = "./Resources/images/Clear.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_, clear);
 	//
 	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_, pipelineManager_, title);
+	sprite_->Init(dxCommon_, pipelineManager_, clear);
 
 	input_ = std::make_unique<Input>();
 	input_->Initialize(winApp_);
@@ -25,7 +25,7 @@ void TitleScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager,
 	isFinished_ = false;
 }
 
-void TitleScene::Update() {
+void ClearScene::Update() {
 
 	// Sprite描画前処理
 	sprite_->PreDraw();
@@ -42,4 +42,4 @@ void TitleScene::Update() {
 	}
 }
 
-void TitleScene::Draw() { sprite_->Draw(); }
+void ClearScene::Draw() { sprite_->Draw(); }

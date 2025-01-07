@@ -4,6 +4,7 @@
 
 #include "Game/Scenes/GameScene.h"
 #include "Game/Scenes/TitleScene.h"
+#include "Game/Scenes/ClearScene.h"
 
 #include <memory>
 
@@ -18,4 +19,5 @@ private:
 
 	TitleScene* titleScene_ = nullptr;
 	GameScene* gameScene_ = nullptr;
+	ClearScene* clearScene_ = nullptr;
 };

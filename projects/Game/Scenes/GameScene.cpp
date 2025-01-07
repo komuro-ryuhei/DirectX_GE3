@@ -7,13 +7,14 @@ bool GameScene::IsFinished() const { return isFinished_; }
 void GameScene::Init() {
 	//	
 	System::GameInit();
+	isFinished_ = false;
 }
 
 void GameScene::Update() {
 	
 	System::GameUpdate();
 
-	if (System::isFinished_) {
+	if (System::IsFinished()) {
 		isFinished_ = true;
 	}
 }

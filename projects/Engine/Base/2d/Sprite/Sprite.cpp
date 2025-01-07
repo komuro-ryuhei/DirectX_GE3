@@ -169,10 +169,6 @@ void Sprite::Draw() {
 
 	ComPtr<ID3D12GraphicsCommandList> commandList = dxCommon_->GetCommandList();
 
-	// 描画用のDescriptorHeapの設定
-	/*ID3D12DescriptorHeap* descriptorHeaps[] = {srvDescriptorHeap.Get()};
-	commandList->SetDescriptorHeaps(1, descriptorHeaps);*/
-
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	// VBVを設定
@@ -181,9 +177,8 @@ void Sprite::Draw() {
 	commandList->IASetIndexBuffer(&indexBufferView);
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
-	//
+	// 
 	commandList->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(textureFilePath_));
-	// commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
 	// Spriteの描画
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }

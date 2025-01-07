@@ -18,8 +18,10 @@ public:
 
 	void ImGuiDebug();
 
+	float GetRadius() const;
 	Vector3 GetTranslate() const;
 	void SetTranlate(Vector3 translate);
+	void SetDirection(const Vector3& direction);
 
 private:
 	Camera* camera_ = nullptr;
@@ -30,4 +32,7 @@ private:
 	Transform transform_;
 
 	float speed_ = 0.1f;
+	Vector3 direction_;
+
+	float radius_ = 0.8f;
 };
