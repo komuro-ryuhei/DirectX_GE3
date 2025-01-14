@@ -162,7 +162,7 @@ void System::GameInit() {
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
 
-	for (int i = 0; i < 50; ++i) {
+	for (int i = 0; i < 999; ++i) {
 		auto bulletObject = new Object3d();
 		bulletObject->Init(dxCommon_.get());
 		bulletObject->SetModel("playerBullet.obj");
