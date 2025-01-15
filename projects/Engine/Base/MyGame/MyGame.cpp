@@ -47,8 +47,7 @@ void MyGame::Run() {
 				explanationScene_ = nullptr;
 				// シーンの生成と初期化
 				gameScene_ = new GameScene();
-				gameScene_->Init();
-				System::SetIsFinished(false);
+				gameScene_->Init(System::GetDXCommon(), System::GetPipelineManager(), System::GetWinApp());
 			}
 			break;
 		case Scene::kGame:
@@ -61,7 +60,6 @@ void MyGame::Run() {
 				// シーンの生成と初期化
 				clearScene_ = new ClearScene();
 				clearScene_->Init(System::GetDXCommon(), System::GetPipelineManager(), System::GetWinApp());
-				System::SetIsFinished(false);
 			}
 			break;
 		case Scene::kClear:

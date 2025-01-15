@@ -8,12 +8,11 @@
 float Player::GetRadius() const { return radius_; }
 std::vector<std::unique_ptr<PlayerBullet>>& Player::GetBullets() { return bullets_; }
 
-void Player::Init(DirectXCommon* dxCommon, Camera* camera, std::vector<Object3d*> bulletObjects, Sprite* sprite, Input* input) {
+void Player::Init(DirectXCommon* dxCommon, Camera* camera, Sprite* sprite, Input* input) {
 
 	dxCommon_ = dxCommon;
 	camera_ = camera;
 	input_ = input;
-	bulletObjects_ = bulletObjects;
 	lockOnSprite_ = sprite;
 
 	// 自機、弾の生成
@@ -26,15 +25,24 @@ void Player::Init(DirectXCommon* dxCommon, Camera* camera, std::vector<Object3d*
 	object3d_->Init(dxCommon_);
 	object3d_->SetScale({0.5f, 0.5f, 0.5f});
 
+	// 弾オブジェクトの生成
+    for (int i = 0; i < 999; ++i) { // 必要な弾数を定義
+        auto bulletObject = new Object3d();
+        bulletObject->Init(dxCommon_);
+        bulletObject->SetModel("playerBullet.obj");
+        bulletObject->SetDefaultCamera(camera_);
+        bulletObjects_.push_back(bulletObject);
+    }
+
 	transform_.translate = object3d_->GetTranslate();
 }
 
 void Player::Update() {
 
-	if (input_->TriggerKey(DIK_L)) {
-		// Lキーでロックオン対象を更新
-		LockOnTarget(System::GetEnemies());
-	}
+	//if (input_->TriggerKey(DIK_L)) {
+	//	// Lキーでロックオン対象を更新
+	//	LockOnTarget(System::GetEnemies());
+	//}
 
 	if (lockedTarget_ && lockedTarget_->GetIsAlive()) {
 		// 必要な行列を取得

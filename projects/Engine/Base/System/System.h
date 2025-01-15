@@ -38,19 +38,9 @@ public: // 静的メンバ関数
 	/// <param name="height">ウィンドウの幅</param>
 	static void Initialize(const char* title, int width, int height);
 
-	/// <summary>
-	/// ゲームシーンのみの初期化(後々削除予定)
-	/// </summary>
-	static void GameInit();
-
 	static void Update();
 
-	/// <summary>
-	/// ゲームシーンのみの更新(後々削除予定)
-	/// </summary>
-	static void GameUpdate();
-
-	static void Draw();
+	// static void Draw();
 
 	/// <summary>
 	/// Windowsのメッセージを処理する
@@ -73,13 +63,6 @@ public: // 静的メンバ関数
 	/// </summary>
 	static void Finalize();
 
-	static void DrawSprite();
-
-	static void DrawObj();
-
-	// 当たり判定
-	static void CheckCollisions();
-
 public:
 	/// <summary>
 	/// getter・setter
@@ -88,11 +71,5 @@ public:
 	static PipelineManager* GetPipelineManager();
 	static WinApp* GetWinApp();
 
-	static std::vector<std::unique_ptr<Enemy>>& GetEnemies();
-
-	static bool IsFinished();
-	static void SetIsFinished(bool finished);
-
-private:
-	static bool isFinished_;
+	// static std::vector<std::unique_ptr<Enemy>>& GetEnemies();
 };

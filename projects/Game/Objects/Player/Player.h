@@ -19,7 +19,7 @@
 class Player {
 
 public:
-	void Init(DirectXCommon* dxCommon, Camera* camera, std::vector<Object3d*> bulletObjects, Sprite* sprite, Input* input);
+	void Init(DirectXCommon* dxCommon, Camera* camera, Sprite* sprite, Input* input);
 
 	void Update();
 
