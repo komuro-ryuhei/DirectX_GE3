@@ -44,6 +44,8 @@ void Model::Draw() {
 
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 
+	commandList->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(modelData.material.textureFilePath));
+
 	// Modelの描画
 	commandList->DrawInstanced(UINT(modelData.vertices.size()), 1, 0, 0);
 }

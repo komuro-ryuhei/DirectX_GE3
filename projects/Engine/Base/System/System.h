@@ -15,12 +15,12 @@
 #pragma comment(lib, "dxguid.lib")
 
 // MyClass
-#include "Engine/lib/ComPtr/ComPtr.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
-#include "Engine/lib/Input/Input.h"
 #include "Engine/Base/Mesh/Mesh.h"
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
 #include "Engine/Base/WinApp/WinApp.h"
+#include "Engine/lib/ComPtr/ComPtr.h"
+#include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
 
 /// <summary>
@@ -37,6 +37,8 @@ public: // 静的メンバ関数
 	static void Initialize(const char* title, int width, int height);
 
 	static void Update();
+
+	static void Draw();
 
 	/// <summary>
 	/// Windowsのメッセージを処理する
@@ -58,10 +60,4 @@ public: // 静的メンバ関数
 	/// 終了処理
 	/// </summary>
 	static void Finalize();
-
-	static void DrawTriangle();
-
-	static void DrawSprite();
-
-	static void DrawObj();
 };
