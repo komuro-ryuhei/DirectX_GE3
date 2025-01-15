@@ -125,6 +125,7 @@ void System::Finalize() {
 	winApp_.reset();
 	dxCommon_.reset();
 	pipelineManager_.reset();
+	srvManager_.reset();
 	input_.reset();
 	mesh_.reset();
 

@@ -19,6 +19,9 @@
 class Player {
 
 public:
+
+	~Player();
+
 	void Init(DirectXCommon* dxCommon, Camera* camera, Sprite* sprite, Input* input);
 
 	void Update();

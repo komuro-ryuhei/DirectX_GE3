@@ -16,11 +16,16 @@
 class GameScene {
 
 public:
+
+	~GameScene();
+
 	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, WinApp* winApp);
 
 	void Update();
 
 	void Draw();
+
+	void Finalize();
 
 	bool IsFinished() const;
 
@@ -46,7 +51,6 @@ private:
 
 	// Player
 	std::unique_ptr<Player> player_ = nullptr;
-	std::vector<Object3d*> bulletObjects;
 
 	// Enemy
 	std::vector<std::unique_ptr<Enemy>> enemies_;

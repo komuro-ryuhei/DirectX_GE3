@@ -8,6 +8,14 @@
 float Player::GetRadius() const { return radius_; }
 std::vector<std::unique_ptr<PlayerBullet>>& Player::GetBullets() { return bullets_; }
 
+Player::~Player() {
+
+	for (auto bulletObject : bulletObjects_) {
+		delete bulletObject;
+	}
+	bulletObjects_.clear();
+}
+
 void Player::Init(DirectXCommon* dxCommon, Camera* camera, Sprite* sprite, Input* input) {
 
 	dxCommon_ = dxCommon;

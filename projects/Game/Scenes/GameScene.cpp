@@ -7,6 +7,19 @@
 bool GameScene::IsFinished() const { return isFinished_; }
 // std::vector<std::unique_ptr<Enemy>>& GameScene::GetEnemies() { return enemies_; }
 
+GameScene::~GameScene() {
+
+	player_.reset();
+	sprite_.reset();
+	camera_.reset();
+	audio_.reset();
+
+	enemyObjects3d_.clear();
+	enemies_.clear();
+
+	object3d_.reset();
+}
+
 void GameScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, WinApp* winApp) {
 
 	dxCommon_ = dxCommon;
