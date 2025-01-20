@@ -38,8 +38,6 @@ public: // 静的メンバ関数
 
 	static void Update();
 
-	static void Draw();
-
 	/// <summary>
 	/// Windowsのメッセージを処理する
 	/// </summary>
@@ -60,4 +58,11 @@ public: // 静的メンバ関数
 	/// 終了処理
 	/// </summary>
 	static void Finalize();
+
+public:
+	/// <summary>
+	/// getter・setter
+	/// </summary>
+	static DirectXCommon* GetDxCommon();
+	static PipelineManager* GetPipelineManager();
 };

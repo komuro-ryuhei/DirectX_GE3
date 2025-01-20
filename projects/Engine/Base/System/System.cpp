@@ -2,11 +2,6 @@
 #include "System.h"
 
 // MyClass
-#include "Engine/Base/2d/Sprite/Sprite.h"
-#include "Engine/Base/3d/Object3d/Object3d.h"
-#include "Engine/Base/3d/Triangle/Triangle.h"
-#include "Engine/Base/Audio/Audio.h"
-#include "Engine/Base/Camera/Camera.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/Mesh/Mesh.h"
 #include "Engine/Base/WinApp/WinApp.h"
@@ -53,17 +48,8 @@ std::unique_ptr<SrvManager> srvManager_ = nullptr;
 // ImGuiManager
 std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
 
-/*==================================================================================*/
-// ゲームシーンの初期化
-
-// Camera
-std::unique_ptr<Camera> camera_ = nullptr;
-// Audio
-std::unique_ptr<Audio> audio_ = nullptr;
-// Sprite
-std::unique_ptr<Sprite> sprite_ = nullptr;
-// Model
-std::unique_ptr<Object3d> object3d_ = nullptr;
+DirectXCommon* System::GetDxCommon() { return dxCommon_.get(); }
+PipelineManager* System::GetPipelineManager() { return pipelineManager_.get(); }
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -93,41 +79,14 @@ void System::Initialize(const char* title, int width, int height) {
 	// TextureManager
 	TextureManager::GetInstance()->Init(srvManager_.get());
 
-	// テクスチャの読み込み
-	const std::string& uvTexture = "./Resources/images/uvChecker.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), uvTexture);
-	const std::string& monsterBallTexture = "./Resources/images/monsterBall.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_.get(), monsterBallTexture);
-
-	// Sprite
-	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_.get(), pipelineManager_.get(), uvTexture);
-
-	object3d_ = std::make_unique<Object3d>();
-	object3d_->Init(dxCommon_.get());
-
 	ModelManager::GetInstance()->Init(dxCommon_.get());
-
-	ModelManager::GetInstance()->LoadModel("plane.obj");
-	object3d_->SetModel("plane.obj");
 
 	// Mesh
 	mesh_ = std::make_unique<Mesh>();
 	mesh_->LightSetting(dxCommon_.get());
 
-	camera_ = std::make_unique<Camera>();
-	camera_->SetRotate({0.0f, 0.0f, 0.0f});
-	camera_->SetTranslate({0.0f, 0.0f, -10.0f});
-	object3d_->SetDefaultCamera(camera_.get());
-
 	imguiManager_ = std::make_unique<ImGuiManager>();
 	imguiManager_->Init(winApp_.get(), dxCommon_.get());
-
-	audio_ = std::make_unique<Audio>();
-	audio_->Init();
-
-	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
-	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
 }
 
 bool System::ProcessMessage() { return winApp_->ProcessMessage(); }
@@ -139,28 +98,11 @@ void System::BeginFrame() {
 
 	srvManager_->PreDraw();
 	imguiManager_->Begin();
-
-	// Sprite描画前処理
-	sprite_->PreDraw();
 }
 
 void System::Update() {
 
-	input_->Update();
-
-	camera_->Update();
-
-	sprite_->Update();
-
-	object3d_->Update();
-
-	sprite_->ImGuiDebug();
-}
-
-void System::Draw() {
-
-	sprite_->Draw();
-	object3d_->Draw();
+	// input_->Update();
 }
 
 void System::EndFrame() {
@@ -182,7 +124,6 @@ void System::Finalize() {
 	pipelineManager_.reset();
 	input_.reset();
 	mesh_.reset();
-	sprite_.reset();
 
 	//
 	TextureManager::GetInstance()->Finalize();

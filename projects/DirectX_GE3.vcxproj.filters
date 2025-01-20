@@ -57,6 +57,7 @@
     <ClCompile Include="Engine\Base\ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="Engine\Base\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\MyGame\MyGame.cpp" />
+    <ClCompile Include="Game\Scene\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="Engine\Base\ImGuiManager\ImGuiManager.h" />
     <ClInclude Include="Engine\Base\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\MyGame\MyGame.h" />
+    <ClInclude Include="Game\Scene\GameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

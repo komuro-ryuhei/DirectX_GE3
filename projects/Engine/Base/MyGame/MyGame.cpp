@@ -7,6 +7,8 @@ const char kWindowTitle[] = "LE2B_12_コムロ_リュウヘイ";
 void MyGame::Run() {
 
 	System::Initialize(kWindowTitle, 1280, 720);
+	scene_ = std::make_unique<GameScene>();
+	scene_->Init(System::GetDxCommon(), System::GetPipelineManager());
 
 	// ×が押されるまでループ
 	while (System::ProcessMessage() == 0) {
@@ -14,9 +16,9 @@ void MyGame::Run() {
 		// フレームの開始
 		System::BeginFrame();
 
-		System::Update();
+		scene_->Update();
 
-		System::Draw();
+		scene_->Draw();
 
 		// フレームの終了
 		System::EndFrame();
