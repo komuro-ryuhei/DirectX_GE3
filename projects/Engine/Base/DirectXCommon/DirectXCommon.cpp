@@ -83,15 +83,6 @@ void DirectXCommon::PreDraw() {
 
 	commandList_->RSSetViewports(1, &viewPort);       // Viewportを設定
 	commandList_->RSSetScissorRects(1, &scissorRect); // Scissorを設定
-
-	// ImGui_ImplDX12_NewFrame();
-	// ImGui_ImplWin32_NewFrame();
-	// ImGui::NewFrame();
-
-	// ShowImGui();
-
-	//// ImGuiの内部コマンドを生成する
-	// ImGui::Render();
 }
 
 void DirectXCommon::PostDraw() {

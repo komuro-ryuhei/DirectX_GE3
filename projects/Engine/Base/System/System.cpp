@@ -61,7 +61,6 @@ std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
 DirectXCommon* System::GetDXCommon() { return dxCommon_.get(); }
 PipelineManager* System::GetPipelineManager() { return pipelineManager_.get(); }
 WinApp* System::GetWinApp() { return winApp_.get(); }
-// std::vector<std::unique_ptr<Enemy>>& System::GetEnemies() { return enemies_; }
 
 void System::Initialize(const char* title, int width, int height) {
 
@@ -99,11 +98,6 @@ void System::BeginFrame() {
 	dxCommon_->PreDraw();
 
 	srvManager_->PreDraw();
-
-	// Sprite描画前処理
-	// sprite_->PreDraw();
-
-	// object3d_->PreDraw();
 }
 
 void System::Update() { imguiManager_->Begin(); }

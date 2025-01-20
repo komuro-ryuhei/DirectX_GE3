@@ -34,23 +34,18 @@ void Player::Init(DirectXCommon* dxCommon, Camera* camera, Sprite* sprite, Input
 	object3d_->SetScale({0.5f, 0.5f, 0.5f});
 
 	// 弾オブジェクトの生成
-    for (int i = 0; i < 999; ++i) { // 必要な弾数を定義
-        auto bulletObject = new Object3d();
-        bulletObject->Init(dxCommon_);
-        bulletObject->SetModel("playerBullet.obj");
-        bulletObject->SetDefaultCamera(camera_);
-        bulletObjects_.push_back(bulletObject);
-    }
+	for (int i = 0; i < 999; ++i) {
+		auto bulletObject = new Object3d();
+		bulletObject->Init(dxCommon_);
+		bulletObject->SetModel("playerBullet.obj");
+		bulletObject->SetDefaultCamera(camera_);
+		bulletObjects_.push_back(bulletObject);
+	}
 
 	transform_.translate = object3d_->GetTranslate();
 }
 
 void Player::Update() {
-
-	//if (input_->TriggerKey(DIK_L)) {
-	//	// Lキーでロックオン対象を更新
-	//	LockOnTarget(System::GetEnemies());
-	//}
 
 	if (lockedTarget_ && lockedTarget_->GetIsAlive()) {
 		// 必要な行列を取得
@@ -153,6 +148,7 @@ void Player::Move() {
 }
 
 void Player::LockOnTarget(std::vector<std::unique_ptr<Enemy>>& enemies) {
+
 	float closestDistance = (std::numeric_limits<float>::max)();
 	Enemy* closestEnemy = nullptr;
 
@@ -166,6 +162,6 @@ void Player::LockOnTarget(std::vector<std::unique_ptr<Enemy>>& enemies) {
 			closestEnemy = enemy.get();
 		}
 	}
-
-	lockedTarget_ = closestEnemy; // 最も近い敵をロックオン
+	// 最も近い敵をロックオン
+	lockedTarget_ = closestEnemy;
 }
