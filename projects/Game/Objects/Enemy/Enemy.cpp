@@ -7,6 +7,7 @@ Vector3 Enemy::GetTranslate() { return transform_.translate; }
 void Enemy::SetTranslate(Vector3 translate) { transform_.translate = translate; }
 
 void Enemy::Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d) {
+
 	dxCommon_ = dxCommon;
 	camera_ = camera;
 	object3d_ = object3d;
@@ -18,6 +19,7 @@ void Enemy::Init(DirectXCommon* dxCommon, Camera* camera, Object3d* object3d) {
 }
 
 void Enemy::Update() {
+
 	if (isBlinking_) {
 		blinkCounter_++;
 		if (blinkCounter_ >= blinkDuration_) {
@@ -33,6 +35,7 @@ void Enemy::Update() {
 }
 
 void Enemy::Draw() {
+
 	// 点滅中はフレーム数によって描画を制御
 	if (isBlinking_ && (blinkCounter_ / 5) % 2 == 0) {
 		return; // 点滅効果で描画をスキップ

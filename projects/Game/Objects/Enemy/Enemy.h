@@ -53,5 +53,5 @@ private:
 	// 点滅用の変数 
 	bool isBlinking_ = false;
 	int blinkCounter_ = 0;
-	const int blinkDuration_ = 60; // 点滅時間 (フレーム数)
+	const int blinkDuration_ = 60;
 };

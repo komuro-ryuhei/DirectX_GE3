@@ -31,12 +31,12 @@ void GameScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, 
 	input_->Initialize(winApp_);
 
 	// テクスチャの読み込み
-	const std::string& uvChecker = "./Resources/images/point.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, uvChecker);
+	const std::string& target = "./Resources/images/point.png";
+	TextureManager::GetInstance()->LoadTexture(dxCommon_, target);
 
 	// Sprite
 	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_, pipelineManager_, uvChecker);
+	sprite_->Init(dxCommon_, pipelineManager_, target);
 
 	// モデル読み込み
 	ModelManager::GetInstance()->Init(dxCommon_);
