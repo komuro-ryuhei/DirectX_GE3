@@ -51,6 +51,8 @@ std::unique_ptr<ImGuiManager> imguiManager_ = nullptr;
 DirectXCommon* System::GetDxCommon() { return dxCommon_.get(); }
 PipelineManager* System::GetPipelineManager() { return pipelineManager_.get(); }
 
+Input* System::GetInput() { return input_.get(); }
+
 void System::Initialize(const char* title, int width, int height) {
 
 	winApp_ = std::make_unique<WinApp>();
@@ -98,12 +100,10 @@ void System::BeginFrame() {
 
 	srvManager_->PreDraw();
 	imguiManager_->Begin();
+	input_->Update();
 }
 
-void System::Update() {
-
-	// input_->Update();
-}
+void System::Update() { input_->Update(); }
 
 void System::EndFrame() {
 

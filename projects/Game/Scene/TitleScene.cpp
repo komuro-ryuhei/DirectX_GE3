@@ -1,9 +1,12 @@
+#include "TitleScene.h"
+
 #include "GameScene.h"
 
-void GameScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input) {
+void TitleScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input) {
 
 	dxCommon_ = dxCommon;
 	pipelineManager_ = pipelineManager;
+	input_ = input;
 
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/images/uvChecker.png";
@@ -15,26 +18,12 @@ void GameScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, 
 	sprite_ = std::make_unique<Sprite>();
 	sprite_->Init(dxCommon_, pipelineManager_, uvTexture);
 
-	object3d_ = std::make_unique<Object3d>();
-	object3d_->Init(dxCommon_);
-
-	ModelManager::GetInstance()->LoadModel("plane.obj");
-	object3d_->SetModel("plane.obj");
-
 	camera_ = std::make_unique<Camera>();
 	camera_->SetRotate({0.0f, 0.0f, 0.0f});
 	camera_->SetTranslate({0.0f, 0.0f, -10.0f});
-	object3d_->SetDefaultCamera(camera_.get());
-
-	audio_ = std::make_unique<Audio>();
-	audio_->Init();
-
-	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
-	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
-
 }
 
-void GameScene::Update() {
+void TitleScene::Update() {
 
 	// Sprite描画前処理
 	sprite_->PreDraw();
@@ -43,16 +32,16 @@ void GameScene::Update() {
 
 	sprite_->Update();
 
-	object3d_->Update();
-
 	sprite_->ImGuiDebug();
 
+	if (input_->TriggerKey(DIK_SPACE)) {
+		// ゲームシーンを生成
+		IScene* scene = new GameScene();
+		// 
+		sceneManager_->SetNextScene(scene);
+	}
 }
 
-void GameScene::Draw() {
+void TitleScene::Draw() { sprite_->Draw(); }
 
-	sprite_->Draw();
-	object3d_->Draw();
-}
-
-void GameScene::Finalize() {}
+void TitleScene::Finalize() {}

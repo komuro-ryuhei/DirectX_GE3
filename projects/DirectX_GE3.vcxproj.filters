@@ -58,6 +58,9 @@
     <ClCompile Include="Engine\Base\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\MyGame\MyGame.cpp" />
     <ClCompile Include="Game\Scene\GameScene.cpp" />
+    <ClCompile Include="Game\Scene\TitleScene.cpp" />
+    <ClCompile Include="Game\Scene\IScene.cpp" />
+    <ClCompile Include="Game\Scene\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -98,6 +101,9 @@
     <ClInclude Include="Engine\Base\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\MyGame\MyGame.h" />
     <ClInclude Include="Game\Scene\GameScene.h" />
+    <ClInclude Include="Game\Scene\TitleScene.h" />
+    <ClInclude Include="Game\Scene\IScene.h" />
+    <ClInclude Include="Game\Scene\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

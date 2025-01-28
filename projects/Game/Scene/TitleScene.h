@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/Base/PSO/PipelineManager/PipelineManager.h"
 
@@ -9,10 +7,14 @@
 #include "Engine/Base/3d/Object3d/Object3d.h"
 #include "Engine/Base/Audio/Audio.h"
 #include "Engine/Base/Camera/Camera.h"
+#include "Engine/lib/Input/Input.h"
 
+#include "Game/Scene/GameScene.h"
 #include "Game/Scene/IScene.h"
+#include "Game/Scene/SceneManager.h"
 
-class GameScene : public IScene {
+class TitleScene : public IScene {
+
 public:
 	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input) override;
 
@@ -28,10 +30,8 @@ private:
 
 	// Camera
 	std::unique_ptr<Camera> camera_ = nullptr;
-	// Audio
-	std::unique_ptr<Audio> audio_ = nullptr;
 	// Sprite
 	std::unique_ptr<Sprite> sprite_ = nullptr;
-	// Model
-	std::unique_ptr<Object3d> object3d_ = nullptr;
+	// Input
+	Input* input_ = nullptr;
 };

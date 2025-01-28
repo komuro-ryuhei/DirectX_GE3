@@ -65,4 +65,5 @@ public:
 	/// </summary>
 	static DirectXCommon* GetDxCommon();
 	static PipelineManager* GetPipelineManager();
+	static Input* GetInput();
 };
