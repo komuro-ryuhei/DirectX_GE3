@@ -131,3 +131,7 @@ void System::Finalize() {
 
 	imguiManager_->Finalize();
 }
+
+bool System::PushKey(BYTE keyNumber) { return input_->PushKey(keyNumber); }
+
+bool System::TriggerKey(BYTE keyNumber) { return input_->TriggerKey(keyNumber); }

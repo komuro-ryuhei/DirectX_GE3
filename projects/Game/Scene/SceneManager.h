@@ -6,19 +6,19 @@
 
 #include "Game/Scene/AbstractSceneFactory.h"
 #include "Game/Scene/IScene.h"
-#include <memory>
+#include <memory> // std::unique_ptr
 
 class SceneManager {
 
 public:
-	~SceneManager();
+	~SceneManager() = default;
 
-	void Update(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input);
+	void Update(DirectXCommon* dxCommon, PipelineManager* pipelineManager);
 
 	void Draw();
 
 	// 次シーン予約
-	void SetNextScene(IScene* nextScene);
+	void SetNextScene(std::unique_ptr<IScene> nextScene);
 
 	void ChangeScene(const std::string& sceneName);
 
@@ -30,7 +30,7 @@ private:
 	AbstractSceneFactory* sceneFactory_ = nullptr;
 
 	// 今のシーン
-	IScene* currentScene_ = nullptr;
+	std::unique_ptr<IScene> currentScene_ = nullptr;
 	// 次のシーン
-	IScene* nextScene_ = nullptr;
+	std::unique_ptr<IScene> nextScene_ = nullptr;
 };

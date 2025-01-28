@@ -1,6 +1,6 @@
 #include "IScene.h"
 
-void IScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input) {}
+void IScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {}
 
 void IScene::Update() {}
 

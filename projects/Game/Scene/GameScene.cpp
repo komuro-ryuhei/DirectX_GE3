@@ -1,6 +1,8 @@
 #include "GameScene.h"
 
-void GameScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input) {
+#include "Engine/Base/System/System.h"
+
+void GameScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 
 	dxCommon_ = dxCommon;
 	pipelineManager_ = pipelineManager;

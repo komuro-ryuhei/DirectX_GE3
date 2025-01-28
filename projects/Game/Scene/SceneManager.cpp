@@ -1,38 +1,33 @@
 #include "SceneManager.h"
 
-SceneManager::~SceneManager() {
-
-	// シーンの終了
-	currentScene_->Finalize();
-	delete currentScene_;
-}
-
-void SceneManager::Update(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input) {
+void SceneManager::Update(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 
 	if (nextScene_) {
 		if (currentScene_) {
 			currentScene_->Finalize();
-			delete currentScene_;
+			currentScene_.reset(); // メモリ解放
 		}
 
 		// シーンの切り替え
-		currentScene_ = nextScene_;
-		nextScene_ = nullptr;
-
-		// シーンマネージャーのセット
+		currentScene_ = std::move(nextScene_);
 		currentScene_->SetSceneManager(this);
 
 		// 次のシーンの初期化
-		currentScene_->Init(dxCommon, pipelineManager, input);
+		currentScene_->Init(dxCommon, pipelineManager);
 	}
 
 	// 現在シーンの更新
 	currentScene_->Update();
 }
 
-void SceneManager::Draw() { currentScene_->Draw(); }
+void SceneManager::Draw() {
 
-void SceneManager::SetNextScene(IScene* nextScene) { nextScene_ = nextScene; }
+	if (currentScene_) {
+		currentScene_->Draw();
+	}
+}
+
+void SceneManager::SetNextScene(std::unique_ptr<IScene> nextScene) { nextScene_ = std::move(nextScene); }
 
 void SceneManager::ChangeScene(const std::string& sceneName) {
 

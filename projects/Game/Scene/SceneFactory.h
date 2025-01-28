@@ -12,5 +12,5 @@ public:
 	/// シーン生成
 	/// </summary>
 	/// <param name="sceneName">シーンの名前</param>
-	IScene* CreateScene(const std::string& sceneName) override;
+	std::unique_ptr<IScene> CreateScene(const std::string& sceneName) override;
 };

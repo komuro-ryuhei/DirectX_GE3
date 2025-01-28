@@ -60,6 +60,18 @@ public: // 静的メンバ関数
 	static void Finalize();
 
 public:
+
+	/// <summary>
+	/// 
+	/// </summary>
+	static bool PushKey(BYTE keyNumber);
+
+	/// <summary>
+	///
+	/// </summary>
+	static bool TriggerKey(BYTE keyNumber);
+
+public:
 	/// <summary>
 	/// getter・setter
 	/// </summary>

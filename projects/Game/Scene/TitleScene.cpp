@@ -1,12 +1,12 @@
 #include "TitleScene.h"
 
 #include "GameScene.h"
+#include "Engine/Base/System/System.h"
 
-void TitleScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, Input* input) {
+void TitleScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
 
 	dxCommon_ = dxCommon;
 	pipelineManager_ = pipelineManager;
-	input_ = input;
 
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/images/uvChecker.png";
@@ -34,7 +34,7 @@ void TitleScene::Update() {
 
 	sprite_->ImGuiDebug();
 
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (System::TriggerKey(DIK_SPACE)) {
 		// ゲームシーンを生成
 		sceneManager_->ChangeScene("GAME");
 	}

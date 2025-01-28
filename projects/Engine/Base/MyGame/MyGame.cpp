@@ -8,11 +8,14 @@ void MyGame::Run() {
 
 	System::Initialize(kWindowTitle, 1280, 720);
 
-	sceneFactory_ = new SceneFactory();
+	// シーンファクトリーを作成
+	sceneFactory_ = std::make_unique<SceneFactory>();
 
+	// シーンマネージャーを作成し、シーンファクトリーを設定
 	sceneManager_ = std::make_unique<SceneManager>();
-	sceneManager_->SetSceneFactory(sceneFactory_);
+	sceneManager_->SetSceneFactory(sceneFactory_.get());
 
+	// 初期シーンを設定
 	sceneManager_->ChangeScene("TITLE");
 
 	// ×が押されるまでループ
@@ -21,11 +24,7 @@ void MyGame::Run() {
 		// フレームの開始
 		System::BeginFrame();
 
-		/*scene_->Update();
-
-		scene_->Draw();*/
-
-		sceneManager_->Update(System::GetDxCommon(), System::GetPipelineManager(), System::GetInput());
+		sceneManager_->Update(System::GetDxCommon(), System::GetPipelineManager());
 		sceneManager_->Draw();
 
 		// フレームの終了
