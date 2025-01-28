@@ -61,6 +61,8 @@
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Game\Scene\IScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
+    <ClCompile Include="Game\Scene\AbstractSceneFactory.cpp" />
+    <ClCompile Include="Game\Scene\SceneFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -104,6 +106,8 @@
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Game\Scene\SceneManager.h" />
+    <ClInclude Include="Game\Scene\AbstractSceneFactory.h" />
+    <ClInclude Include="Game\Scene\SceneFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

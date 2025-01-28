@@ -7,13 +7,13 @@ const char kWindowTitle[] = "LE2B_12_コムロ_リュウヘイ";
 void MyGame::Run() {
 
 	System::Initialize(kWindowTitle, 1280, 720);
-	/*scene_ = std::make_unique<GameScene>();
-	scene_->Init(System::GetDxCommon(), System::GetPipelineManager());*/
 
-	IScene* scene = new TitleScene();
+	sceneFactory_ = new SceneFactory();
 
 	sceneManager_ = std::make_unique<SceneManager>();
-	sceneManager_->SetNextScene(scene);
+	sceneManager_->SetSceneFactory(sceneFactory_);
+
+	sceneManager_->ChangeScene("TITLE");
 
 	// ×が押されるまでループ
 	while (System::ProcessMessage() == 0) {

@@ -104,6 +104,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Scene\AbstractSceneFactory.cpp" />
     <ClCompile Include="Engine\Base\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Base\DirectXCommon\DirectXCommon.cpp" />
@@ -141,8 +142,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\MyGame\MyGame.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
+    <ClCompile Include="Game\Scene\SceneFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="Engine\Base\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\Camera\Camera.h" />
     <ClInclude Include="Engine\Base\PSO\Compiler\Compiler.h" />
@@ -182,6 +185,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Scene\GameScene.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Game\Scene\SceneManager.h" />
+    <ClInclude Include="Game\Scene\SceneFactory.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
   </ItemGroup>

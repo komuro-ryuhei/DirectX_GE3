@@ -33,3 +33,12 @@ void SceneManager::Update(DirectXCommon* dxCommon, PipelineManager* pipelineMana
 void SceneManager::Draw() { currentScene_->Draw(); }
 
 void SceneManager::SetNextScene(IScene* nextScene) { nextScene_ = nextScene; }
+
+void SceneManager::ChangeScene(const std::string& sceneName) {
+
+	assert(sceneFactory_);
+	assert(nextScene_ == nullptr);
+
+	// 次シーンを生成
+	nextScene_ = sceneFactory_->CreateScene(sceneName);
+}

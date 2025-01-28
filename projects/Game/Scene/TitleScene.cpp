@@ -36,9 +36,7 @@ void TitleScene::Update() {
 
 	if (input_->TriggerKey(DIK_SPACE)) {
 		// ゲームシーンを生成
-		IScene* scene = new GameScene();
-		// 
-		sceneManager_->SetNextScene(scene);
+		sceneManager_->ChangeScene("GAME");
 	}
 }
 
