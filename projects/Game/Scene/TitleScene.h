@@ -16,7 +16,7 @@
 class TitleScene : public IScene {
 
 public:
-	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) override;
+	void Init() override;
 
 	void Update() override;
 
@@ -25,9 +25,6 @@ public:
 	void Finalize() override;
 
 private:
-	DirectXCommon* dxCommon_ = nullptr;
-	PipelineManager* pipelineManager_ = nullptr;
-
 	// Camera
 	std::unique_ptr<Camera> camera_ = nullptr;
 	// Sprite

@@ -1,5 +1,6 @@
 #include "Sprite.h"
 
+#include "Engine/Base/System/System.h"
 #include "imgui/imgui.h"
 
 // getter
@@ -29,18 +30,15 @@ void Sprite::SetTextureLeftTop(const Vector2& textureLeftTop) { textureLeftTop_ 
 
 void Sprite::SetTextureSize(const Vector2& textureSize) { textureSize_ = textureSize; }
 
-void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, const std::string& textureFilePath) {
-
-	dxCommon_ = dxCommon;
-	pipelineManager_ = pipelineManager;
+void Sprite::Init(const std::string& textureFilePath) {
 
 	textureFilePath_ = textureFilePath;
 
-	pipelineManager_->CreatePSO(dxCommon_);
+	System::GetPipelineManager()->CreatePSO(System::GetDxCommon());
 
 	// リソース作成
-	vertexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(VertexData) * 4);
-	indexResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(uint32_t) * 6);
+	vertexResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(VertexData) * 4);
+	indexResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(uint32_t) * 6);
 
 	// VertexBufferViewを設定
 	vertexBufferView.BufferLocation = vertexResource->GetGPUVirtualAddress(); // 先頭のアドレスを使用
@@ -57,7 +55,7 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	indexResource->Map(0, nullptr, reinterpret_cast<void**>(&indexData));
 
 	// マテリアルリソース作成
-	materialResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(Material));
+	materialResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(Material));
 	// Resourceに書き込むためのアドレスをDataに割り当てる
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// マテリアルの初期値を書き込む
@@ -66,7 +64,7 @@ void Sprite::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, con
 	materialData->uvTransform = MyMath::MakeIdentity4x4();
 
 	// 座標変換用
-	transformationMatrixResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(TransformationMatrix));
+	transformationMatrixResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(TransformationMatrix));
 	transformationMatrixResource->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData));
 	// 単位行列を書き込む
 	transformationMatrixData->WVP = MyMath::MakeIdentity4x4();
@@ -169,7 +167,7 @@ void Sprite::Update() {
 
 void Sprite::Draw() {
 
-	ComPtr<ID3D12GraphicsCommandList> commandList = dxCommon_->GetCommandList();
+	ComPtr<ID3D12GraphicsCommandList> commandList = System::GetDxCommon()->GetCommandList();
 
 	// 描画用のDescriptorHeapの設定
 	/*ID3D12DescriptorHeap* descriptorHeaps[] = {srvDescriptorHeap.Get()};
@@ -192,12 +190,12 @@ void Sprite::Draw() {
 
 void Sprite::PreDraw() {
 
-	ComPtr<ID3D12GraphicsCommandList> commandList = dxCommon_->GetCommandList();
+	ComPtr<ID3D12GraphicsCommandList> commandList = System::GetDxCommon()->GetCommandList();
 
 	// ルートシグネチャをセット
-	commandList->SetGraphicsRootSignature(pipelineManager_->GetRootSignature());
+	commandList->SetGraphicsRootSignature(System::GetPipelineManager()->GetRootSignature());
 	// グラフィックスパイプラインステートをセット
-	commandList->SetPipelineState(pipelineManager_->GetGraphicsPipelineState());
+	commandList->SetPipelineState(System::GetPipelineManager()->GetGraphicsPipelineState());
 
 	// プリミティブトポロジーをセット
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

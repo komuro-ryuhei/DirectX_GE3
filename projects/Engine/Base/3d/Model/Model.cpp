@@ -31,7 +31,7 @@ void Model::Init(DirectXCommon* dxCommon, const std::string& directoryPath, cons
 	materialData->uvTransform = MyMath::MakeIdentity4x4();
 
 	// .objの参照しているテクスチャファイル読み込み
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, modelData.material.textureFilePath);
+	TextureManager::GetInstance()->LoadTexture(modelData.material.textureFilePath);
 	// 読み込んだテクスチャの番号を取得
 	modelData.material.textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(modelData.material.textureFilePath);
 }

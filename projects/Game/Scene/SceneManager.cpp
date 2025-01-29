@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 
-void SceneManager::Update(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
+void SceneManager::Update() {
 
 	if (nextScene_) {
 		if (currentScene_) {
@@ -13,7 +13,7 @@ void SceneManager::Update(DirectXCommon* dxCommon, PipelineManager* pipelineMana
 		currentScene_->SetSceneManager(this);
 
 		// 次のシーンの初期化
-		currentScene_->Init(dxCommon, pipelineManager);
+		currentScene_->Init();
 	}
 
 	// 現在シーンの更新

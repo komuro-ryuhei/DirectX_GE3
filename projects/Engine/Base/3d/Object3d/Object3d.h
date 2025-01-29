@@ -24,7 +24,7 @@ public: // メンバ関数
 	Object3d() = default;
 	~Object3d() = default;
 
-	void Init(DirectXCommon* dxCommon);
+	void Init();
 
 	void Update();
 
@@ -41,10 +41,6 @@ public: // メンバ関数
 	Camera* GetDefaultCamera() const;
 
 private:
-	// DxCommon
-	DirectXCommon* dxCommon_ = nullptr;
-	// パイプライン
-	PipelineManager* pipelineManager_ = nullptr;
 	// ウィンドウズアプリケーション
 	WinApp* winApp_ = nullptr;
 

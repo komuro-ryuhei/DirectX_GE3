@@ -1,5 +1,7 @@
 #include "TextureManager.h"
 
+#include "Engine/Base/System/System.h"
+
 TextureManager* TextureManager::instance = nullptr;
 uint32_t TextureManager::kSRVIndexTop_ = 1;
 
@@ -24,7 +26,7 @@ void TextureManager::Finalize() {
 	instance = nullptr;
 }
 
-void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& filePath) {
+void TextureManager::LoadTexture(const std::string& filePath) {
 
 	// 読み込み済みテクスチャを検索
 	// auto it = std::find_if(textureDatas.begin(), textureDatas.end(), [&](TextureData& textureData) { return textureData.filePath == filePath; });
@@ -61,7 +63,7 @@ void TextureManager::LoadTexture(DirectXCommon* dxCommon, const std::string& fil
 
 	textureData.filePath = filePath;
 	textureData.metaData = mipImage.GetMetadata();
-	textureData.resource = CreateTextureResource(dxCommon->GetDevice(), textureData.metaData);
+	textureData.resource = CreateTextureResource(System::GetDxCommon()->GetDevice(), textureData.metaData);
 
 	textureData.srvIndex = srvManager_->Allocate();
 	textureData.srvHandleCPU = srvManager_->GetCPUDescriptorHandle(textureData.srvIndex);
