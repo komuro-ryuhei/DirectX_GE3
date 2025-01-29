@@ -23,7 +23,7 @@ void TitleScene::Init() {
 void TitleScene::Update() {
 
 	// Sprite描画前処理
-	sprite_->PreDraw();
+	// sprite_->PreDraw();
 
 	camera_->Update();
 

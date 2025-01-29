@@ -36,7 +36,7 @@ void GameScene::Init() {
 void GameScene::Update() {
 
 	// Sprite描画前処理
-	sprite_->PreDraw();
+	// sprite_->PreDraw();
 
 	camera_->Update();
 
