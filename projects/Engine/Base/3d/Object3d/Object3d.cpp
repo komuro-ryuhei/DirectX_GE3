@@ -70,3 +70,9 @@ void Object3d::SetCamera(Camera* camera) { camera_ = camera; }
 void Object3d::SetDefaultCamera(Camera* camera) { defaultCamera_ = camera; }
 
 Camera* Object3d::GetDefaultCamera() const { return defaultCamera_; }
+
+void Object3d::SetScale(Vector3 scale) { transform.scale = scale; }
+
+void Object3d::SetTranslate(Vector3 translate) { transform.translate = translate; }
+
+Vector3 Object3d::GetTranslate() const { return transform.translate; }

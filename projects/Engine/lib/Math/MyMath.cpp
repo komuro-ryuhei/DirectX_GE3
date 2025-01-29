@@ -1,3 +1,4 @@
+
 #include "MyMath.h"
 
 // π
@@ -441,6 +442,27 @@ Matrix4x4 MyMath::MakeOrthographicMatrix(float left, float top, float right, flo
 	orthographicMatrix.m[3][3] = 1.0f;
 
 	return orthographicMatrix;
+}
+
+float MyMath::CalculateDistance(const Vector3& a, const Vector3& b) {
+	float dx = a.x - b.x;
+	float dy = a.y - b.y;
+	float dz = a.z - b.z;
+	return std::sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+Vector2 MyMath::WorldToScreen(const Vector3& worldPos, const Matrix4x4& viewMatrix, const Matrix4x4& projMatrix, const Matrix4x4& viewportMatrix) {
+	// ワールド座標をビュー座標に変換
+	Vector3 viewPos = MyMath::Transform(worldPos, viewMatrix);
+
+	// ビュー座標を射影座標に変換
+	Vector3 projPos = MyMath::Transform(viewPos, projMatrix);
+
+	// NDC座標からスクリーン座標に変換
+	Vector3 screenPos = MyMath::Transform(projPos, viewportMatrix);
+
+	// スクリーン座標は2Dで表現
+	return {screenPos.x, screenPos.y};
 }
 
 // 線形補間(float)

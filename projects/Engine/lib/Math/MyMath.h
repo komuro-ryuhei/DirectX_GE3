@@ -1,4 +1,5 @@
 
+
 #pragma once
 #include "Engine/lib/Matrix/Matrix.h"
 #include "Engine/lib/Vector/Vector.h"
@@ -88,4 +89,10 @@ public:
 
 	// 正射影行列
 	static Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
+
+	// 距離計算
+	static float CalculateDistance(const Vector3& a, const Vector3& b);
+
+	// ワールド座標をスクリーン座標に変換
+	static Vector2 WorldToScreen(const Vector3& worldPos, const Matrix4x4& viewMatrix, const Matrix4x4& projMatrix, const Matrix4x4& viewportMatrix);
 };

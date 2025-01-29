@@ -36,9 +36,12 @@ public: // メンバ関数
 	void SetModel(const std::string& filePath);
 	void SetCamera(Camera* camera);
 	void SetDefaultCamera(Camera* camera);
+	void SetScale(Vector3 scale);
+	void SetTranslate(Vector3 translate);
 
 	// getter
 	Camera* GetDefaultCamera() const;
+	Vector3 GetTranslate() const;
 
 private:
 	// ウィンドウズアプリケーション
