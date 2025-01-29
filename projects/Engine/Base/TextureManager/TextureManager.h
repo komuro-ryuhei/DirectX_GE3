@@ -1,9 +1,9 @@
 #pragma once
 // C++
 #include <d3d12.h>
-#include <unordered_map>
-#include <string>
 #include <externals/DirectXTex/DirectXTex.h>
+#include <string>
+#include <unordered_map>
 
 // MyClass
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
@@ -25,7 +25,7 @@ public:
 	/// <summary>
 	/// テクスチャファイルの読み込み
 	/// </summary>
-	void LoadTexture(DirectXCommon* dxCommon, const std::string& filePath);
+	void LoadTexture(const std::string& filePath);
 
 	/// <summary>
 	/// テクスチャ作成
@@ -61,7 +61,6 @@ public:
 	static uint32_t kSRVIndexTop_;
 
 private:
-
 	TextureManager() = default;
 	~TextureManager() = default;
 	TextureManager(TextureManager&) = delete;

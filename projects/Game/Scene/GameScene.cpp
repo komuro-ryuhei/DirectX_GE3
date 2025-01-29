@@ -2,23 +2,20 @@
 
 #include "Engine/Base/System/System.h"
 
-void GameScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
-
-	dxCommon_ = dxCommon;
-	pipelineManager_ = pipelineManager;
+void GameScene::Init() {
 
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/images/uvChecker.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, uvTexture);
+	TextureManager::GetInstance()->LoadTexture(uvTexture);
 	const std::string& monsterBallTexture = "./Resources/images/monsterBall.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, monsterBallTexture);
+	TextureManager::GetInstance()->LoadTexture(monsterBallTexture);
 
 	// Sprite
 	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_, pipelineManager_, uvTexture);
+	sprite_->Init(uvTexture);
 
 	object3d_ = std::make_unique<Object3d>();
-	object3d_->Init(dxCommon_);
+	object3d_->Init();
 
 	ModelManager::GetInstance()->LoadModel("plane.obj");
 	object3d_->SetModel("plane.obj");

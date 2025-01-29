@@ -24,7 +24,7 @@ void MyGame::Run() {
 		// フレームの開始
 		System::BeginFrame();
 
-		sceneManager_->Update(System::GetDxCommon(), System::GetPipelineManager());
+		sceneManager_->Update();
 		sceneManager_->Draw();
 
 		// フレームの終了

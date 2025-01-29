@@ -1,17 +1,16 @@
 #include "Object3d.h"
 #include "Engine/lib/Logger/Logger.h"
+#include "Engine/Base/System/System.h"
 
-void Object3d::Init(DirectXCommon* dxCommon) {
+void Object3d::Init() {
 
 	camera_ = defaultCamera_;
-
-	dxCommon_ = dxCommon;
 
 	/*model_ = std::make_unique<Model>();
 	model_->Init(dxCommon_);*/
 
 	// 座標変換用
-	transformationMatrixResource = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(TransformationMatrix));
+	transformationMatrixResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(TransformationMatrix));
 	transformationMatrixResource->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData));
 	// 単位行列を書き込む
 	transformationMatrixData->WVP = MyMath::MakeIdentity4x4();
@@ -49,7 +48,7 @@ void Object3d::Update() {
 
 void Object3d::Draw() {
 
-	ComPtr<ID3D12GraphicsCommandList> commandList = dxCommon_->GetCommandList();
+	ComPtr<ID3D12GraphicsCommandList> commandList = System::GetDxCommon()->GetCommandList();
 
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());

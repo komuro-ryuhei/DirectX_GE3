@@ -1,22 +1,19 @@
 #include "TitleScene.h"
 
-#include "GameScene.h"
 #include "Engine/Base/System/System.h"
+#include "GameScene.h"
 
-void TitleScene::Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) {
-
-	dxCommon_ = dxCommon;
-	pipelineManager_ = pipelineManager;
+void TitleScene::Init() {
 
 	// テクスチャの読み込み
 	const std::string& uvTexture = "./Resources/images/uvChecker.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, uvTexture);
+	TextureManager::GetInstance()->LoadTexture(uvTexture);
 	const std::string& monsterBallTexture = "./Resources/images/monsterBall.png";
-	TextureManager::GetInstance()->LoadTexture(dxCommon_, monsterBallTexture);
+	TextureManager::GetInstance()->LoadTexture(monsterBallTexture);
 
 	// Sprite
 	sprite_ = std::make_unique<Sprite>();
-	sprite_->Init(dxCommon_, pipelineManager_, uvTexture);
+	sprite_->Init(uvTexture);
 
 	camera_ = std::make_unique<Camera>();
 	camera_->SetRotate({0.0f, 0.0f, 0.0f});

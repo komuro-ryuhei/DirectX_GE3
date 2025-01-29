@@ -13,7 +13,7 @@ public:
 
 	virtual ~IScene() = default;
 
-	virtual void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager);
+	virtual void Init();
 
 	virtual void Update();
 

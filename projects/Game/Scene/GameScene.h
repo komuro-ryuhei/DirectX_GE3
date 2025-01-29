@@ -14,7 +14,7 @@
 
 class GameScene : public IScene {
 public:
-	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager) override;
+	void Init() override;
 
 	void Update() override;
 

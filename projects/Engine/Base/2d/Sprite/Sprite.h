@@ -17,7 +17,7 @@ public:
 	Sprite() = default;
 	~Sprite() = default;
 
-	void Init(DirectXCommon* dxCommon, PipelineManager* pipelineManager, const std::string& textureFilePath);
+	void Init(const std::string& textureFilePath);
 
 	void Update();
 
@@ -58,10 +58,6 @@ private:
 	void AdjustTextureSize();
 
 private:
-	// DxCommon
-	DirectXCommon* dxCommon_ = nullptr;
-	// パイプライン
-	PipelineManager* pipelineManager_ = nullptr;
 	// ウィンドウズアプリケーション
 	WinApp* winApp_ = nullptr;
 

@@ -13,7 +13,7 @@ class SceneManager {
 public:
 	~SceneManager() = default;
 
-	void Update(DirectXCommon* dxCommon, PipelineManager* pipelineManager);
+	void Update();
 
 	void Draw();
 
