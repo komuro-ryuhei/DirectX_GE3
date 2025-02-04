@@ -4,6 +4,8 @@
 
 #include "Game/Scene/GameScene.h"
 #include "Game/Scene/TitleScene.h"
+#include "Game/Scene/ClearScene.h"
+#include "Game/Scene/ExplanationScene.h"
 
 class SceneFactory : public AbstractSceneFactory {
 

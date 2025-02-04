@@ -67,6 +67,8 @@
     <ClCompile Include="Game\Objects\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Objects\PlayerBullet\PlayerBullet.cpp" />
     <ClCompile Include="Game\Objects\skydome\Skydome.cpp" />
+    <ClCompile Include="Game\Scene\ClearScene.cpp" />
+    <ClCompile Include="Game\Scene\ExplanationScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -116,6 +118,8 @@
     <ClInclude Include="Game\Objects\Enemy\Enemy.h" />
     <ClInclude Include="Game\Objects\PlayerBullet\PlayerBullet.h" />
     <ClInclude Include="Game\Objects\skydome\Skydome.h" />
+    <ClInclude Include="Game\Scene\ClearScene.h" />
+    <ClInclude Include="Game\Scene\ExplanationScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

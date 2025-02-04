@@ -37,5 +37,5 @@ private:
 	float speed_ = 0.1f;
 	Vector3 direction_;
 
-	float radius_ = 0.8f;
+	float radius_ = 0.2f;
 };

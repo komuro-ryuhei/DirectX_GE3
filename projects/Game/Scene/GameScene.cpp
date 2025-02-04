@@ -18,6 +18,7 @@ void GameScene::Init() {
 	// Sprite
 	sprite_ = std::make_unique<Sprite>();
 	sprite_->Init(target);
+	sprite_->SetPosition({-100.0f, -100.0f});
 
 	object3d_ = std::make_unique<Object3d>();
 	object3d_->Init();
@@ -115,7 +116,7 @@ void GameScene::Update() {
 	ImGui::Begin("camera");
 
 	ImGui::End();
-	
+
 	camera_->ImGuiDebug();
 	sprite_->ImGuiDebug();
 	player_->ImGuiDebug();
@@ -175,6 +176,6 @@ void GameScene::CheckCollisions() {
 
 	// 敵が全ていなくなった場合
 	if (enemies_.empty()) {
-		sceneManager_->ChangeScene("TITLE");
+		sceneManager_->ChangeScene("CLEAR");
 	}
 }
