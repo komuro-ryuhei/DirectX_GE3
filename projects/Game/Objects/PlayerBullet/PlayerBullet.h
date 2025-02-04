@@ -11,6 +11,9 @@
 class PlayerBullet {
 
 public:
+
+	~PlayerBullet();
+
 	void Init(Camera* camera, Object3d* object3d);
 
 	void Update();
@@ -26,7 +29,6 @@ public:
 
 private:
 	Camera* camera_ = nullptr;
-	DirectXCommon* dxCommon_ = nullptr;
 
 	Object3d* object3d_ = nullptr;
 

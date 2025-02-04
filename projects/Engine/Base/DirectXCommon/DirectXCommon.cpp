@@ -83,23 +83,11 @@ void DirectXCommon::PreDraw() {
 
 	commandList_->RSSetViewports(1, &viewPort);       // Viewportを設定
 	commandList_->RSSetScissorRects(1, &scissorRect); // Scissorを設定
-
-	// ImGui_ImplDX12_NewFrame();
-	// ImGui_ImplWin32_NewFrame();
-	// ImGui::NewFrame();
-
-	// ShowImGui();
-
-	//// ImGuiの内部コマンドを生成する
-	// ImGui::Render();
 }
 
 void DirectXCommon::PostDraw() {
 
 	HRESULT hr;
-
-	// 実際のCommandListのImGuiの描画コマンドを積む
-	// ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList_.Get());
 
 	// 画面に描く処理はすべて終わり、画面に移すので状態を遷移
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
@@ -139,20 +127,12 @@ void DirectXCommon::PostDraw() {
 	assert(SUCCEEDED(hr));
 	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(hr));
-
-	// ImGuiの終了処理。初期化と逆順
-	/*ImGui_ImplDX12_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();*/
 }
 
 void DirectXCommon::CrearRenderTargets() {
 
 	// 書き込むバックバッファのインデックスを取得
 	UINT bbIndex = swapChain_->GetCurrentBackBufferIndex();
-
-	// 描画先のRTVを設定する
-	// commandList_->OMSetRenderTargets(1, &rtvHandles[bbIndex], false, nullptr);
 
 	// 描画先のRTVとDSVを設定する
 	commandList_->OMSetRenderTargets(1, &rtvHandles[bbIndex], false, &dsvHandle);
@@ -192,7 +172,7 @@ void DirectXCommon::InitializeDXGIDevice() {
 			Logger::Log(StringUtility::ConvertString(std::format(L"Use Adapter:{}\n", adapterDesc.Description)));
 			break;
 		}
-		useAdapter_ = nullptr; // ソフトウェアアダプタの場合は見なかったことにする
+		useAdapter_ = nullptr;
 	}
 	// 適切なアダプタが見つからなかったので起動できない
 	assert(useAdapter_ != nullptr);

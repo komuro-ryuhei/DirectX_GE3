@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include "Engine/Base/WinApp/WinApp.h"
 
+#include "externals/imgui/imgui.h"
+
 Camera::Camera()
     : transform_({
           {1.0f, 1.0f, 1.0f},
@@ -21,4 +23,13 @@ void Camera::Update() {
 
 	projectionMatrix = MyMath::MakePerspectiveFovMatrix(fovY_, aspectRatio_, nearClip_, farClip_);
 	viewProjectionMatrix = MyMath::Multiply(viewMatrix, projectionMatrix);
+}
+
+void Camera::ImGuiDebug() {
+
+	ImGui::Begin("camera");
+
+	ImGui::DragFloat3("pos", &transform_.translate.x, 0.01f);
+
+	ImGui::End();
 }

@@ -5,6 +5,14 @@
 
 float PlayerBullet::GetRadius() const { return radius_; }
 
+PlayerBullet::~PlayerBullet() {
+
+	if (object3d_) {
+		delete object3d_;
+		object3d_ = nullptr;
+	}
+}
+
 void PlayerBullet::Init(Camera* camera, Object3d* object3d) {
 
 	camera_ = camera;
@@ -12,7 +20,7 @@ void PlayerBullet::Init(Camera* camera, Object3d* object3d) {
 
 	object3d_->Init();
 
-	object3d_->SetScale({0.5f, 0.5f, 0.5f});
+	object3d_->SetScale({0.1f, 0.1f, 0.1f});
 
 	transform_.translate = object3d_->GetTranslate();
 }

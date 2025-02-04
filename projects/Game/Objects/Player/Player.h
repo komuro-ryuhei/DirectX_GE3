@@ -22,7 +22,7 @@ class Player {
 public:
 	~Player();
 
-	void Init(Camera* camera, Sprite* sprite, Input* input);
+	void Init(Camera* camera, Sprite* sprite);
 
 	void Update();
 
@@ -48,7 +48,6 @@ private:
 	// 弾のリスト
 	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
 
-	Input* input_ = nullptr;
 	// SRT
 	Transform transform_;
 

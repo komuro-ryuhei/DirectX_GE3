@@ -66,7 +66,7 @@ void System::Initialize(const char* title, int width, int height) {
 	dxCommon_ = std::make_unique<DirectXCommon>();
 	dxCommon_->Initialize(winApp_.get());
 
-	// pipelineの初期化
+	// Pipelineの初期化
 	pipelineManager_ = std::make_unique<PipelineManager>();
 	pipelineManager_->PSOSetting(dxCommon_.get());
 

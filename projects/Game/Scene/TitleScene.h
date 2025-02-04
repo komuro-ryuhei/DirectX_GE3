@@ -9,7 +9,6 @@
 #include "Engine/Base/Camera/Camera.h"
 #include "Engine/lib/Input/Input.h"
 
-#include "Game/Scene/GameScene.h"
 #include "Game/Scene/IScene.h"
 #include "Game/Scene/SceneManager.h"
 

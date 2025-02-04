@@ -17,10 +17,9 @@ Player::~Player() {
 	bulletObjects_.clear();
 }
 
-void Player::Init(Camera* camera, Sprite* sprite, Input* input) {
+void Player::Init(Camera* camera, Sprite* sprite) {
 
 	camera_ = camera;
-	input_ = input;
 	lockOnSprite_ = sprite;
 
 	// 自機、弾の生成
@@ -30,7 +29,6 @@ void Player::Init(Camera* camera, Sprite* sprite, Input* input) {
 	object3d_->SetModel("player.obj");
 	object3d_->SetDefaultCamera(camera_);
 
-	object3d_->Init();
 	object3d_->SetScale({0.5f, 0.5f, 0.5f});
 
 	// 弾オブジェクトの生成
@@ -98,7 +96,7 @@ void Player::ImGuiDebug() {
 
 void Player::Attack() {
 
-	if (input_->TriggerKey(DIK_SPACE) && !bulletObjects_.empty()) {
+	if (System::TriggerKey(DIK_SPACE) && !bulletObjects_.empty()) {
 		Object3d* bulletObject = bulletObjects_.back();
 		bulletObjects_.pop_back();
 
@@ -126,22 +124,22 @@ void Player::Attack() {
 
 void Player::Move() {
 
-	if (input_->PushKey(DIK_A)) {
+	if (System::PushKey(DIK_A)) {
 		transform_.translate.x -= velocity_;
 		object3d_->SetTranslate(transform_.translate);
 	}
 
-	if (input_->PushKey(DIK_D)) {
+	if (System::PushKey(DIK_D)) {
 		transform_.translate.x += velocity_;
 		object3d_->SetTranslate(transform_.translate);
 	}
 
-	if (input_->PushKey(DIK_W)) {
+	if (System::PushKey(DIK_W)) {
 		transform_.translate.y += velocity_;
 		object3d_->SetTranslate(transform_.translate);
 	}
 
-	if (input_->PushKey(DIK_S)) {
+	if (System::PushKey(DIK_S)) {
 		transform_.translate.y -= velocity_;
 		object3d_->SetTranslate(transform_.translate);
 	}
