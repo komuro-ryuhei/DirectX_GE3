@@ -30,7 +30,6 @@ void GameScene::Init() {
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
-
 }
 
 void GameScene::Update() {
@@ -45,7 +44,6 @@ void GameScene::Update() {
 	object3d_->Update();
 
 	sprite_->ImGuiDebug();
-
 }
 
 void GameScene::Draw() {

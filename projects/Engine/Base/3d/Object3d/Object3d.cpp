@@ -1,6 +1,6 @@
 #include "Object3d.h"
-#include "Engine/lib/Logger/Logger.h"
 #include "Engine/Base/System/System.h"
+#include "Engine/lib/Logger/Logger.h"
 
 void Object3d::Init() {
 
@@ -35,7 +35,7 @@ void Object3d::Update() {
 
 	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 projectionMatrix = MyMath::MakePerspectiveFovMatrix(0.45f, float(winApp_->GetWindowWidth()) / float(winApp_->GetWindowHeight()), 0.1f, 100.0f);
-	Matrix4x4 worldViewProjectionMatrix/* = MyMath::Multiply(worldMatrix, MyMath::Multiply(viewMatrix, projectionMatrix))*/;
+	Matrix4x4 worldViewProjectionMatrix /* = MyMath::Multiply(worldMatrix, MyMath::Multiply(viewMatrix, projectionMatrix))*/;
 	if (defaultCamera_) {
 		const Matrix4x4& viewProjectionMatrix = defaultCamera_->GetViewProjectionMatrix();
 		worldViewProjectionMatrix = MyMath::Multiply(worldMatrix, viewProjectionMatrix);
@@ -54,16 +54,12 @@ void Object3d::Draw() {
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 
 	if (model_) {
-		// 
+		//
 		model_->Draw();
 	}
 }
 
-void Object3d::SetModel(const std::string& filePath) {
-
-	// モデルを検索してセットする
-	model_ = ModelManager::GetInstance()->FindModel(filePath);
-}
+void Object3d::SetModel(const std::string& filePath) { model_ = ModelManager::GetInstance()->FindModel(std::move(filePath)); }
 
 void Object3d::SetCamera(Camera* camera) { camera_ = camera; }
 

@@ -28,40 +28,24 @@ void TextureManager::Finalize() {
 
 void TextureManager::LoadTexture(const std::string& filePath) {
 
-	// 読み込み済みテクスチャを検索
-	// auto it = std::find_if(textureDatas.begin(), textureDatas.end(), [&](TextureData& textureData) { return textureData.filePath == filePath; });
-	// if (it != textureDatas.end()) {
-	//	// 読み込み済みなら早期リターン
-	//	return;
-	//}
-
 	if (textureDatas.contains(filePath)) {
 		return;
 	}
 
-	// テクスチャ枚数上限チェック
-	// assert(textureDatas.size() + kSRVIndexTop_ < DirectXCommon::kMaxSRVCount);
-
 	assert(srvManager_->CanAllocate());
 
-	// テクスチャデータ読み込み
-	// textureDatas.reserve(textureDatas.size() + 1);
-	// textureDatas.emplace_back();
-	// 追加したテクスチャデータの参照を取得する
-	TextureData& textureData = textureDatas[filePath];
+	TextureData textureData;
+	textureData.filePath = std::move(filePath); // ファイルパスをムーブ
+	std::wstring filePathW = StringUtility::ConvertString(textureData.filePath);
 
-	// テクスチャファイルを読んでプログラムで扱えるようにする
 	DirectX::ScratchImage image{};
-	std::wstring filePathW = StringUtility::ConvertString(filePath);
 	HRESULT hr = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
 	assert(SUCCEEDED(hr));
 
-	// ミニマップの作成
 	DirectX::ScratchImage mipImage{};
 	hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImage);
 	assert(SUCCEEDED(hr));
 
-	textureData.filePath = filePath;
 	textureData.metaData = mipImage.GetMetadata();
 	textureData.resource = CreateTextureResource(System::GetDxCommon()->GetDevice(), textureData.metaData);
 
@@ -72,6 +56,9 @@ void TextureManager::LoadTexture(const std::string& filePath) {
 	srvManager_->CreateSRVforTexture2D(textureData.srvIndex, textureData.resource.Get(), textureData.metaData.format, static_cast<UINT>(textureData.metaData.mipLevels));
 
 	UploadTextureData(textureData.resource.Get(), mipImage);
+
+	// ここでムーブ代入を使用
+	textureDatas[textureData.filePath] = std::move(textureData);
 }
 
 ComPtr<ID3D12Resource> TextureManager::CreateTextureResource(ID3D12Device* device, const DirectX::TexMetadata& metadata) {
