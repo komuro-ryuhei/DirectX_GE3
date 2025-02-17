@@ -1,3 +1,6 @@
+#define _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+#define _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
+
 #pragma once
 
 #include <memory>
@@ -12,8 +15,12 @@
 
 #include "Game/Scene/IScene.h"
 
+#include "RankingManager.h"
+
 class GameScene : public IScene {
 public:
+	GameScene();
+
 	void Init() override;
 
 	void Update() override;
@@ -34,4 +41,7 @@ private:
 	std::unique_ptr<Sprite> sprite_ = nullptr;
 	// Model
 	std::unique_ptr<Object3d> object3d_ = nullptr;
+
+	//
+	RankingManager rankingManager;
 };

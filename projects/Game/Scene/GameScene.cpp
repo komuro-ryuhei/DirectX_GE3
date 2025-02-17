@@ -2,6 +2,8 @@
 
 #include "Engine/Base/System/System.h"
 
+GameScene::GameScene() : rankingManager(L"http://localhost:3000") {}
+
 void GameScene::Init() {
 
 	// テクスチャの読み込み
@@ -30,6 +32,9 @@ void GameScene::Init() {
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
+
+	// **ユーザー認証**
+	rankingManager.Login(L"komuro", L"password");
 }
 
 void GameScene::Update() {
@@ -44,6 +49,9 @@ void GameScene::Update() {
 	object3d_->Update();
 
 	sprite_->ImGuiDebug();
+
+	 // **ランキングの描画**
+	rankingManager.Render();
 }
 
 void GameScene::Draw() {
