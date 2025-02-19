@@ -1,8 +1,9 @@
 #include "RootSignature.h"
+#include "Engine/Base/System/System.h"
 
 ID3D12RootSignature* RootSignature::GetRootSignature() const { return rootSignature_.Get(); }
 
-void RootSignature::Create(DirectXCommon* dxCommon) {
+void RootSignature::Create() {
 
 	HRESULT hr;
 
@@ -53,6 +54,6 @@ void RootSignature::Create(DirectXCommon* dxCommon) {
 		assert(false);
 	}
 	// バイナリを元に生成
-	hr = dxCommon->GetDevice()->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
+	hr = System::GetDxCommon()->GetDevice()->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
 	assert(SUCCEEDED(hr));
 }

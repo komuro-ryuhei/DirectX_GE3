@@ -22,6 +22,7 @@
 #include "Engine/lib/ComPtr/ComPtr.h"
 #include "Engine/lib/Input/Input.h"
 #include "Engine/lib/Logger/Logger.h"
+#include "Engine/Base/SrvManager/SrvManager.h"
 
 /// <summary>
 /// システム
@@ -78,4 +79,5 @@ public:
 	static DirectXCommon* GetDxCommon();
 	static PipelineManager* GetPipelineManager();
 	static Input* GetInput();
+	static SrvManager* GetSrvManager();
 };

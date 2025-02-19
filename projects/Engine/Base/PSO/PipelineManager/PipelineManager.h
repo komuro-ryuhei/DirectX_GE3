@@ -35,9 +35,9 @@ public:
 	/// <summary>
 	/// PSOを生成
 	/// </summary>
-	void CreatePSO(DirectXCommon* dXCommon);
+	void CreatePSO();
 
-	void PSOSetting(DirectXCommon* dXCommon);
+	void PSOSetting();
 
 	ID3D12RootSignature* GetRootSignature() const;
 	ID3D12PipelineState* GetGraphicsPipelineState() const;

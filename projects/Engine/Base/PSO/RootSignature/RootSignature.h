@@ -12,7 +12,7 @@ public:
 	/// <summary>
 	/// 生成
 	/// </summary>
-	void Create(DirectXCommon* dxCommon);
+	void Create();
 
 	// getter
 	ID3D12RootSignature* GetRootSignature() const;
