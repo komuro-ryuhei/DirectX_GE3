@@ -1,6 +1,7 @@
 #include "Object3d.h"
 #include "Engine/Base/System/System.h"
 #include "Engine/lib/Logger/Logger.h"
+#include "externals/imgui/imgui.h"
 
 void Object3d::Init() {
 
@@ -57,6 +58,15 @@ void Object3d::Draw() {
 		//
 		model_->Draw();
 	}
+}
+
+void Object3d::ImGuiDebug() {
+
+	ImGui::Begin("object3d");
+
+	ImGui::DragFloat3("translate", &transform.translate.x, 0.01f);
+
+	ImGui::End();
 }
 
 void Object3d::SetModel(const std::string& filePath) { model_ = ModelManager::GetInstance()->FindModel(std::move(filePath)); }

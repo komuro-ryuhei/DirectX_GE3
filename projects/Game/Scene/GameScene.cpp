@@ -44,6 +44,7 @@ void GameScene::Update() {
 	object3d_->Update();
 
 	sprite_->ImGuiDebug();
+	object3d_->ImGuiDebug();
 }
 
 void GameScene::Draw() {

@@ -1,8 +1,8 @@
 #include "ImGuiManager.h"
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_dx12.h>
-#include <imgui/imgui_impl_win32.h>
+#include <externals/imgui/imgui.h>
+#include <externals/imgui/imgui_impl_dx12.h>
+#include <externals/imgui/imgui_impl_win32.h>
 
 void ImGuiManager::Init(WinApp* winApp, DirectXCommon* dxCommon) {
 
@@ -32,6 +32,9 @@ void ImGuiManager::Init(WinApp* winApp, DirectXCommon* dxCommon) {
 	ImGui_ImplDX12_Init(
 	    dxCommon_->GetDevice(), static_cast<int>(dxCommon_->GetBackBufferCount()), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, srvHeap_.Get(), srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 	    srvHeap_->GetGPUDescriptorHandleForHeapStart());
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
 void ImGuiManager::Finalize() {
