@@ -20,6 +20,10 @@ void ParticleManager::Init(Camera* camera) {
 	//
 	camera_ = camera;
 
+	//
+	pipelineManager_ = std::make_unique<PipelineManager>();
+	pipelineManager_->PSOSetting("particle");
+
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine(seedGenerator());
 	std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
@@ -107,7 +111,7 @@ void ParticleManager::Update() {
 			particle.transform.translate.y += particle.velocity.y;
 			particle.transform.translate.z += particle.velocity.z;
 
-			// GPUバッファの最大数 (`kInstanceNum`) を超えないようにする
+			// GPUバッファの最大数 (kInstanceNum) を超えないようにする
 			if (numInstance < group.kInstanceNum) {
 
 				Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(particle.transform.scale, particle.transform.rotate, particle.transform.translate);
@@ -125,10 +129,10 @@ void ParticleManager::Update() {
 void ParticleManager::Draw() {
 
 	// コマンド: ルートシグネチャを設定
-	System::GetDxCommon()->GetCommandList()->SetGraphicsRootSignature(System::GetPipelineManager()->GetRootSignature());
+	System::GetDxCommon()->GetCommandList()->SetGraphicsRootSignature(pipelineManager_->GetRootSignature());
 
 	// コマンド: PSO(Pipeline State Object)を設定
-	System::GetDxCommon()->GetCommandList()->SetPipelineState(System::GetPipelineManager()->GetGraphicsPipelineState());
+	System::GetDxCommon()->GetCommandList()->SetPipelineState(pipelineManager_->GetGraphicsPipelineState());
 
 	// コマンド: プリミティブトポロジーを設定 (三角形リスト)
 	System::GetDxCommon()->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

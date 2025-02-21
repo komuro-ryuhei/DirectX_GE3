@@ -70,7 +70,7 @@ void System::Initialize(const char* title, int width, int height) {
 
 	// pipelineの初期化
 	pipelineManager_ = std::make_unique<PipelineManager>();
-	pipelineManager_->PSOSetting();
+	pipelineManager_->PSOSetting("object3d");
 
 	// SrvManager
 	srvManager_ = std::make_unique<SrvManager>();

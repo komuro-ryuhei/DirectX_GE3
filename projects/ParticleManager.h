@@ -41,7 +41,7 @@ class ParticleManager {
 public:
 	static ParticleManager* GetInstance();
 
-	void Init(Camera* camerar);
+	void Init(Camera* camera);
 
 	void Update();
 
@@ -75,4 +75,7 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
 
 	std::unordered_map<std::string, ParticleGroup> particleGroups;
+
+	// 
+	std::unique_ptr<PipelineManager> pipelineManager_ = nullptr;
 };

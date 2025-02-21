@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <d3d12.h>
@@ -6,6 +5,8 @@
 #include "Engine/lib/ComPtr/ComPtr.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/lib/Logger/Logger.h"
+
+#include <string>
 
 class RootSignature {
 public:

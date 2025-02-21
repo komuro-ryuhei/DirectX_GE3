@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Engine/Base/PSO/Compiler/Compiler.h"
@@ -8,10 +7,10 @@
 #include "Engine/Base/PSO/Inputlayout/InputLayout.h"
 #include "Engine/Base/PSO/RootSignature/RootSignature.h"
 #include "Engine/Base/PSO/RasterizerState/RasterizerState.h"
-#include "Engine/Base/PSO/BlendState/BlendState.h"
 
 #include "Engine/lib/ComPtr/ComPtr.h"
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
+#include <string>
 
 /// <summary>
 /// パイプライン管理
@@ -30,14 +29,14 @@ public:
 	/// <summary>
 	/// ShaderをCompile
 	/// </summary>
-	void ShaderCompile();
+	void ShaderCompile(const std::string& objectType);
 
 	/// <summary>
 	/// PSOを生成
 	/// </summary>
 	void CreatePSO();
 
-	void PSOSetting();
+	void PSOSetting(const std::string& objectType);
 
 	ID3D12RootSignature* GetRootSignature() const;
 	ID3D12PipelineState* GetGraphicsPipelineState() const;

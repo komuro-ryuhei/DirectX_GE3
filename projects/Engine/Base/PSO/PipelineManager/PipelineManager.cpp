@@ -10,14 +10,23 @@ PipelineManager* PipelineManager::GetInstance() {
 	return &instance;
 }
 
-void PipelineManager::ShaderCompile() {
+void PipelineManager::ShaderCompile(const std::string& objectType) {
 
-	// Shaderをコンパイルする
-	vsBlob = compiler_->CompileShader(L"Object3D.VS.hlsl", L"vs_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
-	assert(vsBlob != nullptr);
+	if (objectType == "object3d") {
+		// Shaderをコンパイルする
+		vsBlob = compiler_->CompileShader(L"Object3D.VS.hlsl", L"vs_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(vsBlob != nullptr);
 
-	psBlob = compiler_->CompileShader(L"Object3D.PS.hlsl", L"ps_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
-	assert(psBlob != nullptr);
+		psBlob = compiler_->CompileShader(L"Object3D.PS.hlsl", L"ps_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(psBlob != nullptr);
+	} else if (objectType == "particle") {
+		// Shaderをコンパイルする
+		vsBlob = compiler_->CompileShader(L"Particle.VS.hlsl", L"vs_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(vsBlob != nullptr);
+
+		psBlob = compiler_->CompileShader(L"Particle.PS.hlsl", L"ps_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(psBlob != nullptr);
+	}
 }
 
 void PipelineManager::CreatePSO() {
@@ -51,15 +60,15 @@ void PipelineManager::CreatePSO() {
 	assert(SUCCEEDED(hr));
 }
 
-void PipelineManager::PSOSetting() {
+void PipelineManager::PSOSetting(const std::string& objectType) {
 
 	compiler_->Initialize();
 
-	ShaderCompile();
+	ShaderCompile(objectType);
 
 	rootSignature_->Create();
 
-	inputLayout_->Setting();
+	inputLayout_->Setting(objectType);
 
 	rasterizer_->Setting();
 
