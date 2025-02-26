@@ -13,7 +13,7 @@ public:
 	/// <summary>
 	/// 生成
 	/// </summary>
-	void Create();
+	void Create(const std::string& objectName);
 
 	// getter
 	ID3D12RootSignature* GetRootSignature() const;

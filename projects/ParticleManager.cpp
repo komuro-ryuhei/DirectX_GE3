@@ -117,7 +117,7 @@ void ParticleManager::Update() {
 				Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(particle.transform.scale, particle.transform.rotate, particle.transform.translate);
 				group.instancingData[numInstance].World = worldMatrix;
 				group.instancingData[numInstance].WVP = MyMath::Multiply(MyMath::Multiply(worldMatrix, viewMatrix), projectionMatrix);
-				group.instancingData[numInstance].color = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+				group.instancingData[numInstance].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 				++numInstance;
 			}
 
@@ -142,11 +142,12 @@ void ParticleManager::Draw() {
 
 	// 全てのパーティクルグループについて処理する
 	for (auto& [name, group] : particleGroups) {
-		// コマンド: テクスチャのSRVをDescriptorTableに設定
-		System::GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, System::GetSrvManager()->GetGPUDescriptorHandle(group.srvIndex));
 
 		// コマンド: インスタンシングデータのSRVをDescriptorTableに設定
-		System::GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(2, System::GetSrvManager()->GetGPUDescriptorHandle(group.srvIndex + 1));
+		System::GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(0, System::GetSrvManager()->GetGPUDescriptorHandle(group.instancingSrvIndex));
+
+		// コマンド: テクスチャのSRVをDescriptorTableに設定
+		System::GetDxCommon()->GetCommandList()->SetGraphicsRootDescriptorTable(1, System::GetSrvManager()->GetGPUDescriptorHandle(group.srvIndex));
 
 		// コマンド: DrawCall (インスタンシング描画)
 		System::GetDxCommon()->GetCommandList()->DrawInstanced(6, static_cast<UINT>(group.particles.size()), 0, 0);
@@ -197,9 +198,9 @@ void ParticleManager::CreateParticleGeoup(const std::string name, const std::str
 	newParticle.instancingResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(ParticleForGPU) * newParticle.kInstanceNum);
 	newParticle.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&newParticle.instancingData));
 
-	uint32_t instancingSrvIndex = System::GetSrvManager()->Allocate();
+	newParticle.instancingSrvIndex = System::GetSrvManager()->Allocate();
 
-	System::GetSrvManager()->CreateSRVforStructuredBuffer(instancingSrvIndex, newParticle.instancingResource.Get(), newParticle.kInstanceNum, sizeof(ParticleForGPU));
+	System::GetSrvManager()->CreateSRVforStructuredBuffer(newParticle.instancingSrvIndex, newParticle.instancingResource.Get(), newParticle.kInstanceNum, sizeof(ParticleForGPU));
 
 	particleGroups[name] = newParticle;
 

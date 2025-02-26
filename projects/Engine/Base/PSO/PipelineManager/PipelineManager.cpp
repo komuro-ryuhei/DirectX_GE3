@@ -66,7 +66,7 @@ void PipelineManager::PSOSetting(const std::string& objectType) {
 
 	ShaderCompile(objectType);
 
-	rootSignature_->Create();
+	rootSignature_->Create(objectType);
 
 	inputLayout_->Setting(objectType);
 

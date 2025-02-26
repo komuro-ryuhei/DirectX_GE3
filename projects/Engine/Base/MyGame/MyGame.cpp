@@ -16,7 +16,7 @@ void MyGame::Run() {
 	sceneManager_->SetSceneFactory(sceneFactory_.get());
 
 	// 初期シーンを設定
-	sceneManager_->ChangeScene("TITLE");
+	sceneManager_->ChangeScene("GAME");
 
 	// ×が押されるまでループ
 	while (System::ProcessMessage() == 0) {

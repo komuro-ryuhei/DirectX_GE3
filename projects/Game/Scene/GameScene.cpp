@@ -35,8 +35,12 @@ void GameScene::Init() {
 	//
 	ParticleManager::GetInstance()->Init(camera_.get());
 	ParticleManager::GetInstance()->CreateParticleGeoup("normal", uvTexture);
+	ParticleManager::GetInstance()->CreateParticleGeoup("monsterBall", monsterBallTexture);
 	emitter_ = std::make_unique<ParticleEmitter>();
-	emitter_->Init("normal", {0.0f, 0.0f, 0.0f}, 50);
+	emitter_->Init("normal", {0.0f, 0.0f, 10.0f}, 50);
+
+	emitter2_ = std::make_unique<ParticleEmitter>();
+	emitter2_->Init("monsterBall", {0.0f, 0.0f, 10.0f}, 50);
 }
 
 void GameScene::Update() {
@@ -57,6 +61,9 @@ void GameScene::Update() {
 
 	if (ImGui::Button("Emit Particles")) {
 		emitter_->Update();
+	}
+	if (ImGui::Button("Emit2 Particles")) {
+		emitter2_->Update();
 	}
 }
 

@@ -31,6 +31,7 @@ struct ParticleGroup {
 	MaterialData materialData;
 	std::list<Particle> particles;
 	uint32_t srvIndex;
+	uint32_t instancingSrvIndex;
 	ComPtr<ID3D12Resource> instancingResource;
 	uint32_t kInstanceNum;
 	ParticleForGPU* instancingData;
