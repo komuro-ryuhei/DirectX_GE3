@@ -14,7 +14,7 @@
 #include "Engine/Base/SrvManager/SrvManager.h"
 #include "Engine/Base/TextureManager/TextureManager.h"
 
-#include "imgui/imgui.h"
+#include "externals/imgui/imgui.h"
 
 #include <cassert>
 #include <cstdint>

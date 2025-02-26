@@ -1,7 +1,7 @@
 #include "Sprite.h"
 
 #include "Engine/Base/System/System.h"
-#include "imgui/imgui.h"
+#include "externals/imgui/imgui.h"
 
 // getter
 const Vector2& Sprite::GetPosition() const { return position_; }
