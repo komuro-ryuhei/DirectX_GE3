@@ -1,6 +1,7 @@
 #include "GameScene.h"
 
 #include "Engine/Base/System/System.h"
+#include "externals/imgui/imgui.h"
 
 void GameScene::Init() {
 
@@ -30,6 +31,16 @@ void GameScene::Init() {
 
 	SoundData soundData = audio_->SoundLoadWave("Resources/fanfare.wav");
 	// audio_->SoundPlayWave(audio_->GetXAudio2(), soundData);
+
+	//
+	ParticleManager::GetInstance()->Init(camera_.get());
+	ParticleManager::GetInstance()->CreateParticleGeoup("normal", uvTexture);
+	ParticleManager::GetInstance()->CreateParticleGeoup("monsterBall", monsterBallTexture);
+	emitter_ = std::make_unique<ParticleEmitter>();
+	emitter_->Init("normal", {0.0f, 0.0f, 10.0f}, 50);
+
+	emitter2_ = std::make_unique<ParticleEmitter>();
+	emitter2_->Init("monsterBall", {0.0f, 0.0f, 10.0f}, 50);
 }
 
 void GameScene::Update() {
@@ -44,13 +55,24 @@ void GameScene::Update() {
 	object3d_->Update();
 
 	sprite_->ImGuiDebug();
-	object3d_->ImGuiDebug();
+
+	//
+	ParticleManager::GetInstance()->Update();
+
+	if (ImGui::Button("Emit Particles")) {
+		emitter_->Update();
+	}
+	if (ImGui::Button("Emit2 Particles")) {
+		emitter2_->Update();
+	}
 }
 
 void GameScene::Draw() {
 
 	sprite_->Draw();
-	object3d_->Draw();
+	// object3d_->Draw();
+
+	ParticleManager::GetInstance()->Draw();
 }
 
-void GameScene::Finalize() {}
+void GameScene::Finalize() { ParticleManager::GetInstance()->Finalize(); }

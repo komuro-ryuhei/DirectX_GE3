@@ -53,6 +53,8 @@ PipelineManager* System::GetPipelineManager() { return pipelineManager_.get(); }
 
 Input* System::GetInput() { return input_.get(); }
 
+SrvManager* System::GetSrvManager() { return srvManager_.get(); }
+
 void System::Initialize(const char* title, int width, int height) {
 
 	winApp_ = std::make_unique<WinApp>();
@@ -68,7 +70,7 @@ void System::Initialize(const char* title, int width, int height) {
 
 	// pipelineの初期化
 	pipelineManager_ = std::make_unique<PipelineManager>();
-	pipelineManager_->PSOSetting(dxCommon_.get());
+	pipelineManager_->PSOSetting("object3d");
 
 	// SrvManager
 	srvManager_ = std::make_unique<SrvManager>();

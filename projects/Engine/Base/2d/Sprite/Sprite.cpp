@@ -34,7 +34,7 @@ void Sprite::Init(const std::string& textureFilePath) {
 
 	textureFilePath_ = textureFilePath;
 
-	System::GetPipelineManager()->CreatePSO(System::GetDxCommon());
+	System::GetPipelineManager()->CreatePSO();
 
 	// リソース作成
 	vertexResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(VertexData) * 4);

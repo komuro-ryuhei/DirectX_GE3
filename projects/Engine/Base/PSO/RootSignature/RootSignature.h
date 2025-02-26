@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <d3d12.h>
@@ -7,12 +6,14 @@
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/lib/Logger/Logger.h"
 
+#include <string>
+
 class RootSignature {
 public:
 	/// <summary>
 	/// 生成
 	/// </summary>
-	void Create(DirectXCommon* dxCommon);
+	void Create(const std::string& objectName);
 
 	// getter
 	ID3D12RootSignature* GetRootSignature() const;

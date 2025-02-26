@@ -1,4 +1,5 @@
 #include "PipelineManager.h"
+#include "Engine/Base/System/System.h"
 
 ID3D12RootSignature* PipelineManager::GetRootSignature() const { return rootSignature_->GetRootSignature(); }
 
@@ -9,17 +10,27 @@ PipelineManager* PipelineManager::GetInstance() {
 	return &instance;
 }
 
-void PipelineManager::ShaderCompile() {
+void PipelineManager::ShaderCompile(const std::string& objectType) {
 
-	// Shaderをコンパイルする
-	vsBlob = compiler_->CompileShader(L"Object3D.VS.hlsl", L"vs_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
-	assert(vsBlob != nullptr);
+	if (objectType == "object3d") {
+		// Shaderをコンパイルする
+		vsBlob = compiler_->CompileShader(L"Object3D.VS.hlsl", L"vs_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(vsBlob != nullptr);
 
-	psBlob = compiler_->CompileShader(L"Object3D.PS.hlsl", L"ps_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
-	assert(psBlob != nullptr);
+		psBlob = compiler_->CompileShader(L"Object3D.PS.hlsl", L"ps_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(psBlob != nullptr);
+	} else if (objectType == "particle") {
+		// Shaderをコンパイルする
+		vsBlob = compiler_->CompileShader(L"Particle.VS.hlsl", L"vs_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(vsBlob != nullptr);
+
+		psBlob = compiler_->CompileShader(L"Particle.PS.hlsl", L"ps_6_0", compiler_->GetDxcUtils(), compiler_->GetCompiler(), compiler_->GetIncludeHandler());
+		assert(psBlob != nullptr);
+	}
 }
 
-void PipelineManager::CreatePSO(DirectXCommon* dXCommon) {
+void PipelineManager::CreatePSO() {
+
 	HRESULT hr;
 
 	graphicsPipelineStateDesc.pRootSignature = rootSignature_->GetRootSignature();        // RootSignature
@@ -41,27 +52,27 @@ void PipelineManager::CreatePSO(DirectXCommon* dXCommon) {
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
 	// DepthStencilの設定
-	graphicsPipelineStateDesc.DepthStencilState = dXCommon->GetDepthStencilDesc();
+	graphicsPipelineStateDesc.DepthStencilState = System::GetDxCommon()->GetDepthStencilDesc();
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	hr = dXCommon->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&graphicsPipelineState));
+	hr = System::GetDxCommon()->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&graphicsPipelineState));
 	assert(SUCCEEDED(hr));
 }
 
-void PipelineManager::PSOSetting(DirectXCommon* dXCommon) {
+void PipelineManager::PSOSetting(const std::string& objectType) {
 
 	compiler_->Initialize();
 
-	ShaderCompile();
+	ShaderCompile(objectType);
 
-	rootSignature_->Create(dXCommon);
+	rootSignature_->Create(objectType);
 
-	inputLayout_->Setting();
+	inputLayout_->Setting(objectType);
 
 	rasterizer_->Setting();
 
 	blendState_->Setting();
 
-	CreatePSO(dXCommon);
+	CreatePSO();
 }

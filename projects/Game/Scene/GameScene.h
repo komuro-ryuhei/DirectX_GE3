@@ -10,6 +10,9 @@
 #include "Engine/Base/Audio/Audio.h"
 #include "Engine/Base/Camera/Camera.h"
 
+#include "ParticleEmitter.h"
+#include "ParticleManager.h"
+
 #include "Game/Scene/IScene.h"
 
 class GameScene : public IScene {
@@ -34,4 +37,8 @@ private:
 	std::unique_ptr<Sprite> sprite_ = nullptr;
 	// Model
 	std::unique_ptr<Object3d> object3d_ = nullptr;
+
+	// 
+	std::unique_ptr<ParticleEmitter> emitter_ = nullptr;
+	std::unique_ptr<ParticleEmitter> emitter2_ = nullptr;
 };
