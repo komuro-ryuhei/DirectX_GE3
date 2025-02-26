@@ -63,8 +63,8 @@
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
     <ClCompile Include="Game\Scene\AbstractSceneFactory.cpp" />
     <ClCompile Include="Game\Scene\SceneFactory.cpp" />
-    <ClCompile Include="ParticleManager.cpp" />
-    <ClCompile Include="ParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Base\Particle\ParticleManager.cpp" />
+    <ClCompile Include="Engine\Base\Particle\ParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\lib\ComPtr\ComPtr.h" />
@@ -110,8 +110,8 @@
     <ClInclude Include="Game\Scene\SceneManager.h" />
     <ClInclude Include="Game\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="Game\Scene\SceneFactory.h" />
-    <ClInclude Include="ParticleManager.h" />
-    <ClInclude Include="ParticleEmitter.h" />
+    <ClInclude Include="Engine\Base\Particle\ParticleManager.h" />
+    <ClInclude Include="Engine\Base\Particle\ParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.VS.hlsl" />

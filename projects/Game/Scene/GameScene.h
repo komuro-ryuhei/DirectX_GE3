@@ -10,8 +10,8 @@
 #include "Engine/Base/Audio/Audio.h"
 #include "Engine/Base/Camera/Camera.h"
 
-#include "ParticleEmitter.h"
-#include "ParticleManager.h"
+#include "Engine/Base/Particle/ParticleEmitter.h"
+#include "Engine/Base/Particle/ParticleManager.h"
 
 #include "Game/Scene/IScene.h"
 
