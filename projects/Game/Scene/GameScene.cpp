@@ -19,6 +19,7 @@ void GameScene::Init() {
 	object3d_->Init();
 
 	ModelManager::GetInstance()->LoadModel("plane.obj");
+	ModelManager::GetInstance()->LoadModel("player.obj");
 	object3d_->SetModel("plane.obj");
 
 	camera_ = std::make_unique<Camera>();
@@ -41,6 +42,10 @@ void GameScene::Init() {
 
 	emitter2_ = std::make_unique<ParticleEmitter>();
 	emitter2_->Init("monsterBall", {0.0f, 0.0f, 10.0f}, 50);
+
+	// 
+	player_ = std::make_unique<Player>();
+	player_->Init(camera_.get());
 }
 
 void GameScene::Update() {
@@ -49,6 +54,7 @@ void GameScene::Update() {
 	// sprite_->PreDraw();
 
 	camera_->Update();
+	camera_->ImGuiDebug();
 
 	sprite_->Update();
 
@@ -65,12 +71,18 @@ void GameScene::Update() {
 	if (ImGui::Button("Emit2 Particles")) {
 		emitter2_->Update();
 	}
+
+	// 
+	player_->Update();
 }
 
 void GameScene::Draw() {
 
 	sprite_->Draw();
 	// object3d_->Draw();
+
+	//
+	player_->Draw();
 
 	ParticleManager::GetInstance()->Draw();
 }

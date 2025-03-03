@@ -9,6 +9,7 @@
 #include "Engine/Base/3d/Object3d/Object3d.h"
 #include "Engine/Base/Audio/Audio.h"
 #include "Engine/Base/Camera/Camera.h"
+#include "Game/Objects/Player.h"
 
 #include "Engine/Base/Particle/ParticleEmitter.h"
 #include "Engine/Base/Particle/ParticleManager.h"
@@ -37,6 +38,9 @@ private:
 	std::unique_ptr<Sprite> sprite_ = nullptr;
 	// Model
 	std::unique_ptr<Object3d> object3d_ = nullptr;
+
+	// Player
+	std::unique_ptr<Player> player_ = nullptr;
 
 	// 
 	std::unique_ptr<ParticleEmitter> emitter_ = nullptr;

@@ -39,6 +39,9 @@ public: // メンバ関数
 	void SetCamera(Camera* camera);
 	void SetDefaultCamera(Camera* camera);
 
+	void SetScale(Vector3 scale);
+	void SetTranslate(Vector3 translate);
+
 	// getter
 	Camera* GetDefaultCamera() const;
 
