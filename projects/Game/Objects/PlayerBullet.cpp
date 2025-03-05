@@ -1,6 +1,7 @@
 #include "PlayerBullet.h"
 
 #include "externals/imgui/imgui.h"
+#include <random>
 
 float PlayerBullet::GetRadius() const { return radius_; }
 
@@ -25,25 +26,16 @@ void PlayerBullet::Update() {
 	std::chrono::duration<float> deltaTime = now - prevTime_;
 	prevTime_ = now;
 
-	if (bulletMode_ == BulletMode::normal) {
-		speed_ = 0.1f;
-	} else if (bulletMode_ == BulletMode::machinegun) {
-		speed_ = 0.5f;
-	} else if (bulletMode_ == BulletMode::shotgun) {
-		speed_ = 0.2f;
-	}
-
 	transform_.translate += direction_ * speed_;
 	object3d_->SetTranslate(transform_.translate);
 	object3d_->Update();
 
-	 // 弾の寿命を減らす
+	// 弾の寿命時間を減らす
 	lifeTime_ -= deltaTime.count();
 	if (lifeTime_ <= 0.0f) {
 		isAlive_ = false; // 削除フラグを立てる
 	}
 }
-
 
 void PlayerBullet::Draw() { object3d_->Draw(); }
 
@@ -59,9 +51,56 @@ void PlayerBullet::ImGuiDebug() {
 		ImGui::Text("normal");
 	} else if (bulletMode_ == BulletMode::machinegun) {
 		ImGui::Text("machinegun");
+	} else if (bulletMode_ == BulletMode::machinegun) {
+		ImGui::Text("Shotgun");
 	}
 
 	ImGui::End();
+}
+
+void PlayerBullet::Fire() {
+
+	switch (bulletMode_) {
+	case BulletMode::normal:
+		FireNormal();
+		break;
+	case BulletMode::machinegun:
+		FireMachineGun();
+		break;
+	case BulletMode::shotgun:
+		FireShotgun();
+		break;
+	}
+}
+
+void PlayerBullet::FireNormal() {
+
+	direction_ = {0.0f, 0.0f, 1.0f}; // まっすぐ
+	MyMath::Normalize(direction_);
+}
+
+void PlayerBullet::FireMachineGun() {
+
+	direction_ = {0.0f, 0.0f, 1.0f}; // まっすぐ
+	MyMath::Normalize(direction_);
+	speed_ = 0.5f; // 少しスピード速い
+}
+
+void PlayerBullet::FireShotgun() {
+
+	const float spreadAngle = 30.0f;
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> angleDist(-spreadAngle / 2.0f, spreadAngle / 2.0f);
+
+	float angleX = angleDist(gen);
+	float angleY = angleDist(gen);
+
+	float radianX = angleX * (3.1415926535f / 180.0f);
+	float radianY = angleY * (3.1415926535f / 180.0f);
+
+	direction_ = {sin(radianX), sin(radianY), cos(radianX) * cos(radianY)};
+	MyMath::Normalize(direction_);
 }
 
 Vector3 PlayerBullet::GetTranslate() const { return transform_.translate; }

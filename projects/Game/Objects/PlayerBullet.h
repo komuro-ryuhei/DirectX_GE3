@@ -26,13 +26,21 @@ public:
 
 	void ImGuiDebug();
 
+public: // getter
 	float GetRadius() const;
 	Vector3 GetTranslate() const;
+	bool IsAlive() const;
+
+public: // setter
 	void SetTranlate(Vector3 translate);
 	void SetDirection(const Vector3& direction);
-
 	void SetBulletMode(BulletMode bulletMode);
-	bool IsAlive() const;
+	void Fire();
+
+private:
+	void FireNormal();
+	void FireMachineGun();
+	void FireShotgun();
 
 private:
 	Camera* camera_ = nullptr;

@@ -88,14 +88,7 @@ void Player::Attack() {
 
 	if (System::TriggerKey(DIK_SPACE) && !bulletObjects_.empty()) {
 		if (currentBulletMode_ == BulletMode::shotgun) {
-			// 8発のショットガン弾を生成
 			const int bulletCount = 12;
-			const float spreadAngle = 30.0f;
-
-			// ランダム生成の準備
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_real_distribution<float> angleDist(-spreadAngle / 2.0f, spreadAngle / 2.0f);
 
 			for (int i = 0; i < bulletCount; ++i) {
 				if (bulletObjects_.empty())
@@ -107,43 +100,20 @@ void Player::Attack() {
 				auto newBullet = std::make_unique<PlayerBullet>();
 				newBullet->Init(camera_, bulletObject);
 				newBullet->SetTranlate(transform_.translate);
-
-				// ランダムな角度を設定
-				float angleX = angleDist(gen); // 左右の拡散
-				float angleY = angleDist(gen); // 上下の拡散
-
-				float radianX = angleX * (3.1415926535f / 180.0f);
-				float radianY = angleY * (3.1415926535f / 180.0f);
-
-				// 前方向のベクトル
-				Vector3 spreadDirection = {
-				    sin(radianX),               // X方向
-				    sin(radianY),               // Y方向
-				    cos(radianX) * cos(radianY) // Z方向
-				};
-
-				MyMath::Normalize(spreadDirection);
-				newBullet->SetDirection(spreadDirection);
-
-				// ショットガンの弾のモードを設定
 				newBullet->SetBulletMode(BulletMode::shotgun);
+				newBullet->Fire();
 
 				bullets_.emplace_back(std::move(newBullet));
 			}
 		} else {
-			// 通常の弾・マシンガン
 			Object3d* bulletObject = bulletObjects_.back();
 			bulletObjects_.pop_back();
 
 			auto newBullet = std::make_unique<PlayerBullet>();
 			newBullet->Init(camera_, bulletObject);
 			newBullet->SetTranlate(transform_.translate);
-
-			Vector3 straightDirection = {0.0f, 0.0f, 1.0f};
-			MyMath::Normalize(straightDirection);
-			newBullet->SetDirection(straightDirection);
-
 			newBullet->SetBulletMode(currentBulletMode_);
+			newBullet->Fire();
 
 			bullets_.emplace_back(std::move(newBullet));
 		}
