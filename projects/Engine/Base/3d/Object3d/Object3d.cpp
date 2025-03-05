@@ -7,9 +7,6 @@ void Object3d::Init() {
 
 	camera_ = defaultCamera_;
 
-	/*model_ = std::make_unique<Model>();
-	model_->Init(dxCommon_);*/
-
 	// 座標変換用
 	transformationMatrixResource = System::GetDxCommon()->CreateBufferResource(System::GetDxCommon()->GetDevice(), sizeof(TransformationMatrix));
 	transformationMatrixResource->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData));

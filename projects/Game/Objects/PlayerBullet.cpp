@@ -20,7 +20,7 @@ void PlayerBullet::Init(Camera* camera, Object3d* object3d) {
 
 void PlayerBullet::Update() {
 
-	 // 現在の時間を取得し、差分（deltaTime）を計算
+	// 現在の時間を取得し、差分（deltaTime）を計算
 	auto now = std::chrono::steady_clock::now();
 	std::chrono::duration<float> deltaTime = now - prevTime_;
 	prevTime_ = now;
