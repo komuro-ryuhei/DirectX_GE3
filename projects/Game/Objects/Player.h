@@ -25,8 +25,8 @@ private:
 private:
 	// モデル
 	std::unique_ptr<Object3d> object3d_ = nullptr;
-	std::vector<Object3d*> bulletObjects_;
 	// 弾のリスト
+	std::vector<std::unique_ptr<Object3d>> bulletObjects_;
 	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
 
 	Camera* camera_ = nullptr;

@@ -13,15 +13,6 @@ void Player::Init(Camera* camera) {
 
 	object3d_->SetModel("player.obj");
 	object3d_->SetDefaultCamera(camera_);
-
-	// 弾オブジェクトの生成
-	for (int i = 0; i < 999; ++i) {
-		auto bulletObject = new Object3d();
-		bulletObject->Init();
-		bulletObject->SetModel("player.obj");
-		bulletObject->SetDefaultCamera(camera_);
-		bulletObjects_.push_back(bulletObject);
-	}
 }
 
 void Player::Update() {
@@ -86,36 +77,39 @@ void Player::ChangeBulletMode() {
 
 void Player::Attack() {
 
-	if (System::TriggerKey(DIK_SPACE) && !bulletObjects_.empty()) {
+	if (System::TriggerKey(DIK_SPACE)) {
 		if (currentBulletMode_ == BulletMode::shotgun) {
 			const int bulletCount = 12;
 
 			for (int i = 0; i < bulletCount; ++i) {
-				if (bulletObjects_.empty())
-					break;
-
-				Object3d* bulletObject = bulletObjects_.back();
-				bulletObjects_.pop_back();
+				auto bulletObject = std::make_unique<Object3d>();
+				bulletObject->Init();
+				bulletObject->SetModel("player.obj");
+				bulletObject->SetDefaultCamera(camera_);
 
 				auto newBullet = std::make_unique<PlayerBullet>();
-				newBullet->Init(camera_, bulletObject);
+				newBullet->Init(camera_, bulletObject.get());
 				newBullet->SetTranlate(transform_.translate);
 				newBullet->SetBulletMode(BulletMode::shotgun);
 				newBullet->Fire();
 
 				bullets_.emplace_back(std::move(newBullet));
+				bulletObjects_.emplace_back(std::move(bulletObject));
 			}
 		} else {
-			Object3d* bulletObject = bulletObjects_.back();
-			bulletObjects_.pop_back();
+			auto bulletObject = std::make_unique<Object3d>();
+			bulletObject->Init();
+			bulletObject->SetModel("player.obj");
+			bulletObject->SetDefaultCamera(camera_);
 
 			auto newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Init(camera_, bulletObject);
+			newBullet->Init(camera_, bulletObject.get());
 			newBullet->SetTranlate(transform_.translate);
 			newBullet->SetBulletMode(currentBulletMode_);
 			newBullet->Fire();
 
 			bullets_.emplace_back(std::move(newBullet));
+			bulletObjects_.emplace_back(std::move(bulletObject));
 		}
 	}
 }
