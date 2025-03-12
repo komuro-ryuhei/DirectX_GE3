@@ -58,7 +58,7 @@ void RootSignature::Create(const std::string& objectName) {
 		// バイナリを元に生成
 		hr = System::GetDxCommon()->GetDevice()->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
 		assert(SUCCEEDED(hr));
-	} else if ("particle") {
+	} else if (objectName == "particle") {
 
 		D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 		descriptorRange[0].BaseShaderRegister = 0;                                                   // 0から始まる

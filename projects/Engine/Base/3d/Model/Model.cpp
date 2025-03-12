@@ -2,7 +2,7 @@
 
 void Model::Init(DirectXCommon* dxCommon, const std::string& directoryPath, const std::string& filename) {
 
-	 dxCommon_ = dxCommon;
+	dxCommon_ = dxCommon;
 
 	modelData = LoadObjFile(std::move(directoryPath), std::move(filename));
 

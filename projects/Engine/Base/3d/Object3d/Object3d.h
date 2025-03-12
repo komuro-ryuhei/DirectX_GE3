@@ -47,10 +47,9 @@ private:
 	WinApp* winApp_ = nullptr;
 
 	// モデル
-	//Model* model_ = nullptr;
-
 	Model* model_ = nullptr;
 
+	// カメラ
 	Camera* camera_ = nullptr;
 	Camera* defaultCamera_ = nullptr;
 

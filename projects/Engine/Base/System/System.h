@@ -37,6 +37,9 @@ public: // 静的メンバ関数
 	/// <param name="height">ウィンドウの幅</param>
 	static void Initialize(const char* title, int width, int height);
 
+	/// <summary>
+	/// システム全体の更新
+	/// </summary>
 	static void Update();
 
 	/// <summary>
@@ -63,12 +66,12 @@ public: // 静的メンバ関数
 public:
 
 	/// <summary>
-	/// 
+	/// プッシュキー
 	/// </summary>
 	static bool PushKey(BYTE keyNumber);
 
 	/// <summary>
-	///
+	/// トリガーキー
 	/// </summary>
 	static bool TriggerKey(BYTE keyNumber);
 
