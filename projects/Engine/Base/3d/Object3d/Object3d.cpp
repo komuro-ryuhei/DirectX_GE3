@@ -53,6 +53,8 @@ void Object3d::Draw() {
 
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
+	// DirectionalLight の CBV を設定（RootParameter 3）
+	commandList->SetGraphicsRootConstantBufferView(3, System::GetMesh()->GetLightResource()->GetGPUVirtualAddress());
 
 	if (model_) {
 		//

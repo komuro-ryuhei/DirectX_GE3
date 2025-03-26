@@ -55,6 +55,8 @@ Input* System::GetInput() { return input_.get(); }
 
 SrvManager* System::GetSrvManager() { return srvManager_.get(); }
 
+Mesh* System::GetMesh() { return mesh_.get(); }
+
 void System::Initialize(const char* title, int width, int height) {
 
 	winApp_ = std::make_unique<WinApp>();
@@ -103,6 +105,8 @@ void System::BeginFrame() {
 	srvManager_->PreDraw();
 	imguiManager_->Begin();
 	input_->Update();
+
+	mesh_->ImGuiDebug();
 }
 
 void System::Update() { input_->Update(); }

@@ -1,8 +1,12 @@
 #include "Mesh.h"
 
+#include "externals/imgui/imgui.h"
+
 D3D12_VERTEX_BUFFER_VIEW Mesh::GetVBV() const { return vertexBufferView; }
 
 ID3D12Resource* Mesh::GetMateialResource() const { return materialResource_.Get(); }
+
+ID3D12Resource* Mesh::GetLightResource() const { return materialResourceLight.Get(); }
 
 ComPtr<ID3D12Resource> Mesh::CreateVertexResource(DirectXCommon* dxCommon, size_t sizeInBytes) {
 	HRESULT hr;
@@ -64,7 +68,7 @@ void Mesh::WriteDateForResource() {
 }
 
 void Mesh::LightSetting(DirectXCommon* dXCommon) {
-	
+
 	dxCommon_ = dXCommon;
 
 	// Light用のマテリアルリソースを作る
@@ -83,4 +87,15 @@ void Mesh::LightSetting(DirectXCommon* dXCommon) {
 	directionalLightData->color = {1.0f, 1.0f, 1.0f, 1.0f};
 	directionalLightData->direction = {0.0f, -1.0f, 0.0f};
 	directionalLightData->intensity = 1.0f;
+}
+
+void Mesh::ImGuiDebug() {
+
+	ImGui::Begin("Light");
+
+	ImGui::ColorEdit4("LightColor", &directionalLightData->color.x);
+	ImGui::DragFloat3("direction", &directionalLightData->direction.x, 0.01f);
+	ImGui::DragFloat("intencity", &directionalLightData->intensity, 0.01f);
+
+	ImGui::End();
 }

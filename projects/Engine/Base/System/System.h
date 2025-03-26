@@ -83,4 +83,5 @@ public:
 	static PipelineManager* GetPipelineManager();
 	static Input* GetInput();
 	static SrvManager* GetSrvManager();
+	static Mesh* GetMesh();
 };

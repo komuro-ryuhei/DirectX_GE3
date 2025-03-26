@@ -39,8 +39,11 @@ public:
 
 	void LightSetting(DirectXCommon* dXCommon);
 
+	void ImGuiDebug();
+
 	D3D12_VERTEX_BUFFER_VIEW GetVBV() const;
 	ID3D12Resource* GetMateialResource() const;
+	ID3D12Resource* GetLightResource()const;
 
 private:
 	DirectXCommon* dxCommon_;
