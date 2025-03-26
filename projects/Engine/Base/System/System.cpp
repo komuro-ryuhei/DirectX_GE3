@@ -109,7 +109,7 @@ void System::BeginFrame() {
 	mesh_->ImGuiDebug();
 }
 
-void System::Update() { input_->Update(); }
+void System::Update() {}
 
 void System::EndFrame() {
 
