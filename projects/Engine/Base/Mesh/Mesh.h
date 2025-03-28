@@ -29,6 +29,10 @@ public:
 		float intensity;
 	};
 
+	struct CameraForGPU {
+		Vector3 worldPosition;
+	};
+
 	ComPtr<ID3D12Resource> CreateVertexResource(DirectXCommon* dXCommon, size_t sizeInBytes);
 
 	void CreateVertexBufferView();
@@ -44,6 +48,7 @@ public:
 	D3D12_VERTEX_BUFFER_VIEW GetVBV() const;
 	ID3D12Resource* GetMateialResource() const;
 	ID3D12Resource* GetLightResource()const;
+	ID3D12Resource* GetPhongLightResource()const;
 
 private:
 	DirectXCommon* dxCommon_;
@@ -61,6 +66,10 @@ private:
 	// Light用のマテリアルリソースを作る
 	ComPtr<ID3D12Resource> materialResourceLight;
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewLight{};
-
 	DirectionalLight* directionalLightData = nullptr;
+
+	// Phong用のマテリアルリソースを作る
+	ComPtr<ID3D12Resource> materialResourcePhong;
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewPhong{};
+	CameraForGPU* phongLightData = nullptr;
 };

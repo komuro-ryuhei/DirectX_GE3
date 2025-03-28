@@ -71,6 +71,7 @@ void GameScene::Update() {
 void GameScene::Draw() {
 
 	sprite_->Draw();
+
 	object3d_->Draw();
 
 	ParticleManager::GetInstance()->Draw();

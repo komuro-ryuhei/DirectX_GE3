@@ -7,6 +7,10 @@ void Object3d::Init() {
 
 	camera_ = defaultCamera_;
 
+	//
+	pipelineManager_ = std::make_unique<PipelineManager>();
+	pipelineManager_->PSOSetting("object3d");
+
 	/*model_ = std::make_unique<Model>();
 	model_->Init(dxCommon_);*/
 
@@ -51,10 +55,18 @@ void Object3d::Draw() {
 
 	ComPtr<ID3D12GraphicsCommandList> commandList = System::GetDxCommon()->GetCommandList();
 
+	// コマンド: ルートシグネチャを設定
+	commandList->SetGraphicsRootSignature(pipelineManager_->GetRootSignature());
+
+	// コマンド: PSO(Pipeline State Object)を設定
+	commandList->SetPipelineState(pipelineManager_->GetGraphicsPipelineState());
+
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 	// DirectionalLight の CBV を設定（RootParameter 3）
 	commandList->SetGraphicsRootConstantBufferView(3, System::GetMesh()->GetLightResource()->GetGPUVirtualAddress());
+	// 
+	commandList->SetGraphicsRootConstantBufferView(4, System::GetMesh()->GetPhongLightResource()->GetGPUVirtualAddress());
 
 	if (model_) {
 		//

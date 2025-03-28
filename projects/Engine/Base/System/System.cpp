@@ -104,6 +104,7 @@ void System::BeginFrame() {
 
 	srvManager_->PreDraw();
 	imguiManager_->Begin();
+
 	input_->Update();
 
 	mesh_->ImGuiDebug();

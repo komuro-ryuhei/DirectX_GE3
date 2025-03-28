@@ -61,4 +61,7 @@ private:
 
 	Transform transform;
 	Transform cameraTransform;
+
+	//
+	std::unique_ptr<PipelineManager> pipelineManager_ = nullptr;
 };

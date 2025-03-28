@@ -8,6 +8,8 @@ ID3D12Resource* Mesh::GetMateialResource() const { return materialResource_.Get(
 
 ID3D12Resource* Mesh::GetLightResource() const { return materialResourceLight.Get(); }
 
+ID3D12Resource* Mesh::GetPhongLightResource() const { return materialResourcePhong.Get(); }
+
 ComPtr<ID3D12Resource> Mesh::CreateVertexResource(DirectXCommon* dxCommon, size_t sizeInBytes) {
 	HRESULT hr;
 
@@ -75,27 +77,34 @@ void Mesh::LightSetting(DirectXCommon* dXCommon) {
 	materialResourceLight = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(DirectionalLight));
 
 	// リソース用の先頭のアドレスから使う
-	vertexBufferViewLight.BufferLocation = materialResourceLight->GetGPUVirtualAddress();
+	// vertexBufferViewLight.BufferLocation = materialResourceLight->GetGPUVirtualAddress();
 
-	// 使用するリソースのサイズは頂点6つ分のサイズ
-	vertexBufferViewLight.SizeInBytes = sizeof(DirectionalLight);
-	// 1頂点当たりのサイズ
-	vertexBufferViewLight.StrideInBytes = sizeof(DirectionalLight);
+	//// 使用するリソースのサイズは頂点6つ分のサイズ
+	//vertexBufferViewLight.SizeInBytes = sizeof(DirectionalLight);
+	//// 1頂点当たりのサイズ
+	//vertexBufferViewLight.StrideInBytes = sizeof(DirectionalLight);
 
 	materialResourceLight->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
 
 	directionalLightData->color = {1.0f, 1.0f, 1.0f, 1.0f};
 	directionalLightData->direction = {0.0f, -1.0f, 0.0f};
 	directionalLightData->intensity = 1.0f;
+
+	// Phong用のマテリアルリソースを作る
+	materialResourcePhong = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(CameraForGPU));
+
+	materialResourcePhong->Map(0, nullptr, reinterpret_cast<void**>(&phongLightData));
+
+	phongLightData->worldPosition = {0.0f, 4.0f, -10.0f};
 }
 
 void Mesh::ImGuiDebug() {
 
-	ImGui::Begin("Light");
+	/*ImGui::Begin("Light");
 
 	ImGui::ColorEdit4("LightColor", &directionalLightData->color.x);
 	ImGui::DragFloat3("direction", &directionalLightData->direction.x, 0.01f);
 	ImGui::DragFloat("intencity", &directionalLightData->intensity, 0.01f);
 
-	ImGui::End();
+	ImGui::End();*/
 }
