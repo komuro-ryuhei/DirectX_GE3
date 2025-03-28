@@ -65,11 +65,9 @@ private:
 
 	// Light用のマテリアルリソースを作る
 	ComPtr<ID3D12Resource> materialResourceLight;
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewLight{};
 	DirectionalLight* directionalLightData = nullptr;
 
 	// Phong用のマテリアルリソースを作る
 	ComPtr<ID3D12Resource> materialResourcePhong;
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewPhong{};
 	CameraForGPU* phongLightData = nullptr;
 };
