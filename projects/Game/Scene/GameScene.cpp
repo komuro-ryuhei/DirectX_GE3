@@ -19,7 +19,8 @@ void GameScene::Init() {
 	object3d_->Init();
 
 	ModelManager::GetInstance()->LoadModel("plane.obj");
-	object3d_->SetModel("plane.obj");
+	ModelManager::GetInstance()->LoadModel("sphere.obj");
+	object3d_->SetModel("sphere.obj");
 
 	camera_ = std::make_unique<Camera>();
 	camera_->SetRotate({0.0f, 0.0f, 0.0f});
