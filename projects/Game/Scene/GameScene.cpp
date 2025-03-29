@@ -74,7 +74,7 @@ void GameScene::Draw() {
 
 	object3d_->Draw();
 
-	ParticleManager::GetInstance()->Draw();
+	// ParticleManager::GetInstance()->Draw();
 }
 
 void GameScene::Finalize() { ParticleManager::GetInstance()->Finalize(); }

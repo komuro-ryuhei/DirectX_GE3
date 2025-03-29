@@ -179,10 +179,6 @@ void Sprite::Draw() {
 
 	ComPtr<ID3D12GraphicsCommandList> commandList = System::GetDxCommon()->GetCommandList();
 
-	// 描画用のDescriptorHeapの設定
-	/*ID3D12DescriptorHeap* descriptorHeaps[] = {srvDescriptorHeap.Get()};
-	commandList->SetDescriptorHeaps(1, descriptorHeaps);*/
-
 	// マテリアルCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	// VBVを設定
