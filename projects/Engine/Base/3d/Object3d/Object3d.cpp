@@ -36,7 +36,7 @@ void Object3d::Init() {
 
 void Object3d::Update() {
 
-	transform.rotate.y += 0.01f;
+	// transform.rotate.y += 0.01f;
 
 	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 projectionMatrix = MyMath::MakePerspectiveFovMatrix(0.45f, float(winApp_->GetWindowWidth()) / float(winApp_->GetWindowHeight()), 0.1f, 100.0f);

@@ -37,6 +37,7 @@ private:
 	std::unique_ptr<Sprite> sprite_ = nullptr;
 	// Model
 	std::unique_ptr<Object3d> object3d_ = nullptr;
+	std::unique_ptr<Object3d> glassObject_ = nullptr;
 
 	// 
 	std::unique_ptr<ParticleEmitter> emitter_ = nullptr;
