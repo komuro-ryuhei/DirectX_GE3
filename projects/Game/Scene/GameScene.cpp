@@ -66,6 +66,9 @@ void GameScene::Update() {
 	if (ImGui::Button("Emit2 Particles")) {
 		emitter2_->Update();
 	}
+
+	// 
+	object3d_->ImGuiDebug();
 }
 
 void GameScene::Draw() {

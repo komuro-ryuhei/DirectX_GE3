@@ -443,6 +443,20 @@ Matrix4x4 MyMath::MakeOrthographicMatrix(float left, float top, float right, flo
 	return orthographicMatrix;
 }
 
+// 転置行列
+Matrix4x4 MyMath::Transpose4x4(const Matrix4x4& matrix) {
+
+	Matrix4x4 result;
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			result.m[i][j] = matrix.m[j][i];
+		}
+	}
+
+	return result;
+}
+
 // 線形補間(float)
 float MyMath::Lerp(float p1, float p2, float t) { return p1 + (p2 - p1) * t; }
 

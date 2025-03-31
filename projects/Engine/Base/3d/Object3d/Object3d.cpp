@@ -49,6 +49,8 @@ void Object3d::Update() {
 	}
 	transformationMatrixData->WVP = worldViewProjectionMatrix;
 	transformationMatrixData->World = worldMatrix;
+	transformationMatrixData->WorldInverseTranspose = MyMath::Inverse4x4(worldMatrix);
+	transformationMatrixData->WorldInverseTranspose = MyMath::Transpose4x4(transformationMatrixData->WorldInverseTranspose);
 }
 
 void Object3d::Draw() {
@@ -78,6 +80,8 @@ void Object3d::ImGuiDebug() {
 
 	ImGui::Begin("object3d");
 
+	ImGui::DragFloat3("scale", &transform.scale.x, 0.01f);
+	ImGui::DragFloat3("rotate", &transform.rotate.x, 0.01f);
 	ImGui::DragFloat3("translate", &transform.translate.x, 0.01f);
 
 	ImGui::End();
