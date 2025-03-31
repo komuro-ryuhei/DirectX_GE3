@@ -60,4 +60,6 @@ private: // メンバ変数
 	ComPtr<ID3D12Resource> materialResource;
 	// マテリアルリソース内のデータを指すポインタ
 	Material* materialData = nullptr;
+
+	float shininess;
 };

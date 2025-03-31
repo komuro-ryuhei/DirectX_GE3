@@ -9,19 +9,13 @@
 #include "Engine/Base/DirectXCommon/DirectXCommon.h"
 #include "Engine/lib/Math/MyMath.h"
 
+#include "struct.h"
+
 /// <summary>
 /// メッシュ
 /// </summary>
 class Mesh {
 public:
-
-	// 前方宣言
-	struct Material {
-		Vector4 color;
-		int32_t enableLighting;
-		float padding[3];
-		Matrix4x4 uvTransform;
-	};
 
 	struct DirectionalLight {
 		Vector4 color;

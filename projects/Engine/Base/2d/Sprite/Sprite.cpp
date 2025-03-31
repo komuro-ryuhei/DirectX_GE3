@@ -89,16 +89,6 @@ void Sprite::Init(const std::string& textureFilePath) {
 
 void Sprite::Update() {
 
-	ComPtr<ID3D12GraphicsCommandList> commandList = System::GetDxCommon()->GetCommandList();
-
-	// ルートシグネチャをセット
-	commandList->SetGraphicsRootSignature(System::GetPipelineManager()->GetRootSignature());
-	// グラフィックスパイプラインステートをセット
-	commandList->SetPipelineState(System::GetPipelineManager()->GetGraphicsPipelineState());
-
-	// プリミティブトポロジーをセット
-	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	// ヴァーテックスリソースにデータを書き込む
 	vertexData[0].position = {0.0f, 1.0f, 0.0f, 1.0f}; // 左下
 	vertexData[0].texcoord = {0.0f, 1.0f};
@@ -189,7 +179,6 @@ void Sprite::Draw() {
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 	//
 	commandList->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetSrvHandleGPU(textureFilePath_));
-	// commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
 	// Spriteの描画
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
