@@ -7,6 +7,10 @@ void Object3d::Init() {
 
 	camera_ = defaultCamera_;
 
+	//
+	pipelineManager_ = std::make_unique<PipelineManager>();
+	pipelineManager_->PSOSetting("object3d");
+
 	/*model_ = std::make_unique<Model>();
 	model_->Init(dxCommon_);*/
 
@@ -32,7 +36,7 @@ void Object3d::Init() {
 
 void Object3d::Update() {
 
-	transform.rotate.y += 0.01f;
+	// transform.rotate.y += 0.01f;
 
 	Matrix4x4 worldMatrix = MyMath::MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 projectionMatrix = MyMath::MakePerspectiveFovMatrix(0.45f, float(winApp_->GetWindowWidth()) / float(winApp_->GetWindowHeight()), 0.1f, 100.0f);
@@ -45,16 +49,30 @@ void Object3d::Update() {
 	}
 	transformationMatrixData->WVP = worldViewProjectionMatrix;
 	transformationMatrixData->World = worldMatrix;
+	transformationMatrixData->WorldInverseTranspose = MyMath::Inverse4x4(worldMatrix);
+	transformationMatrixData->WorldInverseTranspose = MyMath::Transpose4x4(transformationMatrixData->WorldInverseTranspose);
 }
 
 void Object3d::Draw() {
 
 	ComPtr<ID3D12GraphicsCommandList> commandList = System::GetDxCommon()->GetCommandList();
 
+	// コマンド: ルートシグネチャを設定
+	commandList->SetGraphicsRootSignature(pipelineManager_->GetRootSignature());
+
+	// コマンド: PSO(Pipeline State Object)を設定
+	commandList->SetPipelineState(pipelineManager_->GetGraphicsPipelineState());
+
 	// TransformationMatrixCBufferの場所を設定
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource->GetGPUVirtualAddress());
 	// DirectionalLight の CBV を設定（RootParameter 3）
 	commandList->SetGraphicsRootConstantBufferView(3, System::GetMesh()->GetLightResource()->GetGPUVirtualAddress());
+	// 
+	commandList->SetGraphicsRootConstantBufferView(4, System::GetMesh()->GetPhongLightResource()->GetGPUVirtualAddress());
+	// 
+	commandList->SetGraphicsRootConstantBufferView(5, System::GetMesh()->GetPointLightResource()->GetGPUVirtualAddress());
+
+	commandList->SetGraphicsRootConstantBufferView(6, System::GetMesh()->GetSpotLightResource()->GetGPUVirtualAddress());
 
 	if (model_) {
 		//
@@ -66,6 +84,8 @@ void Object3d::ImGuiDebug() {
 
 	ImGui::Begin("object3d");
 
+	ImGui::DragFloat3("scale", &transform.scale.x, 0.01f);
+	ImGui::DragFloat3("rotate", &transform.rotate.x, 0.01f);
 	ImGui::DragFloat3("translate", &transform.translate.x, 0.01f);
 
 	ImGui::End();

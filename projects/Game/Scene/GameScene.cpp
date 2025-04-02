@@ -18,14 +18,22 @@ void GameScene::Init() {
 	object3d_ = std::make_unique<Object3d>();
 	object3d_->Init();
 
+	glassObject_ = std::make_unique<Object3d>();
+	glassObject_->Init();
+
 	ModelManager::GetInstance()->LoadModel("plane.obj");
 	ModelManager::GetInstance()->LoadModel("sphere.obj");
+	ModelManager::GetInstance()->LoadModel("terrain.obj");
+
 	object3d_->SetModel("sphere.obj");
+	glassObject_->SetModel("terrain.obj");
 
 	camera_ = std::make_unique<Camera>();
-	camera_->SetRotate({0.0f, 0.0f, 0.0f});
-	camera_->SetTranslate({0.0f, 0.0f, -10.0f});
+	camera_->SetRotate({0.5f, 0.0f, 0.0f});
+	camera_->SetTranslate({0.0f, 7.0f, -12.0f});
+
 	object3d_->SetDefaultCamera(camera_.get());
+	glassObject_->SetDefaultCamera(camera_.get());
 
 	audio_ = std::make_unique<Audio>();
 	audio_->Init();
@@ -54,6 +62,7 @@ void GameScene::Update() {
 	sprite_->Update();
 
 	object3d_->Update();
+	glassObject_->Update();
 
 	sprite_->ImGuiDebug();
 
@@ -66,12 +75,19 @@ void GameScene::Update() {
 	if (ImGui::Button("Emit2 Particles")) {
 		emitter2_->Update();
 	}
+
+	// 
+	camera_->ImGuiDebug();
+	// object3d_->ImGuiDebug();
+	glassObject_->ImGuiDebug();
 }
 
 void GameScene::Draw() {
 
-	sprite_->Draw();
+	// sprite_->Draw();
+
 	object3d_->Draw();
+	glassObject_->Draw();
 
 	ParticleManager::GetInstance()->Draw();
 }

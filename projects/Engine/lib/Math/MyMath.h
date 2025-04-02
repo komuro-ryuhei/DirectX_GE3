@@ -88,4 +88,7 @@ public:
 
 	// 正射影行列
 	static Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
+
+	// 転置行列
+	static Matrix4x4 Transpose4x4(const Matrix4x4& matrix);
 };

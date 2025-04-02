@@ -19,6 +19,7 @@ void Model::Init(DirectXCommon* dxCommon, const std::string& directoryPath, cons
 	materialData->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData->enableLighting = true;
 	materialData->uvTransform = MyMath::MakeIdentity4x4();
+	materialData->shininess = 48.3f;
 
 	TextureManager::GetInstance()->LoadTexture(std::move(modelData.material.textureFilePath));
 	modelData.material.textureIndex = TextureManager::GetInstance()->GetTextureIndexByFilePath(modelData.material.textureFilePath);
@@ -29,6 +30,8 @@ void Model::Draw() {
 	ComPtr<ID3D12GraphicsCommandList> commandList = dxCommon_->GetCommandList();
 
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView); // VBVを設定
+
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 
