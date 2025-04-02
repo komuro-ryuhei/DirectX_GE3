@@ -10,6 +10,8 @@ ID3D12Resource* Mesh::GetLightResource() const { return materialResourceLight.Ge
 
 ID3D12Resource* Mesh::GetPhongLightResource() const { return materialResourcePhong.Get(); }
 
+ID3D12Resource* Mesh::GetPointLightResource() const { return materialResourcePoint.Get(); }
+
 ComPtr<ID3D12Resource> Mesh::CreateVertexResource(DirectXCommon* dxCommon, size_t sizeInBytes) {
 	HRESULT hr;
 
@@ -75,28 +77,38 @@ void Mesh::LightSetting(DirectXCommon* dXCommon) {
 
 	// Light用のマテリアルリソースを作る
 	materialResourceLight = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(DirectionalLight));
-
 	materialResourceLight->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
 
 	directionalLightData->color = {1.0f, 1.0f, 1.0f, 1.0f};
 	directionalLightData->direction = {0.0f, -1.0f, 0.0f};
-	directionalLightData->intensity = 1.0f;
+	directionalLightData->intensity = 0.0f;
 
 	// Phong用のマテリアルリソースを作る
 	materialResourcePhong = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(CameraForGPU));
-
 	materialResourcePhong->Map(0, nullptr, reinterpret_cast<void**>(&phongLightData));
 
 	phongLightData->worldPosition = {0.0f, 4.0f, -10.0f};
+
+	// PointLight用のマテリアルリソースを作る
+	materialResourcePoint = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(PointLight));
+	materialResourcePoint->Map(0, nullptr, reinterpret_cast<void**>(&pointLightData));
+
+	pointLightData->color = {1.0f, 1.0f, 1.0f, 1.0f};
+	pointLightData->position = {0.0f, 2.0f, 0.0f};
+	pointLightData->intensity = 1.0f;
+	pointLightData->radius = 3.0f;
+	pointLightData->decay = 2.0f;
 }
 
 void Mesh::ImGuiDebug() {
 
-	/*ImGui::Begin("Light");
+	ImGui::Begin("Light");
 
-	ImGui::ColorEdit4("LightColor", &directionalLightData->color.x);
-	ImGui::DragFloat3("direction", &directionalLightData->direction.x, 0.01f);
-	ImGui::DragFloat("intencity", &directionalLightData->intensity, 0.01f);
+	ImGui::ColorEdit4("LightColor", &pointLightData->color.x);
+	ImGui::DragFloat3("position", &pointLightData->position.x, 0.01f);
+	ImGui::SliderFloat("intencity", &pointLightData->intensity, 0.0f, 10.0f);
+	ImGui::SliderFloat("radius", &pointLightData->radius, 0.0f, 10.0f);
+	ImGui::SliderFloat("decay", &pointLightData->decay, 0.0f, 10.0f);
 
-	ImGui::End();*/
+	ImGui::End();
 }

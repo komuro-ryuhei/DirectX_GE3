@@ -23,6 +23,15 @@ public:
 		float intensity;
 	};
 
+	struct PointLight {
+		Vector4 color;    // ライトの色
+		Vector3 position; // ライトの位置
+		float intensity;  // 輝度
+		float radius;     // 半径
+		float decay;      // 減衰率
+		float padding[2]; // パディング
+	};
+
 	struct CameraForGPU {
 		Vector3 worldPosition;
 	};
@@ -43,6 +52,7 @@ public:
 	ID3D12Resource* GetMateialResource() const;
 	ID3D12Resource* GetLightResource()const;
 	ID3D12Resource* GetPhongLightResource()const;
+	ID3D12Resource* GetPointLightResource()const;
 
 private:
 	DirectXCommon* dxCommon_;
@@ -64,4 +74,8 @@ private:
 	// Phong用のマテリアルリソースを作る
 	ComPtr<ID3D12Resource> materialResourcePhong;
 	CameraForGPU* phongLightData = nullptr;
+
+	// PointLight用のマテリアルリソースを作る
+	ComPtr<ID3D12Resource> materialResourcePoint;
+	PointLight* pointLightData = nullptr;
 };
