@@ -32,6 +32,18 @@ public:
 		float padding[2]; // パディング
 	};
 
+	struct SpotLight {
+		Vector4 color;     // ライトの色
+		Vector3 position;  // ライトの位置
+		float intensity;   // 輝度
+		Vector3 direction; // ライトの方向
+		float distance;    // 距離
+		float decay;       // 減衰率
+		float casAngle;    // 余弦
+		float cosFalloffStart; // 開始の角度
+		float padding[2];  // パディング
+	};
+
 	struct CameraForGPU {
 		Vector3 worldPosition;
 	};
@@ -53,6 +65,7 @@ public:
 	ID3D12Resource* GetLightResource()const;
 	ID3D12Resource* GetPhongLightResource()const;
 	ID3D12Resource* GetPointLightResource()const;
+	ID3D12Resource* GetSpotLightResource()const;
 
 private:
 	DirectXCommon* dxCommon_;
@@ -78,4 +91,8 @@ private:
 	// PointLight用のマテリアルリソースを作る
 	ComPtr<ID3D12Resource> materialResourcePoint;
 	PointLight* pointLightData = nullptr;
+
+	// SpotLight用のマテリアルリソースを作る
+	ComPtr<ID3D12Resource> materialResourceSpot;
+	SpotLight* spotLightData = nullptr;
 };

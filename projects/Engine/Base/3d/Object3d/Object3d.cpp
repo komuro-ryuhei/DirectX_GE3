@@ -72,6 +72,8 @@ void Object3d::Draw() {
 	// 
 	commandList->SetGraphicsRootConstantBufferView(5, System::GetMesh()->GetPointLightResource()->GetGPUVirtualAddress());
 
+	commandList->SetGraphicsRootConstantBufferView(6, System::GetMesh()->GetSpotLightResource()->GetGPUVirtualAddress());
+
 	if (model_) {
 		//
 		model_->Draw();

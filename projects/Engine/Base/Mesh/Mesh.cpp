@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
 #include "externals/imgui/imgui.h"
+#include <numbers>
 
 D3D12_VERTEX_BUFFER_VIEW Mesh::GetVBV() const { return vertexBufferView; }
 
@@ -11,6 +12,8 @@ ID3D12Resource* Mesh::GetLightResource() const { return materialResourceLight.Ge
 ID3D12Resource* Mesh::GetPhongLightResource() const { return materialResourcePhong.Get(); }
 
 ID3D12Resource* Mesh::GetPointLightResource() const { return materialResourcePoint.Get(); }
+
+ID3D12Resource* Mesh::GetSpotLightResource() const { return materialResourceSpot.Get(); }
 
 ComPtr<ID3D12Resource> Mesh::CreateVertexResource(DirectXCommon* dxCommon, size_t sizeInBytes) {
 	HRESULT hr;
@@ -95,20 +98,41 @@ void Mesh::LightSetting(DirectXCommon* dXCommon) {
 
 	pointLightData->color = {1.0f, 1.0f, 1.0f, 1.0f};
 	pointLightData->position = {0.0f, 2.0f, 0.0f};
-	pointLightData->intensity = 1.0f;
+	pointLightData->intensity = 0.0f;
 	pointLightData->radius = 3.0f;
 	pointLightData->decay = 2.0f;
+
+	// PointLight用のマテリアルリソースを作る
+	materialResourceSpot = dxCommon_->CreateBufferResource(dxCommon_->GetDevice(), sizeof(SpotLight));
+	materialResourceSpot->Map(0, nullptr, reinterpret_cast<void**>(&spotLightData));
+
+	spotLightData->color = {1.0f, 1.0f, 1.0f, 1.0f};
+	spotLightData->position = {2.0f, 1.25f, 0.0f};
+	spotLightData->distance = 7.0f;
+	spotLightData->direction = MyMath::Normalize({-1.0f, -1.0f, 0.0f});
+	spotLightData->intensity = 4.0f;
+	spotLightData->decay = 2.0f;
+	spotLightData->casAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
+	spotLightData->cosFalloffStart = 1.0f;
 }
 
 void Mesh::ImGuiDebug() {
 
 	ImGui::Begin("Light");
 
-	ImGui::ColorEdit4("LightColor", &pointLightData->color.x);
-	ImGui::DragFloat3("position", &pointLightData->position.x, 0.01f);
-	ImGui::SliderFloat("intencity", &pointLightData->intensity, 0.0f, 10.0f);
-	ImGui::SliderFloat("radius", &pointLightData->radius, 0.0f, 10.0f);
-	ImGui::SliderFloat("decay", &pointLightData->decay, 0.0f, 10.0f);
+	ImGui::ColorEdit4("PointLightColor", &pointLightData->color.x);
+	ImGui::DragFloat3("PointLightPosition", &pointLightData->position.x, 0.01f);
+	ImGui::SliderFloat("PointLightIntencity", &pointLightData->intensity, 0.0f, 10.0f);
+	ImGui::SliderFloat("PointLightRadius", &pointLightData->radius, 0.0f, 10.0f);
+	ImGui::SliderFloat("PointLightDecay", &pointLightData->decay, 0.0f, 10.0f);
+
+	ImGui::ColorEdit4("SpotLightColor", &spotLightData->color.x);
+	ImGui::DragFloat3("SpotoPsition", &spotLightData->position.x, 0.01f);
+	ImGui::DragFloat3("SpotLightIntencity", &spotLightData->distance, 0.0f, 10.0f);
+	ImGui::SliderFloat("SpotLightRadius", &spotLightData->intensity, 0.0f, 10.0f);
+	ImGui::SliderFloat("SpotLightDecay", &spotLightData->decay, 0.0f, 10.0f);
+	ImGui::SliderFloat("SpotLightCosAngle", &spotLightData->casAngle, -2.0f, 1.0f);
+	ImGui::SliderFloat("SpotLightCosStartAngle", &spotLightData->cosFalloffStart, 1.0f, 10.0f);
 
 	ImGui::End();
 }
